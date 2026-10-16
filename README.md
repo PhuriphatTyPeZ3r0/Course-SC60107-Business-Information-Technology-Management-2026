@@ -1,4 +1,4 @@
-﻿# SC60107 Business Information Technology Management (การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ)
+# SC60107 Business Information Technology Management (การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ)
 
 <div align="center">
 
@@ -74,6 +74,7 @@ Course-SC60107-Business-Information-Technology-Management/
 | ลำดับงาน | หัวข้องาน (Assignment) | รายละเอียดและโจทย์การวิเคราะห์ | เอกสารงาน |
 | :---: | :--- | :--- | :---: |
 | **Assign 01** | AI Coaching ในการบริหารจัดการไอทีธุรกิจ | ศึกษาและวิเคราะห์การนำเทคโนโลยี AI มาช่วยให้คำปรึกษา แนะนำ และโค้ชการทำงานภายในองค์กรธุรกิจ (10 คะแนน) | [เปิดเอกสารงาน](02_Labs_Assignments/AI%20Coaching%2010%20คะแนน.docx) |
+| **Assign 02** | Auction Quad — Interactive Sales Dashboard (3D) | Sales Dashboard & Interactive 3D Model Viewer สำหรับการวิเคราะห์ยอดขายและการประมูล | [🌐 Live Dashboard](https://phuriphattypez3r0.github.io/Course-SC60107-Business-Information-Technology-Management-2026/) · [โค้ด Dashboard](02_Labs_Assignments/Dashboard-6752300313.html) |
 
 ---
 

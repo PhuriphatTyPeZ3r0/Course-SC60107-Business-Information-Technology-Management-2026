@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Auction Quad — Sales Dashboard</title>
+<!-- Google Fonts: Prompt -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<!-- Google Material Symbols Rounded Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<!-- Three.js, OrbitControls & GLTFLoader for 3D Pop-up -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* CSS Custom Properties for Dual Theme */
+:root {
+  --canvas: #060b18;
+  --nav-bg: rgba(6, 11, 24, 0.94);
+  --glass: rgba(13, 23, 46, 0.75);
+  --glass-b: rgba(255, 255, 255, 0.08);
+  --glass-hover: rgba(20, 35, 70, 0.85);
+  --blue: #2563eb;
+  --blue-l: #3b82f6;
+  --cyan: #38bdf8;
+  --orange: #f97316;
+  --orange-d: #ea580c;
+  --amber: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --txt: #f8fafc;
+  --txt-sub: #cbd5e1;
+  --muted: #94a3b8;
+  --dim: #334155;
+  --track-bg: rgba(255, 255, 255, 0.05);
+  --card-sub-bg: rgba(255, 255, 255, 0.03);
+  --border-sub: rgba(255, 255, 255, 0.04);
+  --modal-bg: #0c162e;
+  --modal-overlay: rgba(3, 7, 18, 0.78);
+  --font: 'Prompt', system-ui, -apple-system, sans-serif;
+  --shadow-main: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] {
+  --canvas: #f8fafc;
+  --nav-bg: rgba(255, 255, 255, 0.94);
+  --glass: rgba(255, 255, 255, 0.88);
+  --glass-b: rgba(0, 0, 0, 0.08);
+  --glass-hover: rgba(241, 245, 249, 0.95);
+  --blue: #2563eb;
+  --blue-l: #1d4ed8;
+  --cyan: #0284c7;
+  --orange: #ea580c;
+  --orange-d: #c2410c;
+  --amber: #d97706;
+  --green: #059669;
+  --red: #dc2626;
+  --txt: #0f172a;
+  --txt-sub: #334155;
+  --muted: #64748b;
+  --dim: #94a3b8;
+  --track-bg: rgba(0, 0, 0, 0.06);
+  --card-sub-bg: rgba(0, 0, 0, 0.025);
+  --border-sub: rgba(0, 0, 0, 0.06);
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(15, 23, 42, 0.65);
+  --shadow-main: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  font-family: var(--font);
+  background: var(--canvas);
+  color: var(--txt);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  font-size: inherit;
+}
+
+.i {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: inherit;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'liga';
+}
+
+.tabular, td.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* NAV */
+.nav {
+  height: 56px;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--glass-b);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.nav-logo .i {
+  font-size: 26px;
+  color: var(--blue);
+}
+
+.nav-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 6px;
+}
+.nav-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.d1{background:var(--blue)}.d2{background:var(--red)}.d3{background:var(--amber)}.d4{background:var(--green)}
+
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--orange);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+}
+.badge .i { font-size: 14px; }
+
+/* Theme Switcher Button */
+.theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--track-bg);
+  border: 1px solid var(--glass-b);
+  color: var(--txt);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.theme-btn:hover {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue-l);
+  transform: rotate(15deg);
+}
+.theme-btn .i {
+  font-size: 20px;
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+/* KPI GRID */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi {
+  background: var(--glass);
+  border: 1px solid var(--glass-b);
+  border-radius: 14px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-main);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.kpi:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 12px 36px rgba(37, 99, 235, 0.15);
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.kpi-icon {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.kpi-icon .i { font-size: 18px; }
+
+.ki-b{background:rgba(37,99,235,.15);color:var(--blue)}
+.ki-o{background:rgba(249,115,22,.15);color:var(--orange)}
+.ki-g{background:rgba(16,185,129,.15);color:var(--green)}
+.ki-c{background:rgba(56,189,248,.15);color:var(--cyan)}
+
+.kpi-val {
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.kpi-unit {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 4px;
+}
+.kpi-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+.kpi:nth-child(1) .kpi-bar{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.kpi:nth-child(2) .kpi-bar{background:linear-gradient(90deg,var(--orange),var(--amber))}
+.kpi:nth-child(3) .kpi-bar{background:linear-gradient(90deg,var(--green),#6ee7b7)}
+.kpi:nth-child(4) .kpi-bar{background:linear-gradient(90deg,var(--cyan),var(--blue))}
+
+/* SECTION & TITLES */
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.st-icon {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+.st-icon .i { font-size: 16px; }
+.st-b{background:rgba(37,99,235,.15);color:var(--blue-l)}
+.st-o{background:rgba(249,115,22,.15);color:var(--orange)}
+.st-g{background:rgba(16,185,129,.15);color:var(--green)}
+.st-c{background:rgba(56,189,248,.15);color:var(--cyan)}
+.st-a{background:rgba(245,158,11,.15);color:var(--amber)}
+.st-r{background:rgba(239,68,68,.15);color:var(--red)}
+
+/* QUAD GRID */
+.quad-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.quad {
+  background: var(--glass);
+  border: 1px solid var(--glass-b);
+  border-radius: 14px;
+  padding: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow-main);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* BARS (QUAD I) */
+.bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar-item {
+  display: grid;
+  grid-template-columns: 140px 1fr 110px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+.bar-item:hover {
+  background: var(--card-sub-bg);
+  transform: translateX(4px);
+}
+.bar-item:hover .bar-name {
+  color: var(--blue-l);
+}
+
+.bar-name {
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bar-rank {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.r1{background:linear-gradient(135deg,var(--amber),var(--orange))}
+.r2{background:linear-gradient(135deg,#94a3b8,#64748b)}
+.r3{background:linear-gradient(135deg,#b45309,#78350f)}
+.r4,.r5,.r6,.r7,.r8{background:var(--dim);font-size:10px}
+
+.bar-track {
+  height: 26px;
+  background: var(--track-bg);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+.bf1{background:linear-gradient(90deg,var(--orange-d),var(--orange))}
+.bf2{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.bf3{background:linear-gradient(90deg,#047857,var(--green))}
+
+.bar-val {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.bar-3d-hint {
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.bar-item:hover .bar-3d-hint {
+  opacity: 1;
+}
+
+/* BRANCH TABLE (QUAD II) */
+.bt {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.bt thead th {
+  padding: 10px;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 1px solid var(--glass-b);
+  letter-spacing: 0.02em;
+}
+.bt thead th:first-child { text-align: left; }
+.bt tbody td {
+  padding: 10px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid var(--border-sub);
+}
+.bt tbody td:first-child { text-align: left; font-weight: 500; }
+.bt tbody tr:hover td { background: var(--card-sub-bg); }
+.bt tfoot td {
+  padding: 10px;
+  text-align: right;
+  font-weight: 700;
+  color: var(--blue-l);
+  border-top: 1px solid var(--blue);
+  font-variant-numeric: tabular-nums;
+}
+.bt tfoot td:first-child { text-align: left; }
+.pbar {
+  display: inline-block;
+  height: 5px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.branch-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.clickable-row:hover td {
+  background: var(--card-sub-bg)!important;
+  color: var(--blue-l);
+}
+
+/* DAILY TIMELINE (QUAD III) */
+.daily-stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.ds {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.ds .i { font-size: 14px; }
+.ds-p{background:rgba(239,68,68,.12);color:var(--red)}
+.ds-l{background:rgba(37,99,235,.12);color:var(--blue-l)}
+.ds-a{background:var(--track-bg);color:var(--muted)}
+.ds-w{background:rgba(16,185,129,.12);color:var(--green)}
+.ds-e{background:rgba(249,115,22,.12);color:var(--orange)}
+
+.daily-wrap { overflow-x: auto; }
+.daily-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 150px;
+  min-width: 640px;
+}
+.dc {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 14px;
+}
+.dc-area {
+  width: 100%;
+  height: 132px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.dc-bar {
+  width: 65%;
+  border-radius: 3px 3px 0 0;
+  position: relative;
+  cursor: default;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.dc-bar.wd{background:var(--blue)}
+.dc-bar.we{background:var(--orange)}
+.dc-bar.pk{background:var(--red)!important}
+.dc-bar:hover {
+  opacity: 0.8;
+  transform: scaleY(1.04);
+}
+.dc-bar .tip {
+  display: none;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--nav-bg);
+  color: var(--txt);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 10;
+  border: 1px solid var(--glass-b);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.dc-bar:hover .tip { display: block; }
+.dc-lbl {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  justify-content: center;
+}
+.leg {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.leg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* CATEGORIES (QUAD IV) */
+.cat-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-sub);
+}
+.cat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cat-info { flex: 1; }
+.cat-name {
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cat-name .i { font-size: 16px; }
+.cat-sub {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.cat-pct {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.cat-prog {
+  height: 5px;
+  background: var(--track-bg);
+  border-radius: 3px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.cat-prog-fill { height: 100%; border-radius: 3px; }
+
+.insight {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-sub);
+}
+.insight-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.insight-title .i { font-size: 16px; color: var(--cyan); }
+.insight-body {
+  font-size: 11px;
+  color: var(--txt-sub);
+  line-height: 1.7;
+}
+.insight-body .i { font-size: 13px; vertical-align: middle; }
+
+/* FULL TABLE */
+.full-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-b);
+  border-radius: 14px;
+  padding: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow-main);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  margin-bottom: 24px;
+}
+.ft {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.ft thead th {
+  padding: 10px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 1px solid var(--glass-b);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.ft thead th .i { font-size: 14px; vertical-align: middle; }
+.ft tbody td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-sub);
+  font-variant-numeric: tabular-nums;
+}
+.ft tbody tr:hover td { background: var(--card-sub-bg); }
+.ft .num { text-align: right; }
+.ft .hl td { background: rgba(37, 99, 235, 0.04); }
+.ft tfoot td {
+  padding: 10px;
+  font-weight: 700;
+  color: var(--blue-l);
+  border-top: 1px solid var(--blue);
+  font-variant-numeric: tabular-nums;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 16px 0 28px;
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid var(--glass-b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.footer .i { font-size: 14px; }
+
+/* ==========================================================================
+   3D DETAIL MODAL POP-UP (Three.js 3D Interactive Stage)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  background: var(--modal-bg);
+  border: 1px solid var(--glass-b);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 780px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.92) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--glass-b);
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modal-cat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(37, 99, 235, 0.15);
+  color: var(--blue-l);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--track-bg);
+  border: 1px solid var(--glass-b);
+  color: var(--txt);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-close:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  min-height: 340px;
+}
+
+@media (max-width: 700px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal-3d-box {
+  position: relative;
+  background: radial-gradient(circle at center, rgba(37,99,235,.08) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--glass-b);
+  min-height: 320px;
+  cursor: grab;
+  transition: border-color 0.2s, background 0.2s;
+}
+.modal-3d-box:active { cursor: grabbing; }
+.modal-3d-box.dragover {
+  border: 2px dashed var(--cyan) !important;
+  background: radial-gradient(circle at center, rgba(56,189,248,.18) 0%, transparent 70%) !important;
+}
+
+.modal-3d-toolbar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  z-index: 10;
+  pointer-events: none;
+}
+.modal-3d-toolbar > * {
+  pointer-events: auto;
+}
+
+.btn-glb {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--nav-bg);
+  border: 1px solid var(--glass-b);
+  color: var(--txt);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.btn-glb:hover {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue-l);
+}
+.btn-glb .i { font-size: 14px; }
+
+#modal3DCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.modal-3d-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--nav-bg);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--glass-b);
+  pointer-events: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-stats-box {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.m-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.m-stat {
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-sub);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.m-lbl {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.m-val {
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.m-total-card {
+  background: var(--track-bg);
+  border: 1px solid var(--glass-b);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.m-branch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.m-branch-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 100px;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+.m-b-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--txt-sub);
+}
+.m-b-track {
+  height: 6px;
+  background: var(--track-bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.m-b-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.m-b-val {
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .quad-grid { grid-template-columns: 1fr; }
+  .bar-item { grid-template-columns: 110px 1fr 85px; }
+}
+@media (max-width: 500px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .container { padding: 12px 10px; }
+}
+
+.fade { animation: fadeUp .5s ease-out both; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.kpi-grid .kpi:nth-child(1){animation-delay:.05s}
+.kpi-grid .kpi:nth-child(2){animation-delay:.1s}
+.kpi-grid .kpi:nth-child(3){animation-delay:.15s}
+.kpi-grid .kpi:nth-child(4){animation-delay:.2s}
+</style>
+</head>
+<body>
+
+<h1 style="position:absolute;left:-9999px">Auction Quad Sales Dashboard</h1>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <span class="i">analytics</span>
+    Auction Quad
+    <span class="nav-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></span>
+  </div>
+  
+  <div class="nav-right">
+    <!-- Theme Toggle Switch -->
+    <button id="themeToggle" class="theme-btn" title="สลับโหมด สว่าง / มืด">
+      <span class="i" id="themeIcon">light_mode</span>
+    </button>
+    <span class="badge"><span class="i">info</span> ข้อมูลจำลองเพื่อการเรียนรู้ · ส.ค. 2569</span>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- KPI -->
+  <div class="kpi-grid">
+    <div class="kpi fade" onclick="openProductModal('ชีสเค้ก')" title="คลิกดู 3D Pop-Up">
+      <div class="kpi-label"><span class="kpi-icon ki-b"><span class="i">payments</span></span> รายได้รวม (Revenue)</div>
+      <div class="kpi-val">72,530<span class="kpi-unit">บาท</span></div>
+      <div class="kpi-sub">AOV ฿725.30 / บิล · <span style="color:var(--cyan)">ดูโมเดล 3D</span></div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi fade" onclick="openProductModal('ลาเต้')" title="คลิกดู 3D Pop-Up">
+      <div class="kpi-label"><span class="kpi-icon ki-o"><span class="i">inventory_2</span></span> จำนวนขายรวม (Units)</div>
+      <div class="kpi-val">1,000<span class="kpi-unit">หน่วย</span></div>
+      <div class="kpi-sub">100 รายการ · 8 สินค้า · <span style="color:var(--orange)">ดูโมเดล 3D</span></div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi fade" onclick="openProductModal('ลาเต้')" title="คลิกดู 3D Pop-Up">
+      <div class="kpi-label"><span class="kpi-icon ki-g"><span class="i">trending_up</span></span> กำไรขั้นต้น (Gross Profit)</div>
+      <div class="kpi-val">38,825<span class="kpi-unit">บาท</span></div>
+      <div class="kpi-sub">ต้นทุนรวม ฿33,705 · <span style="color:var(--green)">ดูโมเดล 3D</span></div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi fade" onclick="openProductModal('อเมริกาโน')" title="คลิกดู 3D Pop-Up">
+      <div class="kpi-label"><span class="kpi-icon ki-c"><span class="i">percent</span></span> อัตรากำไรขั้นต้น (GP Margin)</div>
+      <div class="kpi-val">53.53<span class="kpi-unit">%</span></div>
+      <div class="kpi-sub">กำไร ฿38,825 จาก ฿72,530</div>
+      <div class="kpi-bar"></div>
+    </div>
+  </div>
+
+  <!-- QUAD I & II -->
+  <div class="quad-grid">
+    <!-- QUAD I: TOP PRODUCTS -->
+    <div class="quad fade" style="animation-delay:.25s">
+      <div class="section-title">
+        <span class="st-icon st-a"><span class="i">emoji_events</span></span> 
+        Quad I — สินค้ารายได้สูงสุด 8 อันดับ (คลิกดู 3D Pop-up)
+      </div>
+      <div class="bar-list">
+        <div class="bar-item" onclick="openProductModal('ชีสเค้ก')">
+          <div class="bar-name"><span class="bar-rank r1">1</span>ชีสเค้ก</div>
+          <div class="bar-track"><div class="bar-fill bf1" style="width:100%">100%</div></div>
+          <div class="bar-val"><span class="bar-num">฿13,420</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+        <div class="bar-item" onclick="openProductModal('ลาเต้')">
+          <div class="bar-name"><span class="bar-rank r2">2</span>ลาเต้</div>
+          <div class="bar-track"><div class="bar-fill bf2" style="width:75.4%">75.4%</div></div>
+          <div class="bar-val"><span class="bar-num">฿10,125</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+        <div class="bar-item" onclick="openProductModal('ครัวซองต์')">
+          <div class="bar-name"><span class="bar-rank r3">3</span>ครัวซองต์</div>
+          <div class="bar-track"><div class="bar-fill bf3" style="width:74.7%">74.7%</div></div>
+          <div class="bar-val"><span class="bar-num">฿10,030</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+        <div class="bar-item" onclick="openProductModal('คาปูชิโน')">
+          <div class="bar-name"><span class="bar-rank r4">4</span>คาปูชิโน</div>
+          <div class="bar-track"><div class="bar-fill bf2" style="width:69.9%">69.9%</div></div>
+          <div class="bar-val"><span class="bar-num">฿9,375</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+        <div class="bar-item" onclick="openProductModal('โกโก้')">
+          <div class="bar-name"><span class="bar-rank r5">5</span>โกโก้</div>
+          <div class="bar-track"><div class="bar-fill bf3" style="width:66.8%">66.8%</div></div>
+          <div class="bar-val"><span class="bar-num">฿8,970</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+        <div class="bar-item" onclick="openProductModal('อเมริกาโน')">
+          <div class="bar-name"><span class="bar-rank r6">6</span>อเมริกาโน</div>
+          <div class="bar-track"><div class="bar-fill bf1" style="width:62.6%">62.6%</div></div>
+          <div class="bar-val"><span class="bar-num">฿8,400</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+        <div class="bar-item" onclick="openProductModal('ชาไทย')">
+          <div class="bar-name"><span class="bar-rank r7">7</span>ชาไทย</div>
+          <div class="bar-track"><div class="bar-fill bf2" style="width:45.9%">45.9%</div></div>
+          <div class="bar-val"><span class="bar-num">฿6,160</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+        <div class="bar-item" onclick="openProductModal('บราวนี')">
+          <div class="bar-name"><span class="bar-rank r8">8</span>บราวนี</div>
+          <div class="bar-track"><div class="bar-fill bf3" style="width:45.1%">45.1%</div></div>
+          <div class="bar-val"><span class="bar-num">฿6,050</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUAD II: BRANCHES -->
+    <div class="quad fade" style="animation-delay:.3s">
+      <div class="section-title"><span class="st-icon st-o"><span class="i">storefront</span></span> Quad II — เปรียบเทียบ 3 สาขา</div>
+      <table class="bt">
+        <thead><tr><th>สาขา</th><th>บิล</th><th>ชิ้น</th><th>รายได้</th><th>สัดส่วน</th><th>กำไร</th><th>GP%</th></tr></thead>
+        <tbody>
+          <tr><td><span class="i branch-icon" style="color:var(--blue)">school</span> มหาวิทยาลัย</td><td>34</td><td>465</td><td>฿33,395</td><td><span class="pbar" style="width:46px;background:var(--blue)"></span>46.0%</td><td>฿18,152</td><td>54.4%</td></tr>
+          <tr><td><span class="i branch-icon" style="color:var(--orange)">business</span> สำนักงาน</td><td>33</td><td>290</td><td>฿21,245</td><td><span class="pbar" style="width:29px;background:var(--orange)"></span>29.3%</td><td>฿10,967</td><td>51.6%</td></tr>
+          <tr><td><span class="i branch-icon" style="color:var(--green)">shopping_bag</span> ห้างสรรพสินค้า</td><td>33</td><td>245</td><td>฿17,890</td><td><span class="pbar" style="width:25px;background:var(--green)"></span>24.7%</td><td>฿9,706</td><td>54.3%</td></tr>
+        </tbody>
+        <tfoot><tr><td>รวม</td><td>100</td><td>1,000</td><td>฿72,530</td><td>100%</td><td>฿38,825</td><td>53.5%</td></tr></tfoot>
+      </table>
+
+      <!-- Product detail table with click to 3D -->
+      <div style="margin-top:16px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;">
+          <span style="display:flex;align-items:center;gap:4px"><span class="i" style="font-size:14px">receipt_long</span> รายละเอียดสินค้า × กำไร</span>
+          <span style="font-size:11px;color:var(--cyan);display:flex;align-items:center;gap:3px;"><span class="i" style="font-size:14px">touch_app</span> คลิกแถวเพื่อเปิด 3D</span>
+        </div>
+        <table class="bt" style="font-size:11px">
+          <thead><tr><th>สินค้า</th><th>ชิ้น</th><th>รายได้</th><th>กำไร</th><th>GP%</th><th>สัดส่วน</th></tr></thead>
+          <tbody>
+            <tr class="clickable-row" onclick="openProductModal('ชีสเค้ก')"><td>ชีสเค้ก</td><td>122</td><td>฿13,420</td><td>฿4,636</td><td>34.5%</td><td>18.5%</td></tr>
+            <tr class="clickable-row" onclick="openProductModal('ลาเต้')"><td>ลาเต้</td><td>135</td><td>฿10,125</td><td>฿6,345</td><td>62.7%</td><td>14.0%</td></tr>
+            <tr class="clickable-row" onclick="openProductModal('ครัวซองต์')"><td>ครัวซองต์</td><td>118</td><td>฿10,030</td><td>฿2,950</td><td>29.4%</td><td>13.8%</td></tr>
+            <tr class="clickable-row" onclick="openProductModal('คาปูชิโน')"><td>คาปูชิโน</td><td>125</td><td>฿9,375</td><td>฿6,000</td><td>64.0%</td><td>12.9%</td></tr>
+            <tr class="clickable-row" onclick="openProductModal('โกโก้')"><td>โกโก้</td><td>138</td><td>฿8,970</td><td>฿5,520</td><td>61.5%</td><td>12.4%</td></tr>
+            <tr class="clickable-row" onclick="openProductModal('อเมริกาโน')"><td>อเมริกาโน</td><td>140</td><td>฿8,400</td><td>฿5,600</td><td>66.7%</td><td>11.6%</td></tr>
+            <tr class="clickable-row" onclick="openProductModal('ชาไทย')"><td>ชาไทย</td><td>112</td><td>฿6,160</td><td>฿4,144</td><td>67.3%</td><td>8.5%</td></tr>
+            <tr class="clickable-row" onclick="openProductModal('บราวนี')"><td>บราวนี</td><td>110</td><td>฿6,050</td><td>฿3,630</td><td>60.0%</td><td>8.3%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUAD III & IV -->
+  <div class="quad-grid">
+    <!-- QUAD III: DAILY -->
+    <div class="quad fade" style="animation-delay:.35s">
+      <div class="section-title"><span class="st-icon st-c"><span class="i">calendar_month</span></span> Quad III — รายได้รายวัน · สิงหาคม 2569</div>
+      <div class="daily-stats">
+        <span class="ds ds-p"><span class="i">arrow_upward</span> Peak 4 ส.ค. ฿3,690</span>
+        <span class="ds ds-l"><span class="i">arrow_downward</span> Low 15 ส.ค. ฿1,290</span>
+        <span class="ds ds-a"><span class="i">trending_flat</span> เฉลี่ย ฿2,340/วัน</span>
+        <span class="ds ds-w"><span class="i">work</span> จ-ศ ฿2,343/วัน</span>
+        <span class="ds ds-e"><span class="i">weekend</span> ส-อา ฿2,332/วัน</span>
+      </div>
+      <div class="daily-wrap">
+        <div class="daily-chart">
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:53.4%"><span class="tip">1 ส.ค. ฿1,970 (ส)</span></div></div><div class="dc-lbl">1</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:61.4%"><span class="tip">2 ส.ค. ฿2,265 (อา)</span></div></div><div class="dc-lbl">2</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:55.0%"><span class="tip">3 ส.ค. ฿2,030</span></div></div><div class="dc-lbl">3</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar pk" style="height:100%"><span class="tip">4 ส.ค. ฿3,690 ★PEAK</span></div></div><div class="dc-lbl">4</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:64.9%"><span class="tip">5 ส.ค. ฿2,395</span></div></div><div class="dc-lbl">5</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:39.6%"><span class="tip">6 ส.ค. ฿1,460</span></div></div><div class="dc-lbl">6</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:67.9%"><span class="tip">7 ส.ค. ฿2,505</span></div></div><div class="dc-lbl">7</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:44.7%"><span class="tip">8 ส.ค. ฿1,650 (ส)</span></div></div><div class="dc-lbl">8</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:88.6%"><span class="tip">9 ส.ค. ฿3,270 (อา)</span></div></div><div class="dc-lbl">9</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:56.8%"><span class="tip">10 ส.ค. ฿2,095</span></div></div><div class="dc-lbl">10</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:72.5%"><span class="tip">11 ส.ค. ฿2,675</span></div></div><div class="dc-lbl">11</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:48.1%"><span class="tip">12 ส.ค. ฿1,775</span></div></div><div class="dc-lbl">12</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:63.4%"><span class="tip">13 ส.ค. ฿2,340</span></div></div><div class="dc-lbl">13</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:52.3%"><span class="tip">14 ส.ค. ฿1,930</span></div></div><div class="dc-lbl">14</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:35.0%"><span class="tip">15 ส.ค. ฿1,290 (ส) LOW</span></div></div><div class="dc-lbl">15</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:88.5%"><span class="tip">16 ส.ค. ฿3,265 (อา)</span></div></div><div class="dc-lbl">16</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:59.5%"><span class="tip">17 ส.ค. ฿2,195</span></div></div><div class="dc-lbl">17</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:93.2%"><span class="tip">18 ส.ค. ฿3,440</span></div></div><div class="dc-lbl">18</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:40.4%"><span class="tip">19 ส.ค. ฿1,490</span></div></div><div class="dc-lbl">19</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:72.1%"><span class="tip">20 ส.ค. ฿2,660</span></div></div><div class="dc-lbl">20</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:61.2%"><span class="tip">21 ส.ค. ฿2,260</span></div></div><div class="dc-lbl">21</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:61.8%"><span class="tip">22 ส.ค. ฿2,280 (ส)</span></div></div><div class="dc-lbl">22</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:69.1%"><span class="tip">23 ส.ค. ฿2,550 (อา)</span></div></div><div class="dc-lbl">23</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:78.9%"><span class="tip">24 ส.ค. ฿2,910</span></div></div><div class="dc-lbl">24</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:41.1%"><span class="tip">25 ส.ค. ฿1,515</span></div></div><div class="dc-lbl">25</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:60.0%"><span class="tip">26 ส.ค. ฿2,215</span></div></div><div class="dc-lbl">26</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:72.5%"><span class="tip">27 ส.ค. ฿2,675</span></div></div><div class="dc-lbl">27</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:47.8%"><span class="tip">28 ส.ค. ฿1,765</span></div></div><div class="dc-lbl">28</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:46.7%"><span class="tip">29 ส.ค. ฿1,725 (ส)</span></div></div><div class="dc-lbl">29</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar we" style="height:82.8%"><span class="tip">30 ส.ค. ฿3,055 (อา)</span></div></div><div class="dc-lbl">30</div></div>
+          <div class="dc"><div class="dc-area"><div class="dc-bar wd" style="height:86.4%"><span class="tip">31 ส.ค. ฿3,190</span></div></div><div class="dc-lbl">31</div></div>
+        </div>
+      </div>
+      <div class="legend">
+        <span class="leg"><span class="leg-dot" style="background:var(--blue)"></span>วันธรรมดา</span>
+        <span class="leg"><span class="leg-dot" style="background:var(--orange)"></span>วันหยุด</span>
+        <span class="leg"><span class="leg-dot" style="background:var(--red)"></span>Peak Day</span>
+      </div>
+    </div>
+
+    <!-- QUAD IV: CATEGORY -->
+    <div class="quad fade" style="animation-delay:.4s">
+      <div class="section-title"><span class="st-icon st-g"><span class="i">category</span></span> Quad IV — โครงสร้างหมวดหมู่</div>
+      <div class="cat-cards">
+        <div class="cat-card" onclick="openProductModal('ชีสเค้ก')" style="cursor:pointer;" title="คลิกดูสินค้าหมวดเบเกอรีใน 3D">
+          <div class="cat-dot" style="background:var(--red)"></div>
+          <div class="cat-info">
+            <div class="cat-name"><span class="i" style="color:var(--red)">cake</span> เบเกอรี</div>
+            <div class="cat-sub">฿29,500 · 350 หน่วย · กำไร ฿11,216 (38.0%)</div>
+            <div class="cat-prog"><div class="cat-prog-fill" style="width:100%;background:var(--red)"></div></div>
+          </div>
+          <div class="cat-pct" style="color:var(--red)">40.7%</div>
+        </div>
+        <div class="cat-card" onclick="openProductModal('ลาเต้')" style="cursor:pointer;" title="คลิกดูสินค้าหมวดกาแฟใน 3D">
+          <div class="cat-dot" style="background:var(--blue)"></div>
+          <div class="cat-info">
+            <div class="cat-name"><span class="i" style="color:var(--blue)">coffee</span> กาแฟ</div>
+            <div class="cat-sub">฿27,900 · 400 หน่วย · กำไร ฿17,945 (64.3%)</div>
+            <div class="cat-prog"><div class="cat-prog-fill" style="width:94.6%;background:var(--blue)"></div></div>
+          </div>
+          <div class="cat-pct" style="color:var(--blue)">38.5%</div>
+        </div>
+        <div class="cat-card" onclick="openProductModal('โกโก้')" style="cursor:pointer;" title="คลิกดูสินค้าหมวดเครื่องดื่มอื่นใน 3D">
+          <div class="cat-dot" style="background:var(--green)"></div>
+          <div class="cat-info">
+            <div class="cat-name"><span class="i" style="color:var(--green)">local_cafe</span> เครื่องดื่มอื่น</div>
+            <div class="cat-sub">฿15,130 · 250 หน่วย · กำไร ฿9,664 (63.9%)</div>
+            <div class="cat-prog"><div class="cat-prog-fill" style="width:51.3%;background:var(--green)"></div></div>
+          </div>
+          <div class="cat-pct" style="color:var(--green)">20.9%</div>
+        </div>
+      </div>
+
+      <!-- BCG INSIGHT -->
+      <div class="insight">
+        <div class="insight-title"><span class="i">search</span> BCG-Style Insight (คลิกดู 3D แต่ละตัว)</div>
+        <div class="insight-body">
+          <span style="color:var(--amber);cursor:pointer;" onclick="openProductModal('ลาเต้')"><span class="i">star</span> ดาวเด่น:</span> ลาเต้ (62.7%), คาปูชิโน (64.0%), โกโก้ (61.5%)<br>
+          <span style="color:var(--blue-l);cursor:pointer;" onclick="openProductModal('ชีสเค้ก')"><span class="i">savings</span> เครื่องจักรเงินสด:</span> ชีสเค้ก (ยอดขาย No.1 ฿13,420 | 34.5%), ครัวซองต์ (29.4%)<br>
+          <span style="color:var(--green);cursor:pointer;" onclick="openProductModal('ชาไทย')"><span class="i">help</span> มีศักยภาพ:</span> อเมริกาโน (66.7%), ชาไทย (กำไรสูงสุด 67.3%)<br>
+          <span style="color:var(--red);cursor:pointer;" onclick="openProductModal('บราวนี')"><span class="i">pets</span> ทบทวน:</span> บราวนี (60.0%)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL BRANCH × PRODUCT TABLE -->
+  <div class="section fade" style="animation-delay:.45s">
+    <div class="section-title"><span class="st-icon st-b"><span class="i">bar_chart</span></span> ตารางรายได้ สินค้า × สาขา (คลิกแถวเพื่อดู 3D Pop-Up)</div>
+    <div class="full-card">
+      <table class="ft">
+        <thead>
+          <tr>
+            <th>สินค้า</th>
+            <th>หมวด</th>
+            <th class="num"><span class="i" style="color:var(--blue)">school</span> มหาวิทยาลัย</th>
+            <th class="num"><span class="i" style="color:var(--orange)">business</span> สำนักงาน</th>
+            <th class="num"><span class="i" style="color:var(--green)">shopping_bag</span> ห้างฯ</th>
+            <th class="num">รวม</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hl clickable-row" onclick="openProductModal('ชีสเค้ก')"><td>ชีสเค้ก</td><td>เบเกอรี</td><td class="num">5,280</td><td class="num">4,730</td><td class="num">3,410</td><td class="num"><b>13,420</b></td></tr>
+          <tr class="clickable-row" onclick="openProductModal('ลาเต้')"><td>ลาเต้</td><td>กาแฟ</td><td class="num">4,725</td><td class="num">2,700</td><td class="num">2,700</td><td class="num"><b>10,125</b></td></tr>
+          <tr class="clickable-row" onclick="openProductModal('ครัวซองต์')"><td>ครัวซองต์</td><td>เบเกอรี</td><td class="num">4,420</td><td class="num">3,570</td><td class="num">2,040</td><td class="num"><b>10,030</b></td></tr>
+          <tr class="clickable-row" onclick="openProductModal('คาปูชิโน')"><td>คาปูชิโน</td><td>กาแฟ</td><td class="num">4,875</td><td class="num">1,950</td><td class="num">2,550</td><td class="num"><b>9,375</b></td></tr>
+          <tr class="clickable-row" onclick="openProductModal('โกโก้')"><td>โกโก้</td><td>เครื่องดื่มอื่น</td><td class="num">4,810</td><td class="num">1,690</td><td class="num">2,470</td><td class="num"><b>8,970</b></td></tr>
+          <tr class="clickable-row" onclick="openProductModal('อเมริกาโน')"><td>อเมริกาโน</td><td>กาแฟ</td><td class="num">3,840</td><td class="num">2,040</td><td class="num">2,520</td><td class="num"><b>8,400</b></td></tr>
+          <tr class="clickable-row" onclick="openProductModal('ชาไทย')"><td>ชาไทย</td><td>เครื่องดื่มอื่น</td><td class="num">2,200</td><td class="num">2,805</td><td class="num">1,155</td><td class="num"><b>6,160</b></td></tr>
+          <tr class="clickable-row" onclick="openProductModal('บราวนี')"><td>บราวนี</td><td>เบเกอรี</td><td class="num">3,245</td><td class="num">1,760</td><td class="num">1,045</td><td class="num"><b>6,050</b></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="2">รวมทั้งหมด</td><td class="num">33,395</td><td class="num">21,245</td><td class="num">17,890</td><td class="num">72,530</td></tr></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="i">grid_view</span> Auction Quad Design System · สร้างจากข้อมูล 100 รายการ · <span class="i">functions</span> รายได้ = จำนวนขาย × ราคาขาย | กำไร = จำนวนขาย × (ราคาขาย − ต้นทุน) · <span class="i">verified</span> ตัวเลขตรวจสอบ 100%
+  </div>
+</div>
+
+<!-- ==========================================================================
+     3D DETAIL MODAL POP-UP DIALOG
+     ========================================================================== -->
+<div id="modal3D" class="modal-overlay" style="display:none;" onclick="closeModalOnBackdrop(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="i modal-cat-icon" id="mCatIcon">cake</span>
+        <div>
+          <h3 id="mTitle" style="font-size:18px;font-weight:700;">ชีสเค้ก</h3>
+          <span id="mCat" class="badge" style="font-size:10px;padding:2px 8px;">หมวดเบเกอรี</span>
+        </div>
+      </div>
+      <button class="modal-close" onclick="close3DModal()" title="ปิดหน้าต่าง (Esc)"><span class="i">close</span></button>
+    </div>
+    
+    <div class="modal-body">
+      <!-- 3D Stage Box -->
+      <div class="modal-3d-box" id="modal3DBox">
+        <div class="modal-3d-toolbar">
+          <span id="modelModeBadge" class="badge" style="font-size:10px;padding:3px 8px;background:rgba(37,99,235,.2);color:var(--cyan);border:1px solid rgba(56,189,248,.3);">
+            <span class="i" style="font-size:12px;">auto_awesome</span> โมเดล 3D สมจริง (Studio)
+          </span>
+          <div style="display:flex;gap:6px;">
+            <button id="btnResetModel" class="btn-glb" style="display:none;" onclick="resetToProceduralModel()" title="คืนค่าโมเดลสมจริงตั้งต้น">
+              <span class="i">restart_alt</span> รีเซ็ต
+            </button>
+            <button id="btnImportGLB" class="btn-glb" onclick="document.getElementById('glbFileInput').click()" title="นำเข้าไฟล์ .glb หรือ .gltf Open-Source">
+              <span class="i">upload_file</span> นำเข้า .GLB
+            </button>
+            <input type="file" id="glbFileInput" accept=".glb,.gltf" style="display:none;" onchange="handleGLBFileSelect(event)">
+          </div>
+        </div>
+
+        <canvas id="modal3DCanvas"></canvas>
+        <div class="modal-3d-hint"><span class="i" style="font-size:14px;">3d_rotation</span> หมุน 360° · ซูม · วางไฟล์ .glb ได้</div>
+      </div>
+
+      <!-- Stats Breakdown Box -->
+      <div class="modal-stats-box">
+        <div class="m-grid">
+          <div class="m-stat"><div class="m-lbl">ราคาขาย / หน่วย</div><div class="m-val" id="mPrice">฿110.00</div></div>
+          <div class="m-stat"><div class="m-lbl">ต้นทุน / หน่วย</div><div class="m-val" id="mCost">฿72.00</div></div>
+          <div class="m-stat"><div class="m-lbl">กำไร / หน่วย</div><div class="m-val" id="mUnitProfit" style="color:var(--green)">฿38.00</div></div>
+          <div class="m-stat"><div class="m-lbl">อัตรากำไร (GP%)</div><div class="m-val" id="mMargin" style="color:var(--blue-l)">34.5%</div></div>
+        </div>
+        
+        <div class="m-total-card">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:11px;color:var(--muted)">ยอดขายรวมทั้งสิ้น (3 สาขา)</span>
+            <span id="mTotalQty" style="font-size:12px;font-weight:600">122 ชิ้น</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <span id="mTotalRev" style="font-size:22px;font-weight:700;color:var(--orange)">฿13,420.00</span>
+            <span id="mTotalProfit" style="font-size:13px;font-weight:600;color:var(--green)">กำไร ฿4,636.00</span>
+          </div>
+        </div>
+
+        <!-- Branch Breakdown Mini-bars -->
+        <div class="m-branch-list">
+          <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;">สัดส่วนยอดขายแยกตามสาขา</div>
+          <div class="m-branch-row">
+            <div class="m-b-name"><span class="i" style="color:var(--blue)">school</span> มหาวิทยาลัย</div>
+            <div class="m-b-track"><div class="m-b-fill" id="mBarUni" style="background:var(--blue);width:39.3%;"></div></div>
+            <div class="m-b-val" id="mValUni">฿5,280</div>
+          </div>
+          <div class="m-branch-row">
+            <div class="m-b-name"><span class="i" style="color:var(--orange)">business</span> สำนักงาน</div>
+            <div class="m-b-track"><div class="m-b-fill" id="mBarOff" style="background:var(--orange);width:35.2%;"></div></div>
+            <div class="m-b-val" id="mValOff">฿4,730</div>
+          </div>
+          <div class="m-branch-row">
+            <div class="m-b-name"><span class="i" style="color:var(--green)">shopping_bag</span> ห้างฯ</div>
+            <div class="m-b-track"><div class="m-b-fill" id="mBarMall" style="background:var(--green);width:25.4%;"></div></div>
+            <div class="m-b-val" id="mValMall">฿3,410</div>
+          </div>
+        </div>
+
+        <!-- Open-Source Resource Bar -->
+        <div style="font-size:10px;color:var(--muted);background:var(--card-sub-bg);padding:8px 10px;border-radius:8px;border:1px solid var(--border-sub);display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span class="i" style="font-size:13px;color:var(--cyan);">hub</span>
+            <span>แหล่งโมเดลฟรี: <a href="https://poly.pizza" target="_blank" rel="noopener" style="color:var(--blue-l);text-decoration:none;">Poly.pizza (CC0)</a> · <a href="https://sketchfab.com" target="_blank" rel="noopener" style="color:var(--blue-l);text-decoration:none;">Sketchfab</a></span>
+          </div>
+          <span style="color:var(--dim);">100% Offline</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Product Database
+  const PRODUCT_DATA = {"ชีสเค้ก": {"product": "ชีสเค้ก", "category": "เบเกอรี", "icon": "cake", "color": "#f59e0b", "price": 110.0, "cost": 72.0, "qty": 122, "rev": 13420.0, "profit": 4636.0, "margin": "34.5%", "branches": {"มหาวิทยาลัย": {"qty": 48, "rev": 5280.0, "profit": 1824.0, "pct": 39.3}, "สำนักงาน": {"qty": 43, "rev": 4730.0, "profit": 1634.0, "pct": 35.2}, "ห้างสรรพสินค้า": {"qty": 31, "rev": 3410.0, "profit": 1178.0, "pct": 25.4}}}, "ลาเต้": {"product": "ลาเต้", "category": "กาแฟ", "icon": "coffee", "color": "#3b82f6", "price": 75.0, "cost": 28.0, "qty": 135, "rev": 10125.0, "profit": 6345.0, "margin": "62.7%", "branches": {"มหาวิทยาลัย": {"qty": 63, "rev": 4725.0, "profit": 2961.0, "pct": 46.7}, "สำนักงาน": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}, "ห้างสรรพสินค้า": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}}}, "ครัวซองต์": {"product": "ครัวซองต์", "category": "เบเกอรี", "icon": "bakery_dining", "color": "#f97316", "price": 85.0, "cost": 60.0, "qty": 118, "rev": 10030.0, "profit": 2950.0, "margin": "29.4%", "branches": {"มหาวิทยาลัย": {"qty": 52, "rev": 4420.0, "profit": 1300.0, "pct": 44.1}, "สำนักงาน": {"qty": 42, "rev": 3570.0, "profit": 1050.0, "pct": 35.6}, "ห้างสรรพสินค้า": {"qty": 24, "rev": 2040.0, "profit": 600.0, "pct": 20.3}}}, "คาปูชิโน": {"product": "คาปูชิโน", "category": "กาแฟ", "icon": "local_cafe", "color": "#38bdf8", "price": 75.0, "cost": 27.0, "qty": 125, "rev": 9375.0, "profit": 6000.0, "margin": "64.0%", "branches": {"มหาวิทยาลัย": {"qty": 65, "rev": 4875.0, "profit": 3120.0, "pct": 52.0}, "สำนักงาน": {"qty": 26, "rev": 1950.0, "profit": 1248.0, "pct": 20.8}, "ห้างสรรพสินค้า": {"qty": 34, "rev": 2550.0, "profit": 1632.0, "pct": 27.2}}}, "โกโก้": {"product": "โกโก้", "category": "เครื่องดื่มอื่น", "icon": "icecream", "color": "#10b981", "price": 65.0, "cost": 25.0, "qty": 138, "rev": 8970.0, "profit": 5520.0, "margin": "61.5%", "branches": {"มหาวิทยาลัย": {"qty": 74, "rev": 4810.0, "profit": 2960.0, "pct": 53.6}, "สำนักงาน": {"qty": 26, "rev": 1690.0, "profit": 1040.0, "pct": 18.8}, "ห้างสรรพสินค้า": {"qty": 38, "rev": 2470.0, "profit": 1520.0, "pct": 27.5}}}, "อเมริกาโน": {"product": "อเมริกาโน", "category": "กาแฟ", "icon": "coffee", "color": "#2563eb", "price": 60.0, "cost": 20.0, "qty": 140, "rev": 8400.0, "profit": 5600.0, "margin": "66.7%", "branches": {"มหาวิทยาลัย": {"qty": 64, "rev": 3840.0, "profit": 2560.0, "pct": 45.7}, "สำนักงาน": {"qty": 34, "rev": 2040.0, "profit": 1360.0, "pct": 24.3}, "ห้างสรรพสินค้า": {"qty": 42, "rev": 2520.0, "profit": 1680.0, "pct": 30.0}}}, "ชาไทย": {"product": "ชาไทย", "category": "เครื่องดื่มอื่น", "icon": "emoji_food_beverage", "color": "#f97316", "price": 55.0, "cost": 18.0, "qty": 112, "rev": 6160.0, "profit": 4144.0, "margin": "67.3%", "branches": {"มหาวิทยาลัย": {"qty": 40, "rev": 2200.0, "profit": 1480.0, "pct": 35.7}, "สำนักงาน": {"qty": 51, "rev": 2805.0, "profit": 1887.0, "pct": 45.5}, "ห้างสรรพสินค้า": {"qty": 21, "rev": 1155.0, "profit": 777.0, "pct": 18.8}}}, "บราวนี": {"product": "บราวนี", "category": "เบเกอรี", "icon": "cookie", "color": "#b45309", "price": 55.0, "cost": 22.0, "qty": 110, "rev": 6050.0, "profit": 3630.0, "margin": "60.0%", "branches": {"มหาวิทยาลัย": {"qty": 59, "rev": 3245.0, "profit": 1947.0, "pct": 53.6}, "สำนักงาน": {"qty": 32, "rev": 1760.0, "profit": 1056.0, "pct": 29.1}, "ห้างสรรพสินค้า": {"qty": 19, "rev": 1045.0, "profit": 627.0, "pct": 17.3}}}};
+
+  // Currency & Number Formatters
+  const fmtMoney = (n) => '฿' + Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtInt = (n) => Number(n).toLocaleString('th-TH');
+
+  // 3D Engine & Modal References (Declared at top of script scope)
+  let mScene = null, mCamera = null, mRenderer = null, mControls = null, mMeshGroup = null, mAnimId = null;
+  let currentProductItem = null;
+  let customGLBModel = null;
+  const modalOverlay = document.getElementById('modal3D');
+
+  // ==========================================================================
+  // THEME SWITCHER (LIGHT / DARK MODE)
+  // ==========================================================================
+  const themeToggleBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'light') {
+      themeIcon.textContent = 'dark_mode';
+      themeToggleBtn.title = 'สลับเป็นโหมดกลางคืน (Dark Mode)';
+    } else {
+      themeIcon.textContent = 'light_mode';
+      themeToggleBtn.title = 'สลับเป็นโหมดสว่าง (Light Mode)';
+    }
+    localStorage.setItem('aq_theme', theme);
+
+    // Update 3D scene lighting & background if modal is active
+    if (mRenderer && mScene) {
+      const isLight = (theme === 'light');
+      mScene.background = new THREE.Color(isLight ? 0xf8fafc : 0x0c162e);
+    }
+  }
+
+  // Init Theme from LocalStorage or default to dark
+  const savedTheme = localStorage.getItem('aq_theme') || 'dark';
+  applyTheme(savedTheme);
+
+  themeToggleBtn.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = (cur === 'dark') ? 'light' : 'dark';
+    applyTheme(next);
+  });
+
+  // ==========================================================================
+  // 3D DETAIL MODAL ENGINE (THREE.JS)
+  // ==========================================================================
+
+  function clearCurrentModel() {
+    if (!mMeshGroup) return;
+    while (mMeshGroup.children.length > 2) {
+      mMeshGroup.remove(mMeshGroup.children[2]);
+    }
+  }
+
+  function resetToProceduralModel() {
+    customGLBModel = null;
+    const btnReset = document.getElementById('btnResetModel');
+    if (btnReset) btnReset.style.display = 'none';
+    const badge = document.getElementById('modelModeBadge');
+    if (badge) {
+      badge.innerHTML = '<span class="i" style="font-size:12px;">auto_awesome</span> โมเดล 3D สมจริง (Studio)';
+      badge.style.borderColor = 'rgba(56,189,248,.3)';
+      badge.style.color = 'var(--cyan)';
+    }
+    if (currentProductItem) {
+      updateModalMesh(currentProductItem);
+    }
+  }
+
+  function handleGLBFileSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if (file) loadGLBFile(file);
+    e.target.value = '';
+  }
+
+  function loadGLBFile(file) {
+    if (!window.THREE || !THREE.GLTFLoader) {
+      alert('GLTFLoader ยังโหลดไม่เสร็จหรือออฟไลน์ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตสำหรับการโหลดไลบรารี');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const arrayBuffer = evt.target.result;
+      const loader = new THREE.GLTFLoader();
+      loader.parse(arrayBuffer, '', (gltf) => {
+        clearCurrentModel();
+        customGLBModel = gltf.scene;
+
+        // Auto-fit & center the GLTF model
+        const bBox = new THREE.Box3().setFromObject(customGLBModel);
+        const size = bBox.getSize(new THREE.Vector3());
+        const center = bBox.getCenter(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 2.0 / (maxDim || 1);
+        customGLBModel.scale.setScalar(scale);
+
+        // Center on top of base pedestal
+        customGLBModel.position.x = -center.x * scale;
+        customGLBModel.position.y = -bBox.min.y * scale + 0.05;
+        customGLBModel.position.z = -center.z * scale;
+
+        mMeshGroup.add(customGLBModel);
+
+        // Update UI
+        const btnReset = document.getElementById('btnResetModel');
+        if (btnReset) btnReset.style.display = 'inline-flex';
+        const badge = document.getElementById('modelModeBadge');
+        if (badge) {
+          const shortName = file.name.length > 18 ? file.name.substring(0, 15) + '...' : file.name;
+          badge.innerHTML = '<span class="i" style="font-size:12px;">check_circle</span> โมเดล: ' + shortName;
+          badge.style.borderColor = 'rgba(16,185,129,.4)';
+          badge.style.color = 'var(--green)';
+        }
+      }, (err) => {
+        console.error('Error parsing GLB:', err);
+        alert('เกิดข้อผิดพลาดในการเปิดไฟล์ 3D: กรุณาตรวจสอบว่าเป็นไฟล์ .glb หรือ .gltf ที่ถูกต้อง');
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function setupDragAndDrop() {
+    const box = document.getElementById('modal3DBox');
+    if (!box) return;
+    box.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      box.classList.add('dragover');
+    });
+    box.addEventListener('dragleave', () => {
+      box.classList.remove('dragover');
+    });
+    box.addEventListener('drop', (e) => {
+      e.preventDefault();
+      box.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        loadGLBFile(e.dataTransfer.files[0]);
+      }
+    });
+  }
+
+  function initModalThreeJS() {
+    const box = document.getElementById('modal3DBox');
+    const canvas = document.getElementById('modal3DCanvas');
+    const width = box.clientWidth || 320;
+    const height = box.clientHeight || 320;
+
+    mScene = new THREE.Scene();
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    mScene.background = new THREE.Color(isLight ? 0xf8fafc : 0x0c162e);
+
+    mCamera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    mCamera.position.set(0, 4.4, 5.4); // Higher elevation for better top-down visibility
+
+    mRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    mRenderer.setSize(width, height);
+    mRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    mRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    mRenderer.toneMappingExposure = 1.05;
+
+    mControls = new THREE.OrbitControls(mCamera, mRenderer.domElement);
+    mControls.enableDamping = true;
+    mControls.dampingFactor = 0.05;
+    mControls.enablePan = false;
+    mControls.target.set(0, 0.7, 0);
+    mControls.minDistance = 3.5;
+    mControls.maxDistance = 9;
+    mControls.maxPolarAngle = Math.PI / 2 - 0.05;
+
+    // Studio Lighting (Balanced key, fill, and rim to avoid overexposure)
+    const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+    mScene.add(ambient);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.95);
+    dirLight.position.set(4, 7, 4);
+    mScene.add(dirLight);
+
+    const fillLight = new THREE.PointLight(0x38bdf8, 1.5, 12);
+    fillLight.position.set(-3, 3, 2);
+    mScene.add(fillLight);
+
+    const rimLight = new THREE.PointLight(0xf97316, 1.4, 12);
+    rimLight.position.set(3, 2, -2);
+    mScene.add(rimLight);
+
+    // Mesh Group
+    mMeshGroup = new THREE.Group();
+    mScene.add(mMeshGroup);
+
+    // Base Reflective Disc Pedestal
+    const baseGeo = new THREE.CylinderGeometry(2.2, 2.3, 0.15, 48);
+    const baseMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3, metalness: 0.8 });
+    const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+    baseMesh.position.y = -0.075;
+    mMeshGroup.add(baseMesh);
+
+    // Glowing Neon Ring
+    const ringGeo = new THREE.TorusGeometry(2.25, 0.03, 16, 48);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+    ringMesh.rotation.x = Math.PI / 2;
+    ringMesh.position.y = 0.02;
+    mMeshGroup.add(ringMesh);
+
+    setupDragAndDrop();
+    animateModal();
+  }
+
+  function updateModalMesh(item) {
+    if (!mMeshGroup) return;
+    currentProductItem = item;
+
+    if (customGLBModel) {
+      return; // Keep imported GLB if active
+    }
+
+    clearCurrentModel();
+
+    const m = new THREE.Group();
+    const pName = item.product;
+
+    if (pName === 'ชีสเค้ก') {
+      // 1. Ceramic Dessert Plate with rim
+      const plateGeo = new THREE.CylinderGeometry(1.85, 1.5, 0.08, 48);
+      const plateMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.15, metalness: 0.1 });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.y = 0.04;
+      m.add(plate);
+
+      // 2. Triangular Wedge Cake Slice
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 0);
+      shape.lineTo(1.6, -0.65);
+      shape.quadraticCurveTo(1.75, 0, 1.6, 0.65);
+      shape.lineTo(0, 0);
+
+      const extrudeSettings = { depth: 0.8, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.04, bevelThickness: 0.04 };
+      const sliceGeo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      sliceGeo.center();
+
+      // Graham Cracker Crust (Bottom)
+      const crustMat = new THREE.MeshStandardMaterial({ color: 0x9a5a2a, roughness: 0.8 });
+      const crust = new THREE.Mesh(sliceGeo, crustMat);
+      crust.scale.set(1.02, 1.02, 0.25);
+      crust.rotation.x = Math.PI / 2;
+      crust.position.set(0, 0.16, 0);
+      m.add(crust);
+
+      // Cream Cheese Body (Middle)
+      const cheeseMat = new THREE.MeshStandardMaterial({ color: 0xfffae8, roughness: 0.3 });
+      const cheese = new THREE.Mesh(sliceGeo, cheeseMat);
+      cheese.scale.set(1, 1, 0.7);
+      cheese.rotation.x = Math.PI / 2;
+      cheese.position.set(0, 0.52, 0);
+      m.add(cheese);
+
+      // Strawberry Glaze (Top)
+      const glazeMat = new THREE.MeshStandardMaterial({ color: 0xd91e36, roughness: 0.1, metalness: 0.2 });
+      const glaze = new THREE.Mesh(sliceGeo, glazeMat);
+      glaze.scale.set(1.01, 1.01, 0.1);
+      glaze.rotation.x = Math.PI / 2;
+      glaze.position.set(0, 0.85, 0);
+      m.add(glaze);
+
+      // Berry on Top
+      const berryGeo = new THREE.DodecahedronGeometry(0.18, 1);
+      const berryMat = new THREE.MeshStandardMaterial({ color: 0x990000, roughness: 0.2 });
+      const berry = new THREE.Mesh(berryGeo, berryMat);
+      berry.position.set(0.2, 0.98, 0);
+      m.add(berry);
+
+    } else if (pName === 'ลาเต้' || pName === 'คาปูชิโน' || pName === 'อเมริกาโน') {
+      // 1. Ceramic Saucer (Elegant Matte Navy / Slate Ceramic)
+      const saucerGeo = new THREE.CylinderGeometry(1.65, 1.35, 0.08, 48);
+      const ceramicMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.35, metalness: 0.2 });
+      const saucer = new THREE.Mesh(saucerGeo, ceramicMat);
+      saucer.position.y = 0.04;
+      m.add(saucer);
+
+      const lipGeo = new THREE.TorusGeometry(1.55, 0.04, 16, 48);
+      const lip = new THREE.Mesh(lipGeo, ceramicMat);
+      lip.rotation.x = Math.PI / 2;
+      lip.position.y = 0.08;
+      m.add(lip);
+
+      // 2. Ceramic Coffee Cup Body (Hollow with double-sided ceramic)
+      const cupGeo = new THREE.CylinderGeometry(1.05, 0.75, 1.15, 48, 1, true);
+      const cup = new THREE.Mesh(cupGeo, ceramicMat);
+      cup.position.y = 0.65;
+      m.add(cup);
+
+      // Gold Ceramic Rim
+      const rimGeo = new THREE.TorusGeometry(1.05, 0.045, 16, 48);
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.3, metalness: 0.7 });
+      const rim = new THREE.Mesh(rimGeo, rimMat);
+      rim.rotation.x = Math.PI / 2;
+      rim.position.y = 1.22;
+      m.add(rim);
+
+      // 3. Ergonomic Handle
+      const handleGeo = new THREE.TorusGeometry(0.38, 0.08, 16, 32, Math.PI * 1.3);
+      const handle = new THREE.Mesh(handleGeo, ceramicMat);
+      handle.rotation.z = -Math.PI / 6;
+      handle.position.set(1.15, 0.65, 0);
+      m.add(handle);
+
+      // 4. Coffee Liquid Surface (Planar circular disk visible from above)
+      const isAmericano = (pName === 'อเมริกาโน');
+      const isCappuccino = (pName === 'คาปูชิโน');
+      const coffeeColor = isAmericano ? 0x221206 : (isCappuccino ? 0x543217 : 0x784a27);
+      const coffeeGeo = new THREE.CircleGeometry(1.02, 48);
+      const coffeeMat = new THREE.MeshStandardMaterial({ color: coffeeColor, roughness: 0.2 });
+      const coffee = new THREE.Mesh(coffeeGeo, coffeeMat);
+      coffee.rotation.x = -Math.PI / 2;
+      coffee.position.y = 1.18;
+      m.add(coffee);
+
+      if (pName === 'ลาเต้') {
+        // Latte Art Foam + Heart Emblem
+        const foamGeo = new THREE.RingGeometry(0.12, 0.72, 32);
+        const foamMat = new THREE.MeshStandardMaterial({ color: 0xfffae8, roughness: 0.4, side: THREE.DoubleSide });
+        const foam = new THREE.Mesh(foamGeo, foamMat);
+        foam.rotation.x = -Math.PI / 2;
+        foam.position.y = 1.185;
+        m.add(foam);
+
+        const heartGeo = new THREE.CircleGeometry(0.32, 32);
+        const heart = new THREE.Mesh(heartGeo, foamMat);
+        heart.rotation.x = -Math.PI / 2;
+        heart.position.y = 1.188;
+        m.add(heart);
+      } else if (isCappuccino) {
+        // Thick foamy milk dome
+        const capFoamGeo = new THREE.CircleGeometry(0.96, 48);
+        const capFoamMat = new THREE.MeshStandardMaterial({ color: 0xfffcf5, roughness: 0.5 });
+        const capFoam = new THREE.Mesh(capFoamGeo, capFoamMat);
+        capFoam.rotation.x = -Math.PI / 2;
+        capFoam.position.y = 1.185;
+        m.add(capFoam);
+
+        // Cocoa dust sprinkles on foam
+        for (let i = 0; i < 20; i++) {
+          const dustGeo = new THREE.BoxGeometry(0.04, 0.01, 0.04);
+          const dustMat = new THREE.MeshStandardMaterial({ color: 0x451a03, roughness: 0.9 });
+          const dust = new THREE.Mesh(dustGeo, dustMat);
+          const r = Math.random() * 0.65;
+          const theta = Math.random() * Math.PI * 2;
+          dust.position.set(Math.cos(theta) * r, 1.19, Math.sin(theta) * r);
+          m.add(dust);
+        }
+      }
+
+    } else if (pName === 'ครัวซองต์') {
+      // 1. Ceramic Plate
+      const plateGeo = new THREE.CylinderGeometry(1.75, 1.45, 0.08, 48);
+      const plateMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.15, metalness: 0.1 });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.y = 0.04;
+      m.add(plate);
+
+      // 2. Crescent Croissant Body
+      const croissantGroup = new THREE.Group();
+      const segmentCount = 9;
+      for (let i = 0; i < segmentCount; i++) {
+        const t = (i / (segmentCount - 1)) - 0.5;
+        const angle = t * Math.PI * 0.9;
+        const radius = 1.0;
+        const x = Math.sin(angle) * radius;
+        const z = (Math.cos(angle) * radius * 0.65) - 0.5;
+        
+        const thickness = Math.cos(t * Math.PI) * 0.42 + 0.1;
+        const segGeo = new THREE.SphereGeometry(thickness, 18, 18);
+        segGeo.scale(1, 1.1, 1.35);
+
+        const crustColor = (i % 2 === 0) ? 0x9a521a : 0xbf6c26; // Golden-brown baked crust
+        const segMat = new THREE.MeshStandardMaterial({ color: crustColor, roughness: 0.7, metalness: 0.05 });
+        const seg = new THREE.Mesh(segGeo, segMat);
+        seg.position.set(x, 0.38 + thickness * 0.2, z);
+        seg.rotation.y = -angle;
+        croissantGroup.add(seg);
+      }
+      m.add(croissantGroup);
+
+    } else if (pName === 'บราวนี') {
+      // 1. Plate
+      const plateGeo = new THREE.CylinderGeometry(1.65, 1.4, 0.08, 48);
+      const plateMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.15 });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.y = 0.04;
+      m.add(plate);
+
+      // 2. Fudge Brownie Cube
+      const brownieGeo = new THREE.BoxGeometry(1.3, 0.65, 1.3);
+      const brownieMat = new THREE.MeshStandardMaterial({ color: 0x3d1c06, roughness: 0.75 });
+      const brownie = new THREE.Mesh(brownieGeo, brownieMat);
+      brownie.position.y = 0.4;
+      m.add(brownie);
+
+      // 3. Chocolate Glaze Drizzle Top
+      const glazeGeo = new THREE.BoxGeometry(1.32, 0.08, 1.32);
+      const glazeMat = new THREE.MeshStandardMaterial({ color: 0x241103, roughness: 0.2, metalness: 0.3 });
+      const glaze = new THREE.Mesh(glazeGeo, glazeMat);
+      glaze.position.y = 0.75;
+      m.add(glaze);
+
+      // 4. Roasted Walnut chips
+      for (let i = 0; i < 5; i++) {
+        const nutGeo = new THREE.DodecahedronGeometry(0.09);
+        const nutMat = new THREE.MeshStandardMaterial({ color: 0xc19a6b, roughness: 0.6 });
+        const nut = new THREE.Mesh(nutGeo, nutMat);
+        nut.position.set((Math.random() - 0.5) * 0.75, 0.82, (Math.random() - 0.5) * 0.75);
+        m.add(nut);
+      }
+
+    } else {
+      // Cold Beverages: ชาไทย, โกโก้
+      const isThaiTea = (pName === 'ชาไทย');
+      const liquidColor = isThaiTea ? 0xe65100 : 0x4a2c1d;
+
+      // 1. Coaster Base
+      const coasterGeo = new THREE.CylinderGeometry(1.2, 1.2, 0.06, 36);
+      const coasterMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.4 });
+      const coaster = new THREE.Mesh(coasterGeo, coasterMat);
+      coaster.position.y = 0.03;
+      m.add(coaster);
+
+      // 2. Translucent Glass Body
+      const glassGeo = new THREE.CylinderGeometry(0.85, 0.68, 1.85, 32);
+      const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.35,
+        roughness: 0.05,
+        metalness: 0.1,
+        transmission: 0.85,
+        ior: 1.5
+      });
+      const glass = new THREE.Mesh(glassGeo, glassMat);
+      glass.position.y = 0.98;
+      m.add(glass);
+
+      // 3. Liquid inside
+      const liqGeo = new THREE.CylinderGeometry(0.8, 0.64, 1.6, 32);
+      const liqMat = new THREE.MeshStandardMaterial({ color: liquidColor, roughness: 0.2 });
+      const liquid = new THREE.Mesh(liqGeo, liqMat);
+      liquid.position.y = 0.88;
+      m.add(liquid);
+
+      // Milk froth on top
+      const frothGeo = new THREE.CylinderGeometry(0.81, 0.81, 0.15, 32);
+      const frothMat = new THREE.MeshStandardMaterial({ color: 0xfffbeb, roughness: 0.3 });
+      const froth = new THREE.Mesh(frothGeo, frothMat);
+      froth.position.y = 1.68;
+      m.add(froth);
+
+      // 4. Floating Ice Cubes
+      const iceGeo = new THREE.BoxGeometry(0.35, 0.35, 0.35);
+      const iceMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.7, roughness: 0.1, transmission: 0.9 });
+      
+      const ice1 = new THREE.Mesh(iceGeo, iceMat);
+      ice1.position.set(0.15, 1.72, 0.1);
+      ice1.rotation.set(0.3, 0.4, 0.2);
+      m.add(ice1);
+
+      const ice2 = new THREE.Mesh(iceGeo, iceMat);
+      ice2.position.set(-0.2, 1.7, -0.15);
+      ice2.rotation.set(0.1, 0.8, 0.3);
+      m.add(ice2);
+
+      // 5. Drinking Straw
+      const strawColor = isThaiTea ? 0x38bdf8 : 0x10b981;
+      const strawGeo = new THREE.CylinderGeometry(0.04, 0.04, 2.3, 16);
+      const strawMat = new THREE.MeshStandardMaterial({ color: strawColor, roughness: 0.3 });
+      const straw = new THREE.Mesh(strawGeo, strawMat);
+      straw.position.set(0.2, 1.4, 0);
+      straw.rotation.z = -0.22;
+      straw.rotation.x = 0.15;
+      m.add(straw);
+    }
+
+    mMeshGroup.add(m);
+  }
+
+  function animateModal() {
+    mAnimId = requestAnimationFrame(animateModal);
+    if (mControls) mControls.update();
+    if (mMeshGroup) mMeshGroup.rotation.y += 0.008; // Smooth auto-rotation
+    if (mRenderer && mScene && mCamera) {
+      mRenderer.render(mScene, mCamera);
+    }
+  }
+
+  function openProductModal(prodName) {
+    const item = PRODUCT_DATA[prodName];
+    if (!item) return;
+
+    // Reset imported GLB state for new product view
+    customGLBModel = null;
+    const btnReset = document.getElementById('btnResetModel');
+    if (btnReset) btnReset.style.display = 'none';
+    const badge = document.getElementById('modelModeBadge');
+    if (badge) {
+      badge.innerHTML = '<span class="i" style="font-size:12px;">auto_awesome</span> โมเดล 3D สมจริง (Studio)';
+      badge.style.borderColor = 'rgba(56,189,248,.3)';
+      badge.style.color = 'var(--cyan)';
+    }
+
+    // Populate Modal Content
+    document.getElementById('mTitle').textContent = item.product;
+    document.getElementById('mCat').textContent = 'หมวด' + item.category;
+    document.getElementById('mCatIcon').textContent = item.icon;
+    document.getElementById('mCatIcon').style.color = item.color;
+
+    document.getElementById('mPrice').textContent = fmtMoney(item.price);
+    document.getElementById('mCost').textContent = fmtMoney(item.cost);
+    document.getElementById('mUnitProfit').textContent = fmtMoney(item.price - item.cost);
+    document.getElementById('mMargin').textContent = item.margin;
+
+    document.getElementById('mTotalQty').textContent = fmtInt(item.qty) + ' ชิ้น';
+    document.getElementById('mTotalRev').textContent = fmtMoney(item.rev);
+    document.getElementById('mTotalProfit').textContent = 'กำไร ' + fmtMoney(item.profit);
+
+    // Branch Breakdown
+    const b = item.branches;
+    document.getElementById('mBarUni').style.width = b['มหาวิทยาลัย'].pct + '%';
+    document.getElementById('mValUni').textContent = fmtMoney(b['มหาวิทยาลัย'].rev) + ' (' + b['มหาวิทยาลัย'].qty + ' ชิ้น)';
+
+    document.getElementById('mBarOff').style.width = b['สำนักงาน'].pct + '%';
+    document.getElementById('mValOff').textContent = fmtMoney(b['สำนักงาน'].rev) + ' (' + b['สำนักงาน'].qty + ' ชิ้น)';
+
+    document.getElementById('mBarMall').style.width = b['ห้างสรรพสินค้า'].pct + '%';
+    document.getElementById('mValMall').textContent = fmtMoney(b['ห้างสรรพสินค้า'].rev) + ' (' + b['ห้างสรรพสินค้า'].qty + ' ชิ้น)';
+
+    // Show Modal
+    modalOverlay.style.display = 'flex';
+
+    // Init or Resize 3D
+    setTimeout(() => {{
+      if (!mRenderer) {
+        initModalThreeJS();
+      } else {
+        const box = document.getElementById('modal3DBox');
+        mCamera.aspect = box.clientWidth / box.clientHeight;
+        mCamera.updateProjectionMatrix();
+        mRenderer.setSize(box.clientWidth, box.clientHeight);
+      }
+      updateModalMesh(item);
+    }}, 20);
+  }
+
+  function close3DModal() {
+    modalOverlay.style.display = 'none';
+  }
+
+  function closeModalOnBackdrop(e) {
+    if (e.target === modalOverlay) {
+      close3DModal();
+    }
+  }
+
+  // Keyboard Escape listener
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      close3DModal();
+    }
+  });
+</script>
+
+</body>
+</html>
