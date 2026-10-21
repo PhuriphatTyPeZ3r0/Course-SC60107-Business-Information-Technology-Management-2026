@@ -13,7 +13,7 @@ def set_cell_background(cell, fill_hex):
     shd = parse_xml(f'<w:shd {nsdecls("w")} w:fill="{fill_hex}"/>')
     tcPr.append(shd)
 
-def set_cell_margins(cell, top=60, bottom=60, left=120, right=120):
+def set_cell_margins(cell, top=50, bottom=50, left=100, right=100):
     tcPr = cell._tc.get_or_add_tcPr()
     tcMar = parse_xml(
         f'<w:tcMar {nsdecls("w")}>'
@@ -116,7 +116,7 @@ def build_document():
     header_cell = header_table.cell(0, 0)
     header_cell.width = Inches(7.1)
     set_cell_background(header_cell, "0F172A") # Navy dark slate
-    set_cell_margins(header_cell, top=100, bottom=100, left=180, right=180)
+    set_cell_margins(header_cell, top=90, bottom=90, left=160, right=160)
     
     hp1 = header_cell.paragraphs[0]
     hp1.paragraph_format.space_before = Pt(0)
@@ -148,7 +148,7 @@ def build_document():
     c0 = row0.cells[0]
     c0.width = info_widths[0]
     set_cell_background(c0, "F8FAFC")
-    set_cell_margins(c0, top=60, bottom=60, left=120, right=120)
+    set_cell_margins(c0, top=50, bottom=50, left=100, right=100)
     p = c0.paragraphs[0]
     p.paragraph_format.space_after = Pt(0)
     p.paragraph_format.space_before = Pt(0)
@@ -160,7 +160,7 @@ def build_document():
     c1 = row0.cells[1]
     c1.width = info_widths[1]
     set_cell_background(c1, "F8FAFC")
-    set_cell_margins(c1, top=60, bottom=60, left=120, right=120)
+    set_cell_margins(c1, top=50, bottom=50, left=100, right=100)
     p = c1.paragraphs[0]
     p.paragraph_format.space_after = Pt(0)
     p.paragraph_format.space_before = Pt(0)
@@ -173,7 +173,7 @@ def build_document():
     c2 = row1.cells[0]
     c2.width = info_widths[0]
     set_cell_background(c2, "F8FAFC")
-    set_cell_margins(c2, top=60, bottom=60, left=120, right=120)
+    set_cell_margins(c2, top=50, bottom=50, left=100, right=100)
     p = c2.paragraphs[0]
     p.paragraph_format.space_after = Pt(0)
     p.paragraph_format.space_before = Pt(0)
@@ -185,7 +185,7 @@ def build_document():
     c3 = row1.cells[1]
     c3.width = info_widths[1]
     set_cell_background(c3, "F8FAFC")
-    set_cell_margins(c3, top=60, bottom=60, left=120, right=120)
+    set_cell_margins(c3, top=50, bottom=50, left=100, right=100)
     p = c3.paragraphs[0]
     p.paragraph_format.space_after = Pt(0)
     p.paragraph_format.space_before = Pt(0)
@@ -200,7 +200,7 @@ def build_document():
     lcell = links_table.cell(0, 0)
     lcell.width = Inches(7.1)
     set_cell_background(lcell, "EFF6FF") # Soft Blue Tint
-    set_cell_margins(lcell, top=80, bottom=80, left=150, right=150)
+    set_cell_margins(lcell, top=70, bottom=70, left=140, right=140)
     
     lp0 = lcell.paragraphs[0]
     lp0.paragraph_format.space_before = Pt(0)
@@ -259,7 +259,7 @@ def build_document():
     fcell = feat_table.cell(0, 0)
     fcell.width = Inches(7.1)
     set_cell_background(fcell, "F8FAFC")
-    set_cell_margins(fcell, top=80, bottom=80, left=150, right=150)
+    set_cell_margins(fcell, top=70, bottom=70, left=140, right=140)
     
     fp0 = fcell.paragraphs[0]
     fp0.paragraph_format.space_before = Pt(0)
@@ -300,17 +300,18 @@ def build_document():
         img_p.paragraph_format.space_before = Pt(0)
         img_p.paragraph_format.space_after = Pt(1)
         img_run = img_p.add_run()
-        img_run.add_picture(screenshot_path, width=Inches(6.4))
+        # 5.1 inches width gives height ~ 5.3 inches, showing all sections down to the matrix table
+        img_run.add_picture(screenshot_path, width=Inches(5.1))
         
         caption_p = doc.add_paragraph()
         caption_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         caption_p.paragraph_format.space_before = Pt(1)
-        caption_p.paragraph_format.space_after = Pt(3)
-        rc = caption_p.add_run("ภาพที่ 1: หน้าจอแสดงผล Cafe & Bakery Sales Analytics Dashboard พร้อมโครงสร้างมินิมอล, 2D Studio Photography และ KPIs")
-        format_run(rc, size_pt=13.5, color_rgb=(100, 116, 139), italic=True)
+        caption_p.paragraph_format.space_after = Pt(2)
+        rc = caption_p.add_run("ภาพที่ 1: หน้าจอแสดงผล Cafe & Bakery Sales Analytics Dashboard ครบถ้วนทุกส่วนตั้งแต่ KPIs, กราฟ, จนถึงตาราง Cross-tab สินค้า × สาขา")
+        format_run(rc, size_pt=13, color_rgb=(100, 116, 139), italic=True)
         
         sp4 = doc.add_paragraph()
-        sp4.paragraph_format.space_before = Pt(2)
+        sp4.paragraph_format.space_before = Pt(1)
         sp4.paragraph_format.space_after = Pt(1)
         r_mat_h = sp4.add_run("📊 สรุปความสอดคล้องตามเกณฑ์ประเมิน (Requirement Compliance Matrix):")
         format_run(r_mat_h, size_pt=15.5, color_rgb=(15, 23, 42), bold=True)
@@ -326,7 +327,7 @@ def build_document():
         for idx, title in enumerate(hdr_titles):
             hdr_cells[idx].width = col_widths[idx]
             set_cell_background(hdr_cells[idx], "1E293B")
-            set_cell_margins(hdr_cells[idx], top=50, bottom=50, left=100, right=100)
+            set_cell_margins(hdr_cells[idx], top=40, bottom=40, left=90, right=90)
             hp = hdr_cells[idx].paragraphs[0]
             hp.alignment = WD_ALIGN_PARAGRAPH.CENTER if idx == 2 else WD_ALIGN_PARAGRAPH.LEFT
             r = hp.add_run(title)
@@ -344,13 +345,20 @@ def build_document():
             for c_idx, val in enumerate([crit, detail, stat]):
                 row_cells[c_idx].width = col_widths[c_idx]
                 set_cell_background(row_cells[c_idx], bg)
-                set_cell_margins(row_cells[c_idx], top=40, bottom=40, left=100, right=100)
+                set_cell_margins(row_cells[c_idx], top=35, bottom=35, left=90, right=90)
                 p = row_cells[c_idx].paragraphs[0]
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER if c_idx == 2 else WD_ALIGN_PARAGRAPH.LEFT
                 r = p.add_run(val)
                 stat_color = (22, 101, 52) if c_idx == 2 else (15, 23, 42)
                 format_run(r, size_pt=14 if c_idx == 1 else 14.5, color_rgb=stat_color, bold=(c_idx != 1))
     
+    # Format any trailing paragraphs in body to 1pt so Word never breaks an empty page
+    for p in doc.paragraphs:
+        if not p.text.strip() and not p.runs:
+            p.paragraph_format.space_before = Pt(0)
+            p.paragraph_format.space_after = Pt(0)
+            p.paragraph_format.line_spacing = Pt(1)
+            
     doc_path = os.path.join(current_dir, "Dashboard-6752300313-Submission.docx")
     doc.save(doc_path)
     print(f"DOCX created successfully at: {doc_path}")
