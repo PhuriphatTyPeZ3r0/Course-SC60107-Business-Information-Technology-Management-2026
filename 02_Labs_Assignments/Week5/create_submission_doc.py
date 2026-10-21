@@ -154,7 +154,7 @@ def build_document():
     p.paragraph_format.space_before = Pt(0)
     r1 = p.add_run("👤 ผู้จัดทำ: ")
     format_run(r1, size_pt=14.5, color_rgb=(100, 116, 139), bold=True)
-    r2 = p.add_run("นายภูริพัฒน์ เหมะกุล")
+    r2 = p.add_run("นายภูริพัฒน์ เหมกุล")
     format_run(r2, size_pt=15, color_rgb=(15, 23, 42), bold=True)
     
     c1 = row0.cells[1]
