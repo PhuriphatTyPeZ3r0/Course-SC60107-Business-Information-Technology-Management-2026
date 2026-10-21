@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Adidas F50 Rose — Grace Outside. Chaos Inside.</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+        font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .media {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .media img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform-origin: center center;
+      }
+      .scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.75) 100%);
+      }
+      .label {
+        position: absolute;
+        left: 96px;
+        color: #ff2b3a;
+        font-weight: 900;
+        font-size: 34px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        opacity: 0;
+      }
+      .headline {
+        position: absolute;
+        left: 96px;
+        color: #f5f5f5;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        opacity: 0;
+      }
+      .subline {
+        position: absolute;
+        left: 96px;
+        color: #eaeaea;
+        font-weight: 500;
+        font-size: 32px;
+        opacity: 0;
+      }
+      .stat {
+        position: absolute;
+        left: 96px;
+        color: #ff2b3a;
+        font-weight: 900;
+        font-size: 220px;
+        letter-spacing: -0.03em;
+        opacity: 0;
+      }
+      .credit {
+        position: absolute;
+        left: 96px;
+        bottom: 120px;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 40px;
+        opacity: 0;
+      }
+      .credit .name {
+        color: #ff2b3a;
+      }
+      .price-block {
+        position: absolute;
+        right: 150px;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        opacity: 0;
+      }
+      .price-old {
+        color: #cfcfcf;
+        font-size: 56px;
+        font-weight: 700;
+        text-decoration: line-through;
+        opacity: 0.8;
+        margin-bottom: 24px;
+      }
+      .price-new {
+        color: #ff2b3a;
+        font-size: 150px;
+        font-weight: 900;
+        line-height: 1.15;
+      }
+      .price-badge {
+        display: inline-block;
+        margin-top: 24px;
+        background: #ff2b3a;
+        color: #fff;
+        font-weight: 900;
+        font-size: 44px;
+        padding: 14px 36px;
+        border-radius: 100px;
+        letter-spacing: -0.01em;
+      }
+      #endcard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 28px;
+      }
+      #endcard .brand {
+        color: #ff2b3a;
+        font-size: 160px;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        opacity: 0;
+      }
+      #endcard .tag {
+        color: #fff;
+        font-size: 46px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        opacity: 0;
+      }
+      #endcard .hashtag {
+        color: #ff2b3a;
+        font-size: 40px;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="60"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Scene 1 — Cold open (0-6s) -->
+      <section id="s1" class="clip" data-start="0" data-duration="6" data-track-index="0">
+        <div class="media"><img id="s1-img" src="assets/scene1.png" alt="" data-layout-allow-overflow /></div>
+        <div class="scrim"></div>
+        <div id="s1-logo" class="subline" style="bottom: 90px; font-weight: 900; letter-spacing: 0.08em; color: #ff2b3a;">adidas</div>
+      </section>
+
+      <!-- Scene 2 — Product macro reveal (6-15s) -->
+      <section id="s2" class="clip" data-start="6" data-duration="9" data-track-index="0">
+        <div class="media"><img id="s2-img" src="assets/scene2.png" alt="" data-layout-allow-overflow /></div>
+        <div class="scrim"></div>
+        <div id="s2-haloskin" class="headline" style="bottom: 130px; font-size: 96px;">HALOSKIN+</div>
+      </section>
+
+      <!-- Scene 3 — Speed / movement (15-24s) -->
+      <section id="s3" class="clip" data-start="15" data-duration="9" data-track-index="0">
+        <div class="media"><img id="s3-img" src="assets/scene3.png" alt="" data-layout-allow-overflow /></div>
+        <div class="scrim"></div>
+        <div id="s3-stat" class="stat" style="bottom: 220px;">179<span style="font-size:0.5em;">g</span></div>
+        <div id="s3-sub" class="subline" style="bottom: 150px; font-size: 40px; font-weight: 700;">
+          น้ำหนักเบาที่สุด กับการเคลื่อนไหวที่คาดเดาไม่ได้
+        </div>
+      </section>
+
+      <!-- Scene 4 — The strike (24-33s) -->
+      <section id="s4" class="clip" data-start="24" data-duration="9" data-track-index="0">
+        <div class="media"><img id="s4-img" src="assets/scene4.png" alt="" data-layout-allow-overflow /></div>
+      </section>
+
+      <!-- Scene 5 — Tagline moment (33-41s) -->
+      <section id="s5" class="clip" data-start="33" data-duration="8" data-track-index="0">
+        <div class="media"><img id="s5-img" src="assets/scene5.png" alt="" data-layout-allow-overflow /></div>
+      </section>
+
+      <!-- Scene 6 — Credit + hero shot (41-49s) -->
+      <section id="s6" class="clip" data-start="41" data-duration="8" data-track-index="0">
+        <div class="media"><img id="s6-img" src="assets/scene6.png" alt="" data-layout-allow-overflow /></div>
+        <div class="scrim"></div>
+        <div id="s6-credit" class="credit">นำแสดงโดย <span class="name">Lamine Yamal</span></div>
+      </section>
+
+      <!-- Scene 7 — Offer / CTA (49-57s) -->
+      <section id="s7" class="clip" data-start="49" data-duration="8" data-track-index="0">
+        <div class="media"><img id="s7-img" src="assets/scene7.png" alt="" data-layout-allow-overflow /></div>
+        <div id="s7-price" class="price-block">
+          <div class="price-old">13,000 บาท</div>
+          <div class="price-new">9,100</div>
+          <div class="price-badge">-30%</div>
+        </div>
+      </section>
+
+      <!-- Scene 8 — End card (57-60s) -->
+      <section id="s8" class="clip" data-start="57" data-duration="3" data-track-index="0">
+        <div class="media"><img id="s8-img" src="assets/scene8.png" alt="" data-layout-allow-overflow /></div>
+        <div id="endcard" class="clip" style="background: transparent;">
+          <div class="brand">adidas</div>
+          <div class="tag">GRACE OUTSIDE. CHAOS INSIDE.</div>
+          <div class="hashtag">#ItsTimeToChoose</div>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Scene 1 — slow push-in on the stadium, logo fade
+      tl.fromTo("#s1-img", { scale: 1.0 }, { scale: 1.12, duration: 6, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s1-logo", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }, 3.2);
+
+      // Scene 2 — slow rotate/drift on macro texture, text reveal
+      tl.fromTo("#s2-img", { scale: 1.08, xPercent: -2 }, { scale: 1.0, xPercent: 2, duration: 9, ease: "sine.inOut" }, 6);
+      tl.fromTo("#s2-haloskin", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.8);
+
+      // Scene 3 — fast tracking push, stat counter pop
+      tl.fromTo("#s3-img", { scale: 1.0 }, { scale: 1.15, duration: 9, ease: "power1.inOut" }, 15);
+      tl.fromTo("#s3-stat", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, 16.2);
+      tl.fromTo("#s3-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, 16.8);
+
+      // Scene 4 — impact hold with a hard push then settle
+      tl.fromTo("#s4-img", { scale: 1.18 }, { scale: 1.02, duration: 9, ease: "power2.out" }, 24);
+
+      // Scene 5 — tagline card, gentle scale-in
+      tl.fromTo("#s5-img", { scale: 1.06, opacity: 0.85 }, { scale: 1.0, opacity: 1, duration: 8, ease: "sine.out" }, 33);
+
+      // Scene 6 — slow turntable drift, credit fade
+      tl.fromTo("#s6-img", { scale: 1.1, xPercent: 2 }, { scale: 1.0, xPercent: -2, duration: 8, ease: "sine.inOut" }, 41);
+      tl.fromTo("#s6-credit", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 42.5);
+
+      // Scene 7 — hold shot, price block pops in
+      tl.fromTo("#s7-img", { scale: 1.04 }, { scale: 1.0, duration: 8, ease: "sine.out" }, 49);
+      tl.fromTo("#s7-price", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.8)" }, 50.2);
+
+      // Scene 8 — end card, brand + tagline + hashtag sequence
+      tl.fromTo("#s8-img", { scale: 1.05 }, { scale: 1.0, duration: 3, ease: "sine.out" }, 57);
+      tl.fromTo("#endcard .brand", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, 57.2);
+      tl.fromTo("#endcard .tag", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 57.7);
+      tl.fromTo("#endcard .hashtag", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 58.1);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

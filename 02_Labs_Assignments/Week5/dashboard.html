@@ -1,155 +1,9 @@
-import json
-import os
-
-downloads_file = r'C:\Users\iznamu\Downloads\Auction Quad Dashboard — Google Material Symbols.html'
-project_file = os.path.join('02_Labs_Assignments', 'auction-quad-dashboard', 'dashboard.html')
-
-# Exact product breakdown database
-product_db = {
-  "ชีสเค้ก": {
-    "product": "ชีสเค้ก",
-    "category": "เบเกอรี",
-    "icon": "cake",
-    "color": "#f59e0b",
-    "price": 110.0,
-    "cost": 72.0,
-    "qty": 122,
-    "rev": 13420.0,
-    "profit": 4636.0,
-    "margin": "34.5%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 48, "rev": 5280.0, "profit": 1824.0, "pct": 39.3},
-      "สำนักงาน": {"qty": 43, "rev": 4730.0, "profit": 1634.0, "pct": 35.2},
-      "ห้างสรรพสินค้า": {"qty": 31, "rev": 3410.0, "profit": 1178.0, "pct": 25.4}
-    }
-  },
-  "ลาเต้": {
-    "product": "ลาเต้",
-    "category": "กาแฟ",
-    "icon": "coffee",
-    "color": "#3b82f6",
-    "price": 75.0,
-    "cost": 28.0,
-    "qty": 135,
-    "rev": 10125.0,
-    "profit": 6345.0,
-    "margin": "62.7%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 63, "rev": 4725.0, "profit": 2961.0, "pct": 46.7},
-      "สำนักงาน": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7},
-      "ห้างสรรพสินค้า": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}
-    }
-  },
-  "ครัวซองต์": {
-    "product": "ครัวซองต์",
-    "category": "เบเกอรี",
-    "icon": "bakery_dining",
-    "color": "#f97316",
-    "price": 85.0,
-    "cost": 60.0,
-    "qty": 118,
-    "rev": 10030.0,
-    "profit": 2950.0,
-    "margin": "29.4%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 52, "rev": 4420.0, "profit": 1300.0, "pct": 44.1},
-      "สำนักงาน": {"qty": 42, "rev": 3570.0, "profit": 1050.0, "pct": 35.6},
-      "ห้างสรรพสินค้า": {"qty": 24, "rev": 2040.0, "profit": 600.0, "pct": 20.3}
-    }
-  },
-  "คาปูชิโน": {
-    "product": "คาปูชิโน",
-    "category": "กาแฟ",
-    "icon": "local_cafe",
-    "color": "#38bdf8",
-    "price": 75.0,
-    "cost": 27.0,
-    "qty": 125,
-    "rev": 9375.0,
-    "profit": 6000.0,
-    "margin": "64.0%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 65, "rev": 4875.0, "profit": 3120.0, "pct": 52.0},
-      "สำนักงาน": {"qty": 26, "rev": 1950.0, "profit": 1248.0, "pct": 20.8},
-      "ห้างสรรพสินค้า": {"qty": 34, "rev": 2550.0, "profit": 1632.0, "pct": 27.2}
-    }
-  },
-  "โกโก้": {
-    "product": "โกโก้",
-    "category": "เครื่องดื่มอื่น",
-    "icon": "icecream",
-    "color": "#10b981",
-    "price": 65.0,
-    "cost": 25.0,
-    "qty": 138,
-    "rev": 8970.0,
-    "profit": 5520.0,
-    "margin": "61.5%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 74, "rev": 4810.0, "profit": 2960.0, "pct": 53.6},
-      "สำนักงาน": {"qty": 26, "rev": 1690.0, "profit": 1040.0, "pct": 18.8},
-      "ห้างสรรพสินค้า": {"qty": 38, "rev": 2470.0, "profit": 1520.0, "pct": 27.5}
-    }
-  },
-  "อเมริกาโน": {
-    "product": "อเมริกาโน",
-    "category": "กาแฟ",
-    "icon": "coffee",
-    "color": "#2563eb",
-    "price": 60.0,
-    "cost": 20.0,
-    "qty": 140,
-    "rev": 8400.0,
-    "profit": 5600.0,
-    "margin": "66.7%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 64, "rev": 3840.0, "profit": 2560.0, "pct": 45.7},
-      "สำนักงาน": {"qty": 34, "rev": 2040.0, "profit": 1360.0, "pct": 24.3},
-      "ห้างสรรพสินค้า": {"qty": 42, "rev": 2520.0, "profit": 1680.0, "pct": 30.0}
-    }
-  },
-  "ชาไทย": {
-    "product": "ชาไทย",
-    "category": "เครื่องดื่มอื่น",
-    "icon": "emoji_food_beverage",
-    "color": "#f97316",
-    "price": 55.0,
-    "cost": 18.0,
-    "qty": 112,
-    "rev": 6160.0,
-    "profit": 4144.0,
-    "margin": "67.3%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 40, "rev": 2200.0, "profit": 1480.0, "pct": 35.7},
-      "สำนักงาน": {"qty": 51, "rev": 2805.0, "profit": 1887.0, "pct": 45.5},
-      "ห้างสรรพสินค้า": {"qty": 21, "rev": 1155.0, "profit": 777.0, "pct": 18.8}
-    }
-  },
-  "บราวนี": {
-    "product": "บราวนี",
-    "category": "เบเกอรี",
-    "icon": "cookie",
-    "color": "#b45309",
-    "price": 55.0,
-    "cost": 22.0,
-    "qty": 110,
-    "rev": 6050.0,
-    "profit": 3630.0,
-    "margin": "60.0%",
-    "branches": {
-      "มหาวิทยาลัย": {"qty": 59, "rev": 3245.0, "profit": 1947.0, "pct": 53.6},
-      "สำนักงาน": {"qty": 32, "rev": 1760.0, "profit": 1056.0, "pct": 29.1},
-      "ห้างสรรพสินค้า": {"qty": 19, "rev": 1045.0, "profit": 627.0, "pct": 17.3}
-    }
-  }
-}
-
-html_code = f"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Auction Quad — Sales Dashboard</title>
+<title>Cafe &amp; Bakery Sales Analytics — Dashboard (6752300313)</title>
 <!-- Google Fonts: Prompt -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,10 +16,10 @@ html_code = f"""<!DOCTYPE html>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
 <style>
-*,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 /* CSS Custom Properties for Dual Theme */
-:root {{
+:root {
   --canvas: #060b18;
   --nav-bg: rgba(6, 11, 24, 0.94);
   --glass: rgba(13, 23, 46, 0.75);
@@ -188,11 +42,11 @@ html_code = f"""<!DOCTYPE html>
   --border-sub: rgba(255, 255, 255, 0.04);
   --modal-bg: #0c162e;
   --modal-overlay: rgba(3, 7, 18, 0.78);
-  --font: 'Prompt', system-ui, -apple-system, sans-serif;
+  --font: 'Prompt', 'Noto Sans Thai', 'Segoe UI', Tahoma, system-ui, -apple-system, sans-serif;
   --shadow-main: 0 8px 32px rgba(0, 0, 0, 0.45);
-}}
+}
 
-[data-theme="light"] {{
+[data-theme="light"] {
   --canvas: #f8fafc;
   --nav-bg: rgba(255, 255, 255, 0.94);
   --glass: rgba(255, 255, 255, 0.88);
@@ -216,24 +70,24 @@ html_code = f"""<!DOCTYPE html>
   --modal-bg: #ffffff;
   --modal-overlay: rgba(15, 23, 42, 0.65);
   --shadow-main: 0 8px 28px rgba(0, 0, 0, 0.08);
-}}
+}
 
-body {{
+body {
   font-family: var(--font);
   background: var(--canvas);
   color: var(--txt);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
-}}
+}
 
-.material-symbols-rounded {{
+.material-symbols-rounded {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   vertical-align: middle;
   font-size: inherit;
-}}
+}
 
-.i {{
+.i {
   font-family: 'Material Symbols Rounded';
   font-weight: normal;
   font-style: normal;
@@ -247,14 +101,14 @@ body {{
   direction: ltr;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: 'liga';
-}}
+}
 
-.tabular, td.num {{
+.tabular, td.num {
   font-variant-numeric: tabular-nums;
-}}
+}
 
 /* NAV */
-.nav {{
+.nav {
   height: 56px;
   background: var(--nav-bg);
   border-bottom: 1px solid var(--glass-b);
@@ -267,43 +121,43 @@ body {{
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: background-color 0.3s ease, border-color 0.3s ease;
-}}
+}
 
-.nav-logo {{
+.nav-logo {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.02em;
-}}
+}
 
-.nav-logo .i {{
+.nav-logo .i {
   font-size: 26px;
   color: var(--blue);
-}}
+}
 
-.nav-dots {{
+.nav-dots {
   display: inline-flex;
   gap: 3px;
   margin-left: 6px;
-}}
-.nav-dots span {{
+}
+.nav-dots span {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   display: inline-block;
-}}
-.d1{{background:var(--blue)}}.d2{{background:var(--red)}}.d3{{background:var(--amber)}}.d4{{background:var(--green)}}
+}
+.d1{background:var(--blue)}.d2{background:var(--red)}.d3{background:var(--amber)}.d4{background:var(--green)}
 
-.nav-right {{
+.nav-right {
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 12px;
-}}
+}
 
-.badge {{
+.badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -314,11 +168,11 @@ body {{
   background: rgba(249, 115, 22, 0.12);
   color: var(--orange);
   border: 1px solid rgba(249, 115, 22, 0.25);
-}}
-.badge .i {{ font-size: 14px; }}
+}
+.badge .i { font-size: 14px; }
 
 /* Theme Switcher Button */
-.theme-btn {{
+.theme-btn {
   width: 36px;
   height: 36px;
   border-radius: 10px;
@@ -330,32 +184,32 @@ body {{
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-}}
-.theme-btn:hover {{
+}
+.theme-btn:hover {
   background: var(--blue);
   color: #fff;
   border-color: var(--blue-l);
   transform: rotate(15deg);
-}}
-.theme-btn .i {{
+}
+.theme-btn .i {
   font-size: 20px;
-}}
+}
 
-.container {{
+.container {
   max-width: 1320px;
   margin: 0 auto;
   padding: 24px 20px;
-}}
+}
 
 /* KPI GRID */
-.kpi-grid {{
+.kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 24px;
-}}
+}
 
-.kpi {{
+.kpi {
   background: var(--glass);
   border: 1px solid var(--glass-b);
   border-radius: 14px;
@@ -367,14 +221,14 @@ body {{
   -webkit-backdrop-filter: blur(16px);
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}}
-.kpi:hover {{
+}
+.kpi:hover {
   transform: translateY(-2px);
   border-color: rgba(56, 189, 248, 0.4);
   box-shadow: 0 12px 36px rgba(37, 99, 235, 0.15);
-}}
+}
 
-.kpi-label {{
+.kpi-label {
   font-size: 12px;
   color: var(--muted);
   margin-bottom: 8px;
@@ -382,87 +236,87 @@ body {{
   align-items: center;
   gap: 8px;
   font-weight: 500;
-}}
+}
 
-.kpi-icon {{
+.kpi-icon {
   display: inline-flex;
   width: 32px;
   height: 32px;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
-}}
-.kpi-icon .i {{ font-size: 18px; }}
+}
+.kpi-icon .i { font-size: 18px; }
 
-.ki-b{{background:rgba(37,99,235,.15);color:var(--blue)}}
-.ki-o{{background:rgba(249,115,22,.15);color:var(--orange)}}
-.ki-g{{background:rgba(16,185,129,.15);color:var(--green)}}
-.ki-c{{background:rgba(56,189,248,.15);color:var(--cyan)}}
+.ki-b{background:rgba(37,99,235,.15);color:var(--blue)}
+.ki-o{background:rgba(249,115,22,.15);color:var(--orange)}
+.ki-g{background:rgba(16,185,129,.15);color:var(--green)}
+.ki-c{background:rgba(56,189,248,.15);color:var(--cyan)}
 
-.kpi-val {{
+.kpi-val {
   font-size: 26px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
-}}
-.kpi-unit {{
+}
+.kpi-unit {
   font-size: 13px;
   font-weight: 400;
   color: var(--muted);
   margin-left: 4px;
-}}
-.kpi-sub {{
+}
+.kpi-sub {
   font-size: 11px;
   color: var(--muted);
   margin-top: 4px;
   font-variant-numeric: tabular-nums;
-}}
-.kpi-bar {{
+}
+.kpi-bar {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 3px;
-}}
-.kpi:nth-child(1) .kpi-bar{{background:linear-gradient(90deg,var(--blue),var(--cyan))}}
-.kpi:nth-child(2) .kpi-bar{{background:linear-gradient(90deg,var(--orange),var(--amber))}}
-.kpi:nth-child(3) .kpi-bar{{background:linear-gradient(90deg,var(--green),#6ee7b7)}}
-.kpi:nth-child(4) .kpi-bar{{background:linear-gradient(90deg,var(--cyan),var(--blue))}}
+}
+.kpi:nth-child(1) .kpi-bar{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.kpi:nth-child(2) .kpi-bar{background:linear-gradient(90deg,var(--orange),var(--amber))}
+.kpi:nth-child(3) .kpi-bar{background:linear-gradient(90deg,var(--green),#6ee7b7)}
+.kpi:nth-child(4) .kpi-bar{background:linear-gradient(90deg,var(--cyan),var(--blue))}
 
 /* SECTION & TITLES */
-.section-title {{
+.section-title {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
-}}
-.st-icon {{
+}
+.st-icon {
   width: 26px;
   height: 26px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-}}
-.st-icon .i {{ font-size: 16px; }}
-.st-b{{background:rgba(37,99,235,.15);color:var(--blue-l)}}
-.st-o{{background:rgba(249,115,22,.15);color:var(--orange)}}
-.st-g{{background:rgba(16,185,129,.15);color:var(--green)}}
-.st-c{{background:rgba(56,189,248,.15);color:var(--cyan)}}
-.st-a{{background:rgba(245,158,11,.15);color:var(--amber)}}
-.st-r{{background:rgba(239,68,68,.15);color:var(--red)}}
+}
+.st-icon .i { font-size: 16px; }
+.st-b{background:rgba(37,99,235,.15);color:var(--blue-l)}
+.st-o{background:rgba(249,115,22,.15);color:var(--orange)}
+.st-g{background:rgba(16,185,129,.15);color:var(--green)}
+.st-c{background:rgba(56,189,248,.15);color:var(--cyan)}
+.st-a{background:rgba(245,158,11,.15);color:var(--amber)}
+.st-r{background:rgba(239,68,68,.15);color:var(--red)}
 
 /* QUAD GRID */
-.quad-grid {{
+.quad-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin-bottom: 24px;
-}}
+}
 
-.quad {{
+.quad {
   background: var(--glass);
   border: 1px solid var(--glass-b);
   border-radius: 14px;
@@ -472,16 +326,50 @@ body {{
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: background-color 0.3s ease, border-color 0.3s ease;
-}}
+}
+
+/* FILTER TOGGLE BUTTONS (PROMPT 1 vs PROMPT 2) */
+.view-toggle-wrap {
+  display: inline-flex;
+  background: var(--track-bg);
+  padding: 3px;
+  border-radius: 9px;
+  border: 1px solid var(--glass-b);
+  gap: 4px;
+}
+.filter-btn {
+  padding: 5px 12px;
+  font-size: 11px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.filter-btn:hover {
+  color: var(--txt);
+}
+.filter-btn.active {
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
 
 /* BARS (QUAD I) */
-.bar-list {{
+.bar-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}}
+}
 
-.bar-item {{
+.bar-item {
   display: grid;
   grid-template-columns: 140px 1fr 110px;
   align-items: center;
@@ -490,23 +378,23 @@ body {{
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.15s;
-}}
-.bar-item:hover {{
+}
+.bar-item:hover {
   background: var(--card-sub-bg);
   transform: translateX(4px);
-}}
-.bar-item:hover .bar-name {{
+}
+.bar-item:hover .bar-name {
   color: var(--blue-l);
-}}
+}
 
-.bar-name {{
+.bar-name {
   font-size: 13px;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
-}}
-.bar-rank {{
+}
+.bar-rank {
   width: 22px;
   height: 22px;
   border-radius: 6px;
@@ -517,20 +405,20 @@ body {{
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
-}}
-.r1{{background:linear-gradient(135deg,var(--amber),var(--orange))}}
-.r2{{background:linear-gradient(135deg,#94a3b8,#64748b)}}
-.r3{{background:linear-gradient(135deg,#b45309,#78350f)}}
-.r4,.r5,.r6,.r7,.r8{{background:var(--dim);font-size:10px}}
+}
+.r1{background:linear-gradient(135deg,var(--amber),var(--orange))}
+.r2{background:linear-gradient(135deg,#94a3b8,#64748b)}
+.r3{background:linear-gradient(135deg,#b45309,#78350f)}
+.r4,.r5,.r6,.r7,.r8{background:var(--dim);font-size:10px}
 
-.bar-track {{
+.bar-track {
   height: 26px;
   background: var(--track-bg);
   border-radius: 6px;
   overflow: hidden;
   position: relative;
-}}
-.bar-fill {{
+}
+.bar-fill {
   height: 100%;
   border-radius: 6px;
   display: flex;
@@ -540,12 +428,12 @@ body {{
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
-}}
-.bf1{{background:linear-gradient(90deg,var(--orange-d),var(--orange))}}
-.bf2{{background:linear-gradient(90deg,var(--blue),var(--cyan))}}
-.bf3{{background:linear-gradient(90deg,#047857,var(--green))}}
+}
+.bf1{background:linear-gradient(90deg,var(--orange-d),var(--orange))}
+.bf2{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.bf3{background:linear-gradient(90deg,#047857,var(--green))}
 
-.bar-val {{
+.bar-val {
   font-size: 13px;
   font-weight: 600;
   text-align: right;
@@ -554,8 +442,8 @@ body {{
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-}}
-.bar-3d-hint {{
+}
+.bar-3d-hint {
   font-size: 10px;
   color: var(--muted);
   opacity: 0;
@@ -563,18 +451,18 @@ body {{
   display: flex;
   align-items: center;
   gap: 2px;
-}}
-.bar-item:hover .bar-3d-hint {{
+}
+.bar-item:hover .bar-3d-hint {
   opacity: 1;
-}}
+}
 
 /* BRANCH TABLE (QUAD II) */
-.bt {{
+.bt {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
-}}
-.bt thead th {{
+}
+.bt thead th {
   padding: 10px;
   text-align: right;
   font-size: 11px;
@@ -582,55 +470,55 @@ body {{
   color: var(--muted);
   border-bottom: 1px solid var(--glass-b);
   letter-spacing: 0.02em;
-}}
-.bt thead th:first-child {{ text-align: left; }}
-.bt tbody td {{
+}
+.bt thead th:first-child { text-align: left; }
+.bt tbody td {
   padding: 10px;
   text-align: right;
   font-variant-numeric: tabular-nums;
   border-bottom: 1px solid var(--border-sub);
-}}
-.bt tbody td:first-child {{ text-align: left; font-weight: 500; }}
-.bt tbody tr:hover td {{ background: var(--card-sub-bg); }}
-.bt tfoot td {{
+}
+.bt tbody td:first-child { text-align: left; font-weight: 500; }
+.bt tbody tr:hover td { background: var(--card-sub-bg); }
+.bt tfoot td {
   padding: 10px;
   text-align: right;
   font-weight: 700;
   color: var(--blue-l);
   border-top: 1px solid var(--blue);
   font-variant-numeric: tabular-nums;
-}}
-.bt tfoot td:first-child {{ text-align: left; }}
-.pbar {{
+}
+.bt tfoot td:first-child { text-align: left; }
+.pbar {
   display: inline-block;
   height: 5px;
   border-radius: 3px;
   vertical-align: middle;
   margin-right: 6px;
-}}
-.branch-icon {{
+}
+.branch-icon {
   font-size: 16px;
   vertical-align: middle;
   margin-right: 4px;
-}}
+}
 
-.clickable-row {{
+.clickable-row {
   cursor: pointer;
   transition: background-color 0.15s;
-}}
-.clickable-row:hover td {{
+}
+.clickable-row:hover td {
   background: var(--card-sub-bg)!important;
   color: var(--blue-l);
-}}
+}
 
 /* DAILY TIMELINE (QUAD III) */
-.daily-stats {{
+.daily-stats {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 12px;
-}}
-.ds {{
+}
+.ds {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -638,51 +526,51 @@ body {{
   border-radius: 9999px;
   font-size: 11px;
   font-weight: 500;
-}}
-.ds .i {{ font-size: 14px; }}
-.ds-p{{background:rgba(239,68,68,.12);color:var(--red)}}
-.ds-l{{background:rgba(37,99,235,.12);color:var(--blue-l)}}
-.ds-a{{background:var(--track-bg);color:var(--muted)}}
-.ds-w{{background:rgba(16,185,129,.12);color:var(--green)}}
-.ds-e{{background:rgba(249,115,22,.12);color:var(--orange)}}
+}
+.ds .i { font-size: 14px; }
+.ds-p{background:rgba(239,68,68,.12);color:var(--red)}
+.ds-l{background:rgba(37,99,235,.12);color:var(--blue-l)}
+.ds-a{background:var(--track-bg);color:var(--muted)}
+.ds-w{background:rgba(16,185,129,.12);color:var(--green)}
+.ds-e{background:rgba(249,115,22,.12);color:var(--orange)}
 
-.daily-wrap {{ overflow-x: auto; }}
-.daily-chart {{
+.daily-wrap { overflow-x: auto; }
+.daily-chart {
   display: flex;
   align-items: flex-end;
   gap: 2px;
   height: 150px;
   min-width: 640px;
-}}
-.dc {{
+}
+.dc {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 14px;
-}}
-.dc-area {{
+}
+.dc-area {
   width: 100%;
   height: 132px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-}}
-.dc-bar {{
+}
+.dc-bar {
   width: 65%;
   border-radius: 3px 3px 0 0;
   position: relative;
   cursor: default;
   transition: transform 0.15s, opacity 0.15s;
-}}
-.dc-bar.wd{{background:var(--blue)}}
-.dc-bar.we{{background:var(--orange)}}
-.dc-bar.pk{{background:var(--red)!important}}
-.dc-bar:hover {{
+}
+.dc-bar.wd{background:var(--blue)}
+.dc-bar.we{background:var(--orange)}
+.dc-bar.pk{background:var(--red)!important}
+.dc-bar:hover {
   opacity: 0.8;
   transform: scaleY(1.04);
-}}
-.dc-bar .tip {{
+}
+.dc-bar .tip {
   display: none;
   position: absolute;
   top: -30px;
@@ -698,40 +586,40 @@ body {{
   z-index: 10;
   border: 1px solid var(--glass-b);
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}}
-.dc-bar:hover .tip {{ display: block; }}
-.dc-lbl {{
+}
+.dc-bar:hover .tip { display: block; }
+.dc-lbl {
   font-size: 9px;
   color: var(--muted);
   margin-top: 4px;
-}}
-.legend {{
+}
+.legend {
   display: flex;
   gap: 16px;
   margin-top: 10px;
   justify-content: center;
-}}
-.leg {{
+}
+.leg {
   font-size: 11px;
   color: var(--muted);
   display: flex;
   align-items: center;
   gap: 5px;
-}}
-.leg-dot {{
+}
+.leg-dot {
   width: 8px;
   height: 8px;
   border-radius: 3px;
   display: inline-block;
-}}
+}
 
 /* CATEGORIES (QUAD IV) */
-.cat-cards {{
+.cat-cards {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}}
-.cat-card {{
+}
+.cat-card {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -739,67 +627,67 @@ body {{
   border-radius: 10px;
   background: var(--card-sub-bg);
   border: 1px solid var(--border-sub);
-}}
-.cat-dot {{
+}
+.cat-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
-}}
-.cat-info {{ flex: 1; }}
-.cat-name {{
+}
+.cat-info { flex: 1; }
+.cat-name {
   font-size: 13px;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 5px;
-}}
-.cat-name .i {{ font-size: 16px; }}
-.cat-sub {{
+}
+.cat-name .i { font-size: 16px; }
+.cat-sub {
   font-size: 11px;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
-}}
-.cat-pct {{
+}
+.cat-pct {
   font-size: 14px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
-}}
-.cat-prog {{
+}
+.cat-prog {
   height: 5px;
   background: var(--track-bg);
   border-radius: 3px;
   margin-top: 4px;
   overflow: hidden;
-}}
-.cat-prog-fill {{ height: 100%; border-radius: 3px; }}
+}
+.cat-prog-fill { height: 100%; border-radius: 3px; }
 
-.insight {{
+.insight {
   margin-top: 16px;
   padding: 14px;
   border-radius: 10px;
   background: var(--card-sub-bg);
   border: 1px solid var(--border-sub);
-}}
-.insight-title {{
+}
+.insight-title {
   font-size: 13px;
   font-weight: 600;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 6px;
-}}
-.insight-title .i {{ font-size: 16px; color: var(--cyan); }}
-.insight-body {{
+}
+.insight-title .i { font-size: 16px; color: var(--cyan); }
+.insight-body {
   font-size: 11px;
   color: var(--txt-sub);
   line-height: 1.7;
-}}
-.insight-body .i {{ font-size: 13px; vertical-align: middle; }}
+}
+.insight-body .i { font-size: 13px; vertical-align: middle; }
 
 /* FULL TABLE */
-.full-card {{
+.full-card {
   background: var(--glass);
   border: 1px solid var(--glass-b);
   border-radius: 14px;
@@ -809,13 +697,13 @@ body {{
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   margin-bottom: 24px;
-}}
-.ft {{
+}
+.ft {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
-}}
-.ft thead th {{
+}
+.ft thead th {
   padding: 10px;
   text-align: left;
   font-size: 11px;
@@ -824,26 +712,26 @@ body {{
   border-bottom: 1px solid var(--glass-b);
   letter-spacing: 0.02em;
   white-space: nowrap;
-}}
-.ft thead th .i {{ font-size: 14px; vertical-align: middle; }}
-.ft tbody td {{
+}
+.ft thead th .i { font-size: 14px; vertical-align: middle; }
+.ft tbody td {
   padding: 10px;
   border-bottom: 1px solid var(--border-sub);
   font-variant-numeric: tabular-nums;
-}}
-.ft tbody tr:hover td {{ background: var(--card-sub-bg); }}
-.ft .num {{ text-align: right; }}
-.ft .hl td {{ background: rgba(37, 99, 235, 0.04); }}
-.ft tfoot td {{
+}
+.ft tbody tr:hover td { background: var(--card-sub-bg); }
+.ft .num { text-align: right; }
+.ft .hl td { background: rgba(37, 99, 235, 0.04); }
+.ft tfoot td {
   padding: 10px;
   font-weight: 700;
   color: var(--blue-l);
   border-top: 1px solid var(--blue);
   font-variant-numeric: tabular-nums;
-}}
+}
 
 /* FOOTER */
-.footer {{
+.footer {
   text-align: center;
   padding: 16px 0 28px;
   font-size: 11px;
@@ -854,13 +742,13 @@ body {{
   justify-content: center;
   gap: 6px;
   flex-wrap: wrap;
-}}
-.footer .i {{ font-size: 14px; }}
+}
+.footer .i { font-size: 14px; }
 
 /* ==========================================================================
    3D DETAIL MODAL POP-UP (Three.js 3D Interactive Stage)
    ========================================================================== */
-.modal-overlay {{
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: var(--modal-overlay);
@@ -872,14 +760,14 @@ body {{
   justify-content: center;
   padding: 20px;
   animation: fadeIn 0.2s ease-out;
-}}
+}
 
-@keyframes fadeIn {{
-  from {{ opacity: 0; }}
-  to {{ opacity: 1; }}
-}}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-.modal-card {{
+.modal-card {
   background: var(--modal-bg);
   border: 1px solid var(--glass-b);
   border-radius: 18px;
@@ -890,27 +778,27 @@ body {{
   animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-}}
+}
 
-@keyframes modalScaleUp {{
-  from {{ opacity: 0; transform: scale(0.92) translateY(10px); }}
-  to {{ opacity: 1; transform: scale(1) translateY(0); }}
-}}
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.92) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
 
-.modal-header {{
+.modal-header {
   padding: 16px 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--glass-b);
-}}
+}
 
-.modal-title-wrap {{
+.modal-title-wrap {
   display: flex;
   align-items: center;
   gap: 12px;
-}}
-.modal-cat-icon {{
+}
+.modal-cat-icon {
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -920,9 +808,9 @@ body {{
   align-items: center;
   justify-content: center;
   font-size: 22px;
-}}
+}
 
-.modal-close {{
+.modal-close {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -934,25 +822,25 @@ body {{
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
-}}
-.modal-close:hover {{
+}
+.modal-close:hover {
   background: var(--red);
   color: #fff;
-}}
+}
 
-.modal-body {{
+.modal-body {
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   min-height: 340px;
-}}
+}
 
-@media (max-width: 700px) {{
-  .modal-body {{
+@media (max-width: 700px) {
+  .modal-body {
     grid-template-columns: 1fr;
-  }}
-}}
+  }
+}
 
-.modal-3d-box {{
+.modal-3d-box {
   position: relative;
   background: radial-gradient(circle at center, rgba(37,99,235,.08) 0%, transparent 70%);
   display: flex;
@@ -962,14 +850,14 @@ body {{
   min-height: 320px;
   cursor: grab;
   transition: border-color 0.2s, background 0.2s;
-}}
-.modal-3d-box:active {{ cursor: grabbing; }}
-.modal-3d-box.dragover {{
+}
+.modal-3d-box:active { cursor: grabbing; }
+.modal-3d-box.dragover {
   border: 2px dashed var(--cyan) !important;
   background: radial-gradient(circle at center, rgba(56,189,248,.18) 0%, transparent 70%) !important;
-}}
+}
 
-.modal-3d-toolbar {{
+.modal-3d-toolbar {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -980,12 +868,12 @@ body {{
   gap: 8px;
   z-index: 10;
   pointer-events: none;
-}}
-.modal-3d-toolbar > * {{
+}
+.modal-3d-toolbar > * {
   pointer-events: auto;
-}}
+}
 
-.btn-glb {{
+.btn-glb {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -1000,21 +888,21 @@ body {{
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}}
-.btn-glb:hover {{
+}
+.btn-glb:hover {
   background: var(--blue);
   color: #fff;
   border-color: var(--blue-l);
-}}
-.btn-glb .i {{ font-size: 14px; }}
+}
+.btn-glb .i { font-size: 14px; }
 
-#modal3DCanvas {{
+#modal3DCanvas {
   width: 100%;
   height: 100%;
   display: block;
-}}
+}
 
-.modal-3d-hint {{
+.modal-3d-hint {
   position: absolute;
   bottom: 12px;
   left: 50%;
@@ -1030,110 +918,110 @@ body {{
   display: flex;
   align-items: center;
   gap: 5px;
-}}
+}
 
-.modal-stats-box {{
+.modal-stats-box {
   padding: 22px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-}}
+}
 
-.m-grid {{
+.m-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-}}
+}
 
-.m-stat {{
+.m-stat {
   background: var(--card-sub-bg);
   border: 1px solid var(--border-sub);
   border-radius: 8px;
   padding: 10px 12px;
-}}
-.m-lbl {{
+}
+.m-lbl {
   font-size: 11px;
   color: var(--muted);
   margin-bottom: 2px;
-}}
-.m-val {{
+}
+.m-val {
   font-size: 16px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-}}
+}
 
-.m-total-card {{
+.m-total-card {
   background: var(--track-bg);
   border: 1px solid var(--glass-b);
   border-radius: 10px;
   padding: 12px 14px;
-}}
+}
 
-.m-branch-list {{
+.m-branch-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}}
-.m-branch-row {{
+}
+.m-branch-row {
   display: grid;
   grid-template-columns: 100px 1fr 100px;
   align-items: center;
   gap: 10px;
   font-size: 11px;
-}}
-.m-b-name {{
+}
+.m-b-name {
   display: flex;
   align-items: center;
   gap: 4px;
   color: var(--txt-sub);
-}}
-.m-b-track {{
+}
+.m-b-track {
   height: 6px;
   background: var(--track-bg);
   border-radius: 3px;
   overflow: hidden;
-}}
-.m-b-fill {{
+}
+.m-b-fill {
   height: 100%;
   border-radius: 3px;
   transition: width 0.4s ease;
-}}
-.m-b-val {{
+}
+.m-b-val {
   text-align: right;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-}}
+}
 
-@media (max-width: 900px) {{
-  .kpi-grid {{ grid-template-columns: repeat(2, 1fr); }}
-  .quad-grid {{ grid-template-columns: 1fr; }}
-  .bar-item {{ grid-template-columns: 110px 1fr 85px; }}
-}}
-@media (max-width: 500px) {{
-  .kpi-grid {{ grid-template-columns: 1fr; }}
-  .container {{ padding: 12px 10px; }}
-}}
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .quad-grid { grid-template-columns: 1fr; }
+  .bar-item { grid-template-columns: 110px 1fr 85px; }
+}
+@media (max-width: 500px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .container { padding: 12px 10px; }
+}
 
-.fade {{ animation: fadeUp .5s ease-out both; }}
-@keyframes fadeUp {{
-  from {{ opacity: 0; transform: translateY(10px); }}
-  to {{ opacity: 1; transform: none; }}
-}}
-.kpi-grid .kpi:nth-child(1){{animation-delay:.05s}}
-.kpi-grid .kpi:nth-child(2){{animation-delay:.1s}}
-.kpi-grid .kpi:nth-child(3){{animation-delay:.15s}}
-.kpi-grid .kpi:nth-child(4){{animation-delay:.2s}}
+.fade { animation: fadeUp .5s ease-out both; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.kpi-grid .kpi:nth-child(1){animation-delay:.05s}
+.kpi-grid .kpi:nth-child(2){animation-delay:.1s}
+.kpi-grid .kpi:nth-child(3){animation-delay:.15s}
+.kpi-grid .kpi:nth-child(4){animation-delay:.2s}
 </style>
 </head>
 <body>
 
-<h1 style="position:absolute;left:-9999px">Auction Quad Sales Dashboard</h1>
+<h1 style="position:absolute;left:-9999px">Cafe &amp; Bakery Sales Analytics Dashboard</h1>
 
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">
-    <span class="i">analytics</span>
-    Auction Quad
+    <span class="i" style="color:var(--orange);">coffee</span>
+    Cafe &amp; Bakery Analytics
     <span class="nav-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></span>
   </div>
   
@@ -1180,47 +1068,59 @@ body {{
   <div class="quad-grid">
     <!-- QUAD I: TOP PRODUCTS -->
     <div class="quad fade" style="animation-delay:.25s">
-      <div class="section-title">
-        <span class="st-icon st-a"><span class="i">emoji_events</span></span> 
-        Quad I — สินค้ารายได้สูงสุด 8 อันดับ (คลิกดู 3D Pop-up)
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">
+          <span class="st-icon st-a"><span class="i">emoji_events</span></span> 
+          <span id="quad1Title">Quad I — สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span></span>
+        </div>
+        <div class="view-toggle-wrap">
+          <button id="btnTop3" class="filter-btn active" onclick="setProductFilter('top3')">
+            <span class="i" style="font-size:13px;">check</span> Top 3 สูงสุด (ตามโจทย์ 1)
+          </button>
+          <button id="btnAllProds" class="filter-btn" onclick="setProductFilter('all')">
+            <span class="i" style="font-size:13px;">analytics</span> ครบ 8 รายการ (Prompt 2)
+          </button>
+        </div>
       </div>
       <div class="bar-list">
-        <div class="bar-item" onclick="openProductModal('ชีสเค้ก')">
+        <!-- Top 3 Required by Prompt 1 (Visible by default) -->
+        <div class="bar-item bar-top3" onclick="openProductModal('ชีสเค้ก')">
           <div class="bar-name"><span class="bar-rank r1">1</span>ชีสเค้ก</div>
           <div class="bar-track"><div class="bar-fill bf1" style="width:100%">100%</div></div>
           <div class="bar-val"><span class="bar-num">฿13,420</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('ลาเต้')">
+        <div class="bar-item bar-top3" onclick="openProductModal('ลาเต้')">
           <div class="bar-name"><span class="bar-rank r2">2</span>ลาเต้</div>
           <div class="bar-track"><div class="bar-fill bf2" style="width:75.4%">75.4%</div></div>
           <div class="bar-val"><span class="bar-num">฿10,125</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('ครัวซองต์')">
+        <div class="bar-item bar-top3" onclick="openProductModal('ครัวซองต์')">
           <div class="bar-name"><span class="bar-rank r3">3</span>ครัวซองต์</div>
           <div class="bar-track"><div class="bar-fill bf3" style="width:74.7%">74.7%</div></div>
           <div class="bar-val"><span class="bar-num">฿10,030</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('คาปูชิโน')">
+        <!-- Ranks 4-8 for Prompt 2 Detailed Analysis (Hidden by default to strictly comply with Prompt 1) -->
+        <div class="bar-item bar-rest" onclick="openProductModal('คาปูชิโน')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r4">4</span>คาปูชิโน</div>
           <div class="bar-track"><div class="bar-fill bf2" style="width:69.9%">69.9%</div></div>
           <div class="bar-val"><span class="bar-num">฿9,375</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('โกโก้')">
+        <div class="bar-item bar-rest" onclick="openProductModal('โกโก้')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r5">5</span>โกโก้</div>
           <div class="bar-track"><div class="bar-fill bf3" style="width:66.8%">66.8%</div></div>
           <div class="bar-val"><span class="bar-num">฿8,970</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('อเมริกาโน')">
+        <div class="bar-item bar-rest" onclick="openProductModal('อเมริกาโน')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r6">6</span>อเมริกาโน</div>
           <div class="bar-track"><div class="bar-fill bf1" style="width:62.6%">62.6%</div></div>
           <div class="bar-val"><span class="bar-num">฿8,400</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('ชาไทย')">
+        <div class="bar-item bar-rest" onclick="openProductModal('ชาไทย')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r7">7</span>ชาไทย</div>
           <div class="bar-track"><div class="bar-fill bf2" style="width:45.9%">45.9%</div></div>
           <div class="bar-val"><span class="bar-num">฿6,160</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('บราวนี')">
+        <div class="bar-item bar-rest" onclick="openProductModal('บราวนี')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r8">8</span>บราวนี</div>
           <div class="bar-track"><div class="bar-fill bf3" style="width:45.1%">45.1%</div></div>
           <div class="bar-val"><span class="bar-num">฿6,050</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
@@ -1395,7 +1295,7 @@ body {{
   </div>
 
   <div class="footer">
-    <span class="i">grid_view</span> Auction Quad Design System · สร้างจากข้อมูล 100 รายการ · <span class="i">functions</span> รายได้ = จำนวนขาย × ราคาขาย | กำไร = จำนวนขาย × (ราคาขาย − ต้นทุน) · <span class="i">verified</span> ตัวเลขตรวจสอบ 100%
+    <span class="i">grid_view</span> ระบบวิเคราะห์ข้อมูลการขายร้านกาแฟและเบเกอรี (Amazon Quick Workshop) · สร้างจากข้อมูล 100 รายการ · <span class="i">functions</span> รายได้ = จำนวนขาย × ราคาขาย | กำไร = จำนวนขาย × (ราคาขาย − ต้นทุน) · <span class="i">verified</span> ตัวเลขตรวจสอบ 100%
   </div>
 </div>
 
@@ -1492,7 +1392,7 @@ body {{
 
 <script>
   // Product Database
-  const PRODUCT_DATA = """ + json.dumps(product_db, ensure_ascii=False) + """;
+  const PRODUCT_DATA = {"ชีสเค้ก": {"product": "ชีสเค้ก", "category": "เบเกอรี", "icon": "cake", "color": "#f59e0b", "price": 110.0, "cost": 72.0, "qty": 122, "rev": 13420.0, "profit": 4636.0, "margin": "34.5%", "branches": {"มหาวิทยาลัย": {"qty": 48, "rev": 5280.0, "profit": 1824.0, "pct": 39.3}, "สำนักงาน": {"qty": 43, "rev": 4730.0, "profit": 1634.0, "pct": 35.2}, "ห้างสรรพสินค้า": {"qty": 31, "rev": 3410.0, "profit": 1178.0, "pct": 25.4}}}, "ลาเต้": {"product": "ลาเต้", "category": "กาแฟ", "icon": "coffee", "color": "#3b82f6", "price": 75.0, "cost": 28.0, "qty": 135, "rev": 10125.0, "profit": 6345.0, "margin": "62.7%", "branches": {"มหาวิทยาลัย": {"qty": 63, "rev": 4725.0, "profit": 2961.0, "pct": 46.7}, "สำนักงาน": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}, "ห้างสรรพสินค้า": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}}}, "ครัวซองต์": {"product": "ครัวซองต์", "category": "เบเกอรี", "icon": "bakery_dining", "color": "#f97316", "price": 85.0, "cost": 60.0, "qty": 118, "rev": 10030.0, "profit": 2950.0, "margin": "29.4%", "branches": {"มหาวิทยาลัย": {"qty": 52, "rev": 4420.0, "profit": 1300.0, "pct": 44.1}, "สำนักงาน": {"qty": 42, "rev": 3570.0, "profit": 1050.0, "pct": 35.6}, "ห้างสรรพสินค้า": {"qty": 24, "rev": 2040.0, "profit": 600.0, "pct": 20.3}}}, "คาปูชิโน": {"product": "คาปูชิโน", "category": "กาแฟ", "icon": "local_cafe", "color": "#38bdf8", "price": 75.0, "cost": 27.0, "qty": 125, "rev": 9375.0, "profit": 6000.0, "margin": "64.0%", "branches": {"มหาวิทยาลัย": {"qty": 65, "rev": 4875.0, "profit": 3120.0, "pct": 52.0}, "สำนักงาน": {"qty": 26, "rev": 1950.0, "profit": 1248.0, "pct": 20.8}, "ห้างสรรพสินค้า": {"qty": 34, "rev": 2550.0, "profit": 1632.0, "pct": 27.2}}}, "โกโก้": {"product": "โกโก้", "category": "เครื่องดื่มอื่น", "icon": "icecream", "color": "#10b981", "price": 65.0, "cost": 25.0, "qty": 138, "rev": 8970.0, "profit": 5520.0, "margin": "61.5%", "branches": {"มหาวิทยาลัย": {"qty": 74, "rev": 4810.0, "profit": 2960.0, "pct": 53.6}, "สำนักงาน": {"qty": 26, "rev": 1690.0, "profit": 1040.0, "pct": 18.8}, "ห้างสรรพสินค้า": {"qty": 38, "rev": 2470.0, "profit": 1520.0, "pct": 27.5}}}, "อเมริกาโน": {"product": "อเมริกาโน", "category": "กาแฟ", "icon": "coffee", "color": "#2563eb", "price": 60.0, "cost": 20.0, "qty": 140, "rev": 8400.0, "profit": 5600.0, "margin": "66.7%", "branches": {"มหาวิทยาลัย": {"qty": 64, "rev": 3840.0, "profit": 2560.0, "pct": 45.7}, "สำนักงาน": {"qty": 34, "rev": 2040.0, "profit": 1360.0, "pct": 24.3}, "ห้างสรรพสินค้า": {"qty": 42, "rev": 2520.0, "profit": 1680.0, "pct": 30.0}}}, "ชาไทย": {"product": "ชาไทย", "category": "เครื่องดื่มอื่น", "icon": "emoji_food_beverage", "color": "#f97316", "price": 55.0, "cost": 18.0, "qty": 112, "rev": 6160.0, "profit": 4144.0, "margin": "67.3%", "branches": {"มหาวิทยาลัย": {"qty": 40, "rev": 2200.0, "profit": 1480.0, "pct": 35.7}, "สำนักงาน": {"qty": 51, "rev": 2805.0, "profit": 1887.0, "pct": 45.5}, "ห้างสรรพสินค้า": {"qty": 21, "rev": 1155.0, "profit": 777.0, "pct": 18.8}}}, "บราวนี": {"product": "บราวนี", "category": "เบเกอรี", "icon": "cookie", "color": "#b45309", "price": 55.0, "cost": 22.0, "qty": 110, "rev": 6050.0, "profit": 3630.0, "margin": "60.0%", "branches": {"มหาวิทยาลัย": {"qty": 59, "rev": 3245.0, "profit": 1947.0, "pct": 53.6}, "สำนักงาน": {"qty": 32, "rev": 1760.0, "profit": 1056.0, "pct": 29.1}, "ห้างสรรพสินค้า": {"qty": 19, "rev": 1045.0, "profit": 627.0, "pct": 17.3}}}};
 
   // Currency & Number Formatters
   const fmtMoney = (n) => '฿' + Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1519,7 +1419,7 @@ body {{
       themeIcon.textContent = 'light_mode';
       themeToggleBtn.title = 'สลับเป็นโหมดสว่าง (Light Mode)';
     }
-    localStorage.setItem('aq_theme', theme);
+    localStorage.setItem('cafe_dashboard_theme', theme);
 
     // Update 3D scene lighting & background if modal is active
     if (mRenderer && mScene) {
@@ -1529,7 +1429,7 @@ body {{
   }
 
   // Init Theme from LocalStorage or default to dark
-  const savedTheme = localStorage.getItem('aq_theme') || 'dark';
+  const savedTheme = localStorage.getItem('cafe_dashboard_theme') || 'dark';
   applyTheme(savedTheme);
 
   themeToggleBtn.addEventListener('click', () => {
@@ -1537,6 +1437,71 @@ body {{
     const next = (cur === 'dark') ? 'light' : 'dark';
     applyTheme(next);
   });
+
+  // ==========================================================================
+  // VIEW FILTER: PROMPT 1 (TOP 3) vs PROMPT 2 (ALL 8)
+  // ==========================================================================
+  function setProductFilter(mode) {
+    const btn3 = document.getElementById('btnTop3');
+    const btnAll = document.getElementById('btnAllProds');
+    const title = document.getElementById('quad1Title');
+    const restItems = document.querySelectorAll('.bar-rest');
+    
+    if (mode === 'top3') {
+      btn3.classList.add('active');
+      btnAll.classList.remove('active');
+      title.innerHTML = 'Quad I — สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>';
+      restItems.forEach(el => el.style.display = 'none');
+    } else {
+      btn3.classList.remove('active');
+      btnAll.classList.add('active');
+      title.innerHTML = 'Quad I — สินค้ารายได้รวม 8 รายการ <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>';
+      restItems.forEach(el => el.style.display = 'grid');
+    }
+  }
+
+  // Offline 2D Fallback for Modal (Zero-Dependency Requirement)
+  function render2DFallback(item) {
+    const box = document.getElementById('modal3DBox');
+    const badge = document.getElementById('modelModeBadge');
+    if (badge) {
+      badge.innerHTML = '<span class="i" style="font-size:12px;">offline_bolt</span> โหมด 2D Standalone (ออฟไลน์)';
+      badge.style.borderColor = 'rgba(16,185,129,.4)';
+      badge.style.color = 'var(--green)';
+    }
+    const canvas = document.getElementById('modal3DCanvas');
+    if (canvas) canvas.style.display = 'none';
+    
+    let fb = document.getElementById('offline2DFallback');
+    if (!fb) {
+      fb = document.createElement('div');
+      fb.id = 'offline2DFallback';
+      fb.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center;gap:14px;width:100%;';
+      box.appendChild(fb);
+    }
+    fb.style.display = 'flex';
+    fb.innerHTML = `
+      <div style="width:80px;height:80px;border-radius:24px;background:rgba(37,99,235,0.12);color:${item.color};display:flex;align-items:center;justify-content:center;font-size:42px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+        <span class="i">${item.icon}</span>
+      </div>
+      <div>
+        <div style="font-size:20px;font-weight:700;color:var(--txt);">${item.product}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">หมวด${item.category} · ยอดขายอันดับนำ</div>
+      </div>
+      <div style="background:var(--track-bg);border:1px solid var(--glass-b);border-radius:12px;padding:12px 18px;width:85%;max-width:280px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+          <span style="color:var(--muted)">สัดส่วนอัตรากำไร (GP%)</span>
+          <span style="font-weight:700;color:var(--green)">${item.margin}</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${item.margin};background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px;"></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--dim);display:flex;align-items:center;gap:4px;">
+        <span class="i" style="font-size:14px;color:var(--green)">verified</span> แสดงผลได้สมบูรณ์แบบโดยไม่ต้องต่อเน็ต
+      </div>
+    `;
+  }
 
   // ==========================================================================
   // 3D DETAIL MODAL ENGINE (THREE.JS)
@@ -2064,14 +2029,3 @@ body {{
 
 </body>
 </html>
-"""
-
-# Write to Downloads
-with open(downloads_file, 'w', encoding='utf-8') as f:
-    f.write(html_code)
-print('Updated Downloads file successfully:', downloads_file)
-
-# Write to Project directory
-with open(project_file, 'w', encoding='utf-8') as f:
-    f.write(html_code)
-print('Updated Project file successfully:', project_file)

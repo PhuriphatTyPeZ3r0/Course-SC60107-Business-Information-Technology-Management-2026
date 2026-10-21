@@ -45,8 +45,15 @@
 ```text
 Course-SC60107-Business-Information-Technology-Management/
 ├── 00_Templates/                     # Template โน้ตสรุปและคู่มือ Markdown/Obsidian
+├── 01_Lectures/                      # เอกสารการสอน สไลด์บรรยายประจำสัปดาห์
+│   ├── 01_Docs/                      # ประมวลรายวิชา (Syllabus)
+│   └── 02_Teaching_Slides/           # สไลด์บรรยาย (W1, W2)
 ├── 02_Labs_Assignments/              # ใบงาน แบบฝึกหัด และการมอบหมายงานภาคปฏิบัติ
-│   └── AI Coaching 10 คะแนน.docx
+│   ├── Week1/                        # AI Coaching ในการบริหารจัดการไอทีธุรกิจ (10 คะแนน)
+│   ├── Week2/                        # Storyboards & Video Clip แคมเปญโฆษณา Adidas F50 (10 คะแนน)
+│   ├── Week3/                        # (สำรองสัปดาห์การเรียนรู้)
+│   ├── Week4/                        # (สำรองสัปดาห์การเรียนรู้)
+│   └── Week5/                        # Cafe & Bakery Sales Analytics Dashboard (3D) (5 คะแนน)
 ├── 03_Project/                       # โครงงานประจำรายวิชา
 │   ├── Whisper_Backend_API/         # FastAPI + Docker: audio transcription/diarization/summarization service (ตรวจภาษาอัตโนมัติ)
 │   │   ├── README.md                # เอกสารโครงสร้างและวิธีใช้งานของโครงงาน
@@ -56,7 +63,7 @@ Course-SC60107-Business-Information-Technology-Management/
 └── README.md                         # สารบัญหลักและภาพรวมรายวิชา
 ```
 
-> **หมายเหตุ:** โครงสร้างข้างต้นสะท้อนสถานะปัจจุบันของ Repository เท่านั้น ส่วน `01_Lectures/` และ `04_Exams_Review/` จะถูกเพิ่มเข้ามาเมื่อมีเนื้อหาในภายหลัง โครงสร้างนี้รองรับการเปิดอ่านบน GitHub และเปิดเป็น **Obsidian Vault** โดยสมบูรณ์ (รองรับ Callouts, Markdown Tables, Mermaid)
+> **หมายเหตุ:** โครงสร้างนี้รองรับการเปิดอ่านบน GitHub และเปิดเป็น **Obsidian Vault** โดยสมบูรณ์ (รองรับ Callouts, Markdown Tables, Mermaid)
 
 ---
 
@@ -71,10 +78,11 @@ Course-SC60107-Business-Information-Technology-Management/
 
 ## <img src="https://api.iconify.design/material-symbols:terminal-outline.svg?color=%2310B981" width="22" height="22" align="center" /> 4. แบบฝึกหัดและการทดลองภาคปฏิบัติ (Labs & Assignments)
 
-| ลำดับงาน | หัวข้องาน (Assignment) | รายละเอียดและโจทย์การวิเคราะห์ | เอกสารงาน |
-| :---: | :--- | :--- | :---: |
-| **Assign 01** | AI Coaching ในการบริหารจัดการไอทีธุรกิจ | ศึกษาและวิเคราะห์การนำเทคโนโลยี AI มาช่วยให้คำปรึกษา แนะนำ และโค้ชการทำงานภายในองค์กรธุรกิจ (10 คะแนน) | [เปิดเอกสารงาน](02_Labs_Assignments/AI%20Coaching%2010%20คะแนน.docx) |
-| **Assign 02** | Auction Quad — Interactive Sales Dashboard (3D) | Sales Dashboard & Interactive 3D Model Viewer สำหรับการวิเคราะห์ยอดขายและการประมูล | [🌐 Live Dashboard](https://phuriphattypez3r0.github.io/Course-SC60107-Business-Information-Technology-Management-2026/) · [โค้ด Dashboard](02_Labs_Assignments/Dashboard-6752300313.html) |
+| สัปดาห์ | ลำดับงาน | หัวข้องาน (Assignment) | รายละเอียดและโจทย์การวิเคราะห์ | เอกสาร/ซอร์สโค้ด |
+| :---: | :---: | :--- | :--- | :---: |
+| **Week 01** | **Assign 01** | AI Coaching ในการบริหารจัดการไอทีธุรกิจ | ศึกษาและวิเคราะห์การนำเทคโนโลยี AI มาช่วยให้คำปรึกษา แนะนำ และโค้ชการทำงานภายในองค์กรธุรกิจ (10 คะแนน) | [เปิดเอกสารงาน](02_Labs_Assignments/Week1/AI%20Coaching%2010%20คะแนน.docx) |
+| **Week 02** | **Assign 02** | Storyboards & Video Clip แคมเปญโฆษณา (Adidas F50) | ออกแบบ Storyboard และสร้างวิดีโอคลิปโฆษณาสินค้าด้วย AI ตามกลยุทธ์ MarTech & Video Marketing (10 คะแนน) | [โฟลเดอร์ผลงาน](02_Labs_Assignments/Week2/) |
+| **Week 05** | **Assign 03** | Cafe & Bakery Sales Analytics Dashboard (3D) | Sales Dashboard & Interactive 3D Model Viewer สำหรับการวิเคราะห์ยอดขายร้านกาแฟและเบเกอรี (Amazon Quick Workshop) (5 คะแนน) | [🌐 Live Dashboard](https://phuriphattypez3r0.github.io/Course-SC60107-Business-Information-Technology-Management-2026/) · [โค้ด Dashboard](02_Labs_Assignments/Week5/Dashboard-6752300313.html) |
 
 ---
 

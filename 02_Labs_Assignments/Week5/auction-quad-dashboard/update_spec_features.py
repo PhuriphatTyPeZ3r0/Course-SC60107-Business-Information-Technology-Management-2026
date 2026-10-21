@@ -1,6 +1,7 @@
 import os
 
-md_path = os.path.join('02_Labs_Assignments', 'auction-quad-dashboard', 'AUCTION_QUAD_DESIGN_SYSTEM.md')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+md_path = os.path.join(base_dir, 'AUCTION_QUAD_DESIGN_SYSTEM.md')
 
 with open(md_path, 'r', encoding='utf-8') as f:
     existing = f.read()

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Auction Quad — Sales Dashboard</title>
+<title>Cafe &amp; Bakery Sales Analytics — Dashboard (6752300313)</title>
 <!-- Google Fonts: Prompt -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +42,7 @@
   --border-sub: rgba(255, 255, 255, 0.04);
   --modal-bg: #0c162e;
   --modal-overlay: rgba(3, 7, 18, 0.78);
-  --font: 'Prompt', system-ui, -apple-system, sans-serif;
+  --font: 'Prompt', 'Noto Sans Thai', 'Segoe UI', Tahoma, system-ui, -apple-system, sans-serif;
   --shadow-main: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
@@ -326,6 +326,40 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* FILTER TOGGLE BUTTONS (PROMPT 1 vs PROMPT 2) */
+.view-toggle-wrap {
+  display: inline-flex;
+  background: var(--track-bg);
+  padding: 3px;
+  border-radius: 9px;
+  border: 1px solid var(--glass-b);
+  gap: 4px;
+}
+.filter-btn {
+  padding: 5px 12px;
+  font-size: 11px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.filter-btn:hover {
+  color: var(--txt);
+}
+.filter-btn.active {
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
 }
 
 /* BARS (QUAD I) */
@@ -981,13 +1015,13 @@ body {
 </head>
 <body>
 
-<h1 style="position:absolute;left:-9999px">Auction Quad Sales Dashboard</h1>
+<h1 style="position:absolute;left:-9999px">Cafe &amp; Bakery Sales Analytics Dashboard</h1>
 
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">
-    <span class="i">analytics</span>
-    Auction Quad
+    <span class="i" style="color:var(--orange);">coffee</span>
+    Cafe &amp; Bakery Analytics
     <span class="nav-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></span>
   </div>
   
@@ -1034,47 +1068,59 @@ body {
   <div class="quad-grid">
     <!-- QUAD I: TOP PRODUCTS -->
     <div class="quad fade" style="animation-delay:.25s">
-      <div class="section-title">
-        <span class="st-icon st-a"><span class="i">emoji_events</span></span> 
-        Quad I — สินค้ารายได้สูงสุด 8 อันดับ (คลิกดู 3D Pop-up)
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">
+          <span class="st-icon st-a"><span class="i">emoji_events</span></span> 
+          <span id="quad1Title">Quad I — สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span></span>
+        </div>
+        <div class="view-toggle-wrap">
+          <button id="btnTop3" class="filter-btn active" onclick="setProductFilter('top3')">
+            <span class="i" style="font-size:13px;">check</span> Top 3 สูงสุด (ตามโจทย์ 1)
+          </button>
+          <button id="btnAllProds" class="filter-btn" onclick="setProductFilter('all')">
+            <span class="i" style="font-size:13px;">analytics</span> ครบ 8 รายการ (Prompt 2)
+          </button>
+        </div>
       </div>
       <div class="bar-list">
-        <div class="bar-item" onclick="openProductModal('ชีสเค้ก')">
+        <!-- Top 3 Required by Prompt 1 (Visible by default) -->
+        <div class="bar-item bar-top3" onclick="openProductModal('ชีสเค้ก')">
           <div class="bar-name"><span class="bar-rank r1">1</span>ชีสเค้ก</div>
           <div class="bar-track"><div class="bar-fill bf1" style="width:100%">100%</div></div>
           <div class="bar-val"><span class="bar-num">฿13,420</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('ลาเต้')">
+        <div class="bar-item bar-top3" onclick="openProductModal('ลาเต้')">
           <div class="bar-name"><span class="bar-rank r2">2</span>ลาเต้</div>
           <div class="bar-track"><div class="bar-fill bf2" style="width:75.4%">75.4%</div></div>
           <div class="bar-val"><span class="bar-num">฿10,125</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('ครัวซองต์')">
+        <div class="bar-item bar-top3" onclick="openProductModal('ครัวซองต์')">
           <div class="bar-name"><span class="bar-rank r3">3</span>ครัวซองต์</div>
           <div class="bar-track"><div class="bar-fill bf3" style="width:74.7%">74.7%</div></div>
           <div class="bar-val"><span class="bar-num">฿10,030</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('คาปูชิโน')">
+        <!-- Ranks 4-8 for Prompt 2 Detailed Analysis (Hidden by default to strictly comply with Prompt 1) -->
+        <div class="bar-item bar-rest" onclick="openProductModal('คาปูชิโน')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r4">4</span>คาปูชิโน</div>
           <div class="bar-track"><div class="bar-fill bf2" style="width:69.9%">69.9%</div></div>
           <div class="bar-val"><span class="bar-num">฿9,375</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('โกโก้')">
+        <div class="bar-item bar-rest" onclick="openProductModal('โกโก้')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r5">5</span>โกโก้</div>
           <div class="bar-track"><div class="bar-fill bf3" style="width:66.8%">66.8%</div></div>
           <div class="bar-val"><span class="bar-num">฿8,970</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('อเมริกาโน')">
+        <div class="bar-item bar-rest" onclick="openProductModal('อเมริกาโน')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r6">6</span>อเมริกาโน</div>
           <div class="bar-track"><div class="bar-fill bf1" style="width:62.6%">62.6%</div></div>
           <div class="bar-val"><span class="bar-num">฿8,400</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('ชาไทย')">
+        <div class="bar-item bar-rest" onclick="openProductModal('ชาไทย')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r7">7</span>ชาไทย</div>
           <div class="bar-track"><div class="bar-fill bf2" style="width:45.9%">45.9%</div></div>
           <div class="bar-val"><span class="bar-num">฿6,160</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
         </div>
-        <div class="bar-item" onclick="openProductModal('บราวนี')">
+        <div class="bar-item bar-rest" onclick="openProductModal('บราวนี')" style="display:none;">
           <div class="bar-name"><span class="bar-rank r8">8</span>บราวนี</div>
           <div class="bar-track"><div class="bar-fill bf3" style="width:45.1%">45.1%</div></div>
           <div class="bar-val"><span class="bar-num">฿6,050</span><span class="bar-3d-hint"><span class="i">view_in_ar</span> 3D</span></div>
@@ -1249,7 +1295,7 @@ body {
   </div>
 
   <div class="footer">
-    <span class="i">grid_view</span> Auction Quad Design System · สร้างจากข้อมูล 100 รายการ · <span class="i">functions</span> รายได้ = จำนวนขาย × ราคาขาย | กำไร = จำนวนขาย × (ราคาขาย − ต้นทุน) · <span class="i">verified</span> ตัวเลขตรวจสอบ 100%
+    <span class="i">grid_view</span> ระบบวิเคราะห์ข้อมูลการขายร้านกาแฟและเบเกอรี (Amazon Quick Workshop) · สร้างจากข้อมูล 100 รายการ · <span class="i">functions</span> รายได้ = จำนวนขาย × ราคาขาย | กำไร = จำนวนขาย × (ราคาขาย − ต้นทุน) · <span class="i">verified</span> ตัวเลขตรวจสอบ 100%
   </div>
 </div>
 
@@ -1373,7 +1419,7 @@ body {
       themeIcon.textContent = 'light_mode';
       themeToggleBtn.title = 'สลับเป็นโหมดสว่าง (Light Mode)';
     }
-    localStorage.setItem('aq_theme', theme);
+    localStorage.setItem('cafe_dashboard_theme', theme);
 
     // Update 3D scene lighting & background if modal is active
     if (mRenderer && mScene) {
@@ -1383,7 +1429,7 @@ body {
   }
 
   // Init Theme from LocalStorage or default to dark
-  const savedTheme = localStorage.getItem('aq_theme') || 'dark';
+  const savedTheme = localStorage.getItem('cafe_dashboard_theme') || 'dark';
   applyTheme(savedTheme);
 
   themeToggleBtn.addEventListener('click', () => {
@@ -1391,6 +1437,71 @@ body {
     const next = (cur === 'dark') ? 'light' : 'dark';
     applyTheme(next);
   });
+
+  // ==========================================================================
+  // VIEW FILTER: PROMPT 1 (TOP 3) vs PROMPT 2 (ALL 8)
+  // ==========================================================================
+  function setProductFilter(mode) {
+    const btn3 = document.getElementById('btnTop3');
+    const btnAll = document.getElementById('btnAllProds');
+    const title = document.getElementById('quad1Title');
+    const restItems = document.querySelectorAll('.bar-rest');
+    
+    if (mode === 'top3') {
+      btn3.classList.add('active');
+      btnAll.classList.remove('active');
+      title.innerHTML = 'Quad I — สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>';
+      restItems.forEach(el => el.style.display = 'none');
+    } else {
+      btn3.classList.remove('active');
+      btnAll.classList.add('active');
+      title.innerHTML = 'Quad I — สินค้ารายได้รวม 8 รายการ <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>';
+      restItems.forEach(el => el.style.display = 'grid');
+    }
+  }
+
+  // Offline 2D Fallback for Modal (Zero-Dependency Requirement)
+  function render2DFallback(item) {
+    const box = document.getElementById('modal3DBox');
+    const badge = document.getElementById('modelModeBadge');
+    if (badge) {
+      badge.innerHTML = '<span class="i" style="font-size:12px;">offline_bolt</span> โหมด 2D Standalone (ออฟไลน์)';
+      badge.style.borderColor = 'rgba(16,185,129,.4)';
+      badge.style.color = 'var(--green)';
+    }
+    const canvas = document.getElementById('modal3DCanvas');
+    if (canvas) canvas.style.display = 'none';
+    
+    let fb = document.getElementById('offline2DFallback');
+    if (!fb) {
+      fb = document.createElement('div');
+      fb.id = 'offline2DFallback';
+      fb.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center;gap:14px;width:100%;';
+      box.appendChild(fb);
+    }
+    fb.style.display = 'flex';
+    fb.innerHTML = `
+      <div style="width:80px;height:80px;border-radius:24px;background:rgba(37,99,235,0.12);color:${item.color};display:flex;align-items:center;justify-content:center;font-size:42px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+        <span class="i">${item.icon}</span>
+      </div>
+      <div>
+        <div style="font-size:20px;font-weight:700;color:var(--txt);">${item.product}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">หมวด${item.category} · ยอดขายอันดับนำ</div>
+      </div>
+      <div style="background:var(--track-bg);border:1px solid var(--glass-b);border-radius:12px;padding:12px 18px;width:85%;max-width:280px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+          <span style="color:var(--muted)">สัดส่วนอัตรากำไร (GP%)</span>
+          <span style="font-weight:700;color:var(--green)">${item.margin}</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${item.margin};background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px;"></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--dim);display:flex;align-items:center;gap:4px;">
+        <span class="i" style="font-size:14px;color:var(--green)">verified</span> แสดงผลได้สมบูรณ์แบบโดยไม่ต้องต่อเน็ต
+      </div>
+    `;
+  }
 
   // ==========================================================================
   // 3D DETAIL MODAL ENGINE (THREE.JS)

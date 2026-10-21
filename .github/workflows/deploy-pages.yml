@@ -30,10 +30,13 @@ jobs:
 
       - name: Build site directory
         run: |
-          mkdir -p _site/02_Labs_Assignments
-          cp "02_Labs_Assignments/Dashboard-6752300313.html" _site/index.html
-          cp "02_Labs_Assignments/Dashboard-6752300313.html" _site/Dashboard-6752300313.html
-          cp "02_Labs_Assignments/Dashboard-6752300313.html" "_site/02_Labs_Assignments/Dashboard-6752300313.html"
+          mkdir -p _site/02_Labs_Assignments _site/02_Labs_Assignments/Week5
+          cp "02_Labs_Assignments/Week5/Dashboard-6752300313.html" _site/index.html
+          cp "02_Labs_Assignments/Week5/Dashboard-6752300313.html" _site/Dashboard-6752300313.html
+          cp "02_Labs_Assignments/Week5/Dashboard-6752300313.html" "_site/02_Labs_Assignments/Dashboard-6752300313.html"
+          cp "02_Labs_Assignments/Week5/Dashboard-6752300313.html" "_site/02_Labs_Assignments/Week5/Dashboard-6752300313.html"
+          cp "02_Labs_Assignments/Week5/dashboard.html" _site/dashboard.html
+          cp "02_Labs_Assignments/Week5/dashboard.html" "_site/02_Labs_Assignments/Week5/dashboard.html"
           touch _site/.nojekyll
 
       - name: Upload Pages Artifact

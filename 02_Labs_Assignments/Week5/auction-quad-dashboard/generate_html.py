@@ -1,8 +1,8 @@
 import json
 import os
-
-data_path = os.path.join('02_Labs_Assignments', 'auction-quad-dashboard', 'sales_data.json')
-out_path = os.path.join('02_Labs_Assignments', 'auction-quad-dashboard', 'dashboard.html')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+data_path = os.path.join(base_dir, 'sales_data.json')
+out_path = os.path.join(base_dir, 'dashboard.html')
 
 with open(data_path, 'r', encoding='utf-8') as f:
     sales = json.load(f)

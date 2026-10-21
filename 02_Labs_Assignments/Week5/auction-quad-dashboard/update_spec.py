@@ -1,7 +1,7 @@
 import json
 import os
 
-base_dir = os.path.join('02_Labs_Assignments', 'auction-quad-dashboard')
+base_dir = os.path.dirname(os.path.abspath(__file__))
 compact_path = os.path.join(base_dir, 'sales_compact.json')
 md_path = os.path.join(base_dir, 'AUCTION_QUAD_DESIGN_SYSTEM.md')
 
