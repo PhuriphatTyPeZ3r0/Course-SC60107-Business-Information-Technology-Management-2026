@@ -308,7 +308,7 @@ body {
 .st-a{background:rgba(245,158,11,.15);color:var(--amber)}
 .st-r{background:rgba(239,68,68,.15);color:var(--red)}
 
-/* QUAD GRID */
+/* DASHBOARD GRID */
 .quad-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -362,7 +362,7 @@ body {
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
 }
 
-/* BARS (QUAD I) */
+/* BARS (TOP PRODUCTS) */
 .bar-list {
   display: flex;
   flex-direction: column;
@@ -456,7 +456,7 @@ body {
   opacity: 1;
 }
 
-/* BRANCH TABLE (QUAD II) */
+/* BRANCH TABLE */
 .bt {
   width: 100%;
   border-collapse: collapse;
@@ -511,7 +511,7 @@ body {
   color: var(--blue-l);
 }
 
-/* DAILY TIMELINE (QUAD III) */
+/* DAILY TIMELINE */
 .daily-stats {
   display: flex;
   gap: 8px;
@@ -613,7 +613,7 @@ body {
   display: inline-block;
 }
 
-/* CATEGORIES (QUAD IV) */
+/* CATEGORIES */
 .cat-cards {
   display: flex;
   flex-direction: column;
@@ -1064,14 +1064,14 @@ body {
     </div>
   </div>
 
-  <!-- QUAD I & II -->
+  <!-- SECTION: TOP PRODUCTS & BRANCHES -->
   <div class="quad-grid">
-    <!-- QUAD I: TOP PRODUCTS -->
+    <!-- TOP PRODUCTS -->
     <div class="quad fade" style="animation-delay:.25s">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
         <div class="section-title" style="margin-bottom:0;">
           <span class="st-icon st-a"><span class="i">emoji_events</span></span> 
-          <span id="quad1Title">Quad I — สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span></span>
+          <span id="quad1Title">สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span></span>
         </div>
         <div class="view-toggle-wrap">
           <button id="btnTop3" class="filter-btn active" onclick="setProductFilter('top3')">
@@ -1128,9 +1128,9 @@ body {
       </div>
     </div>
 
-    <!-- QUAD II: BRANCHES -->
+    <!-- BRANCHES -->
     <div class="quad fade" style="animation-delay:.3s">
-      <div class="section-title"><span class="st-icon st-o"><span class="i">storefront</span></span> Quad II — เปรียบเทียบ 3 สาขา</div>
+      <div class="section-title"><span class="st-icon st-o"><span class="i">storefront</span></span> เปรียบเทียบผลประกอบการ 3 สาขา</div>
       <table class="bt">
         <thead><tr><th>สาขา</th><th>บิล</th><th>ชิ้น</th><th>รายได้</th><th>สัดส่วน</th><th>กำไร</th><th>GP%</th></tr></thead>
         <tbody>
@@ -1164,11 +1164,11 @@ body {
     </div>
   </div>
 
-  <!-- QUAD III & IV -->
+  <!-- SECTION: DAILY & CATEGORY -->
   <div class="quad-grid">
-    <!-- QUAD III: DAILY -->
+    <!-- DAILY TIMELINE -->
     <div class="quad fade" style="animation-delay:.35s">
-      <div class="section-title"><span class="st-icon st-c"><span class="i">calendar_month</span></span> Quad III — รายได้รายวัน · สิงหาคม 2569</div>
+      <div class="section-title"><span class="st-icon st-c"><span class="i">calendar_month</span></span> แนวโน้มรายได้รายวัน · สิงหาคม 2569</div>
       <div class="daily-stats">
         <span class="ds ds-p"><span class="i">arrow_upward</span> Peak 4 ส.ค. ฿3,690</span>
         <span class="ds ds-l"><span class="i">arrow_downward</span> Low 15 ส.ค. ฿1,290</span>
@@ -1218,9 +1218,9 @@ body {
       </div>
     </div>
 
-    <!-- QUAD IV: CATEGORY -->
+    <!-- CATEGORY BREAKDOWN -->
     <div class="quad fade" style="animation-delay:.4s">
-      <div class="section-title"><span class="st-icon st-g"><span class="i">category</span></span> Quad IV — โครงสร้างหมวดหมู่</div>
+      <div class="section-title"><span class="st-icon st-g"><span class="i">category</span></span> โครงสร้างสัดส่วนหมวดหมู่สินค้า</div>
       <div class="cat-cards">
         <div class="cat-card" onclick="openProductModal('ชีสเค้ก')" style="cursor:pointer;" title="คลิกดูสินค้าหมวดเบเกอรีใน 3D">
           <div class="cat-dot" style="background:var(--red)"></div>
@@ -1450,12 +1450,12 @@ body {
     if (mode === 'top3') {
       btn3.classList.add('active');
       btnAll.classList.remove('active');
-      title.innerHTML = 'Quad I — สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>';
+      title.innerHTML = 'สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>';
       restItems.forEach(el => el.style.display = 'none');
     } else {
       btn3.classList.remove('active');
       btnAll.classList.add('active');
-      title.innerHTML = 'Quad I — สินค้ารายได้รวม 8 รายการ <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>';
+      title.innerHTML = 'สินค้ารายได้รวม 8 รายการ <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>';
       restItems.forEach(el => el.style.display = 'grid');
     }
   }
