@@ -469,6 +469,132 @@ body {
 }
 .insight-body { font-size: 11px; color: var(--txt-sub); line-height: 1.7; }
 
+
+/* DYNAMIC INTERACTIVE FILTER TOOLBAR */
+.filter-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-b);
+  border-radius: 14px;
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-main);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.filter-toolbar-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.filter-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.pill-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.pill-btn {
+  background: var(--track-bg);
+  color: var(--txt-sub);
+  border: 1px solid var(--glass-b);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  user-select: none;
+}
+.pill-btn:hover {
+  background: var(--card-sub-bg);
+  color: var(--txt);
+  border-color: var(--blue-l);
+}
+.pill-btn.active {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+.filter-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cyan);
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+}
+.filter-reset-btn {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.filter-reset-btn:hover {
+  background: var(--red);
+  color: #ffffff;
+}
+.branch-highlight-cell {
+  background: rgba(37, 99, 235, 0.08) !important;
+  color: var(--blue-l) !important;
+  font-weight: 700;
+}
+.branch-highlight-head {
+  background: rgba(37, 99, 235, 0.12) !important;
+  color: var(--blue-l) !important;
+  font-weight: 700;
+}
+
 /* FULL TABLE */
 .full-card {
   background: var(--glass);
@@ -748,6 +874,41 @@ body {
 
 <div class="container">
 
+    <!-- DYNAMIC INTERACTIVE FILTER TOOLBAR -->
+  <div class="filter-toolbar fade">
+    <div class="filter-toolbar-left">
+      <div class="filter-group">
+        <span class="filter-label"><span class="icon" id="filtBranchIcon"></span> สาขา:</span>
+        <div class="pill-group" id="branchPillGroup">
+          <button class="pill-btn active" data-branch="all" onclick="setBranchFilter('all')">ทุกสาขา</button>
+          <button class="pill-btn" data-branch="มหาวิทยาลัย" onclick="setBranchFilter('มหาวิทยาลัย')">มหาวิทยาลัย</button>
+          <button class="pill-btn" data-branch="สำนักงาน" onclick="setBranchFilter('สำนักงาน')">สำนักงาน</button>
+          <button class="pill-btn" data-branch="ห้างสรรพสินค้า" onclick="setBranchFilter('ห้างสรรพสินค้า')">ห้างสรรพสินค้า</button>
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <span class="filter-label"><span class="icon" id="filtCatIcon"></span> หมวดหมู่:</span>
+        <div class="pill-group" id="catPillGroup">
+          <button class="pill-btn active" data-cat="all" onclick="setCategoryFilter('all')">ทุกหมวด</button>
+          <button class="pill-btn" data-cat="เบเกอรี" onclick="setCategoryFilter('เบเกอรี')">เบเกอรี</button>
+          <button class="pill-btn" data-cat="กาแฟ" onclick="setCategoryFilter('กาแฟ')">กาแฟ</button>
+          <button class="pill-btn" data-cat="เครื่องดื่มอื่น" onclick="setCategoryFilter('เครื่องดื่มอื่น')">เครื่องดื่มอื่น</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-toolbar-right">
+      <span class="filter-status-tag" id="filterStatusTag">
+        <span class="status-dot"></span>
+        <span id="filterStatusText">แสดงทุกสาขาและทุกหมวดหมู่ (100 รายการ · ฿72,530.00)</span>
+      </span>
+      <button class="filter-reset-btn" id="btnResetFilters" style="display:none;" onclick="resetAllFilters()">
+        <span class="icon" id="resetIcon"></span> รีเซ็ตตัวกรอง
+      </button>
+    </div>
+  </div>
+
   <!-- KPI CARDS (DYNAMIC) -->
   <div class="kpi-grid" id="kpiGrid"></div>
 
@@ -965,10 +1126,35 @@ body {
 </div>
 
 <script>
-  // Normalized Data Store
-  const APP_DATA = {"summary": {"revenue": 72530.0, "units": 1000, "profit": 38825.0, "margin": "53.53%", "cost": 33705.0, "aov": 725.3, "bills": 100, "products_count": 8}, "products": [{"id": "cheesecake", "name": "ชีสเค้ก", "cat": "เบเกอรี", "icon": "cake", "color": "#f59e0b", "price": 110.0, "cost": 72.0, "qty": 122, "rev": 13420.0, "profit": 4636.0, "margin": "34.5%", "pctOfTotal": "18.5%", "branches": {"มหาวิทยาลัย": {"qty": 48, "rev": 5280.0, "profit": 1824.0, "pct": 39.3}, "สำนักงาน": {"qty": 43, "rev": 4730.0, "profit": 1634.0, "pct": 35.2}, "ห้างสรรพสินค้า": {"qty": 31, "rev": 3410.0, "profit": 1178.0, "pct": 25.4}}, "img": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&auto=format&fit=crop&q=80"}, {"id": "latte", "name": "ลาเต้", "cat": "กาแฟ", "icon": "coffee", "color": "#3b82f6", "price": 75.0, "cost": 28.0, "qty": 135, "rev": 10125.0, "profit": 6345.0, "margin": "62.7%", "pctOfTotal": "14.0%", "branches": {"มหาวิทยาลัย": {"qty": 63, "rev": 4725.0, "profit": 2961.0, "pct": 46.7}, "สำนักงาน": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}, "ห้างสรรพสินค้า": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}}, "img": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=500&auto=format&fit=crop&q=80"}, {"id": "croissant", "name": "ครัวซองต์", "cat": "เบเกอรี", "icon": "bakery", "color": "#f97316", "price": 85.0, "cost": 60.0, "qty": 118, "rev": 10030.0, "profit": 2950.0, "margin": "29.4%", "pctOfTotal": "13.8%", "branches": {"มหาวิทยาลัย": {"qty": 52, "rev": 4420.0, "profit": 1300.0, "pct": 44.1}, "สำนักงาน": {"qty": 42, "rev": 3570.0, "profit": 1050.0, "pct": 35.6}, "ห้างสรรพสินค้า": {"qty": 24, "rev": 2040.0, "profit": 600.0, "pct": 20.3}}, "img": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop&q=80"}, {"id": "cappuccino", "name": "คาปูชิโน", "cat": "กาแฟ", "icon": "cafe", "color": "#38bdf8", "price": 75.0, "cost": 27.0, "qty": 125, "rev": 9375.0, "profit": 6000.0, "margin": "64.0%", "pctOfTotal": "12.9%", "branches": {"มหาวิทยาลัย": {"qty": 65, "rev": 4875.0, "profit": 3120.0, "pct": 52.0}, "สำนักงาน": {"qty": 26, "rev": 1950.0, "profit": 1248.0, "pct": 20.8}, "ห้างสรรพสินค้า": {"qty": 34, "rev": 2550.0, "profit": 1632.0, "pct": 27.2}}, "img": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop&q=80"}, {"id": "cocoa", "name": "โกโก้", "cat": "เครื่องดื่มอื่น", "icon": "drink", "color": "#10b981", "price": 65.0, "cost": 25.0, "qty": 138, "rev": 8970.0, "profit": 5520.0, "margin": "61.5%", "pctOfTotal": "12.4%", "branches": {"มหาวิทยาลัย": {"qty": 74, "rev": 4810.0, "profit": 2960.0, "pct": 53.6}, "สำนักงาน": {"qty": 26, "rev": 1690.0, "profit": 1040.0, "pct": 18.8}, "ห้างสรรพสินค้า": {"qty": 38, "rev": 2470.0, "profit": 1520.0, "pct": 27.5}}, "img": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=500&auto=format&fit=crop&q=80"}, {"id": "americano", "name": "อเมริกาโน", "cat": "กาแฟ", "icon": "coffee", "color": "#2563eb", "price": 60.0, "cost": 20.0, "qty": 140, "rev": 8400.0, "profit": 5600.0, "margin": "66.7%", "pctOfTotal": "11.6%", "branches": {"มหาวิทยาลัย": {"qty": 64, "rev": 3840.0, "profit": 2560.0, "pct": 45.7}, "สำนักงาน": {"qty": 34, "rev": 2040.0, "profit": 1360.0, "pct": 24.3}, "ห้างสรรพสินค้า": {"qty": 42, "rev": 2520.0, "profit": 1680.0, "pct": 30.0}}, "img": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop&q=80"}, {"id": "thaitea", "name": "ชาไทย", "cat": "เครื่องดื่มอื่น", "icon": "tea", "color": "#ea580c", "price": 55.0, "cost": 18.0, "qty": 112, "rev": 6160.0, "profit": 4144.0, "margin": "67.3%", "pctOfTotal": "8.5%", "branches": {"มหาวิทยาลัย": {"qty": 40, "rev": 2200.0, "profit": 1480.0, "pct": 35.7}, "สำนักงาน": {"qty": 51, "rev": 2805.0, "profit": 1887.0, "pct": 45.5}, "ห้างสรรพสินค้า": {"qty": 21, "rev": 1155.0, "profit": 777.0, "pct": 18.8}}, "img": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&auto=format&fit=crop&q=80"}, {"id": "brownie", "name": "บราวนี", "cat": "เบเกอรี", "icon": "cookie", "color": "#b45309", "price": 55.0, "cost": 22.0, "qty": 110, "rev": 6050.0, "profit": 3630.0, "margin": "60.0%", "pctOfTotal": "8.3%", "branches": {"มหาวิทยาลัย": {"qty": 59, "rev": 3245.0, "profit": 1947.0, "pct": 53.6}, "สำนักงาน": {"qty": 32, "rev": 1760.0, "profit": 1056.0, "pct": 29.1}, "ห้างสรรพสินค้า": {"qty": 19, "rev": 1045.0, "profit": 627.0, "pct": 17.3}}, "img": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&auto=format&fit=crop&q=80"}], "branches": [{"name": "มหาวิทยาลัย", "icon": "school", "bills": 34, "qty": 465, "rev": 33395.0, "profit": 18152.0, "margin": "54.4%", "pct": 46.0, "color": "var(--blue)"}, {"name": "สำนักงาน", "icon": "business", "bills": 33, "qty": 290, "rev": 21245.0, "profit": 10967.0, "margin": "51.6%", "pct": 29.3, "color": "var(--orange)"}, {"name": "ห้างสรรพสินค้า", "icon": "store", "bills": 33, "qty": 245, "rev": 17890.0, "profit": 9706.0, "margin": "54.3%", "pct": 24.7, "color": "var(--green)"}], "categories": [{"name": "เบเกอรี", "icon": "cake", "rev": 29500.0, "qty": 350, "profit": 11216.0, "margin": "38.0%", "pct": 40.7, "color": "var(--red)"}, {"name": "กาแฟ", "icon": "coffee", "rev": 27900.0, "qty": 400, "profit": 17945.0, "margin": "64.3%", "pct": 38.5, "color": "var(--blue)"}, {"name": "เครื่องดื่มอื่น", "icon": "drink", "rev": 15130.0, "qty": 250, "profit": 9664.0, "margin": "63.9%", "pct": 20.9, "color": "var(--green)"}], "daily": [{"day": 1, "rev": 1970.0, "isWeekend": true, "label": "1 ส.ค. ฿1,970 (ส)"}, {"day": 2, "rev": 2265.0, "isWeekend": true, "label": "2 ส.ค. ฿2,265 (อา)"}, {"day": 3, "rev": 2030.0, "isWeekend": false, "label": "3 ส.ค. ฿2,030"}, {"day": 4, "rev": 3690.0, "isWeekend": false, "isPeak": true, "label": "4 ส.ค. ฿3,690 ★PEAK"}, {"day": 5, "rev": 2395.0, "isWeekend": false, "label": "5 ส.ค. ฿2,395"}, {"day": 6, "rev": 1460.0, "isWeekend": false, "label": "6 ส.ค. ฿1,460"}, {"day": 7, "rev": 2505.0, "isWeekend": false, "label": "7 ส.ค. ฿2,505"}, {"day": 8, "rev": 1650.0, "isWeekend": true, "label": "8 ส.ค. ฿1,650 (ส)"}, {"day": 9, "rev": 3270.0, "isWeekend": true, "label": "9 ส.ค. ฿3,270 (อา)"}, {"day": 10, "rev": 2095.0, "isWeekend": false, "label": "10 ส.ค. ฿2,095"}, {"day": 11, "rev": 2675.0, "isWeekend": false, "label": "11 ส.ค. ฿2,675"}, {"day": 12, "rev": 1775.0, "isWeekend": false, "label": "12 ส.ค. ฿1,775"}, {"day": 13, "rev": 2340.0, "isWeekend": false, "label": "13 ส.ค. ฿2,340"}, {"day": 14, "rev": 1930.0, "isWeekend": false, "label": "14 ส.ค. ฿1,930"}, {"day": 15, "rev": 1290.0, "isWeekend": true, "isLow": true, "label": "15 ส.ค. ฿1,290 (ส) LOW"}, {"day": 16, "rev": 3265.0, "isWeekend": true, "label": "16 ส.ค. ฿3,265 (อา)"}, {"day": 17, "rev": 2195.0, "isWeekend": false, "label": "17 ส.ค. ฿2,195"}, {"day": 18, "rev": 3440.0, "isWeekend": false, "label": "18 ส.ค. ฿3,440"}, {"day": 19, "rev": 1490.0, "isWeekend": false, "label": "19 ส.ค. ฿1,490"}, {"day": 20, "rev": 2660.0, "isWeekend": false, "label": "20 ส.ค. ฿2,660"}, {"day": 21, "rev": 2260.0, "isWeekend": false, "label": "21 ส.ค. ฿2,260"}, {"day": 22, "rev": 2280.0, "isWeekend": true, "label": "22 ส.ค. ฿2,280 (ส)"}, {"day": 23, "rev": 2550.0, "isWeekend": true, "label": "23 ส.ค. ฿2,550 (อา)"}, {"day": 24, "rev": 2910.0, "isWeekend": false, "label": "24 ส.ค. ฿2,910"}, {"day": 25, "rev": 1515.0, "isWeekend": false, "label": "25 ส.ค. ฿1,515"}, {"day": 26, "rev": 2215.0, "isWeekend": false, "label": "26 ส.ค. ฿2,215"}, {"day": 27, "rev": 2675.0, "isWeekend": false, "label": "27 ส.ค. ฿2,675"}, {"day": 28, "rev": 1765.0, "isWeekend": false, "label": "28 ส.ค. ฿1,765"}, {"day": 29, "rev": 1725.0, "isWeekend": true, "label": "29 ส.ค. ฿1,725 (ส)"}, {"day": 30, "rev": 3055.0, "isWeekend": true, "label": "30 ส.ค. ฿3,055 (อา)"}, {"day": 31, "rev": 3190.0, "isWeekend": false, "label": "31 ส.ค. ฿3,190"}]};
+  // Raw Transactions Store (100 records from Sales sheet)
+  // Format: [id, day, branch, product, category, qty, revenue, profit]
+  const RAW_SALES = [["S001", 1, "มหาวิทยาลัย", "อเมริกาโน", "กาแฟ", 14, 840, 560], ["S002", 1, "สำนักงาน", "ชาไทย", "เครื่องดื่มอื่น", 6, 330, 222], ["S003", 1, "ห้างสรรพสินค้า", "บราวนี", "เบเกอรี", 5, 275, 165], ["S004", 1, "มหาวิทยาลัย", "ลาเต้", "กาแฟ", 7, 525, 329], ["S005", 2, "สำนักงาน", "โกโก้", "เครื่องดื่มอื่น", 5, 325, 200], ["S006", 2, "ห้างสรรพสินค้า", "ชีสเค้ก", "เบเกอรี", 4, 440, 152], ["S007", 2, "มหาวิทยาลัย", "คาปูชิโน", "กาแฟ", 20, 1500, 960], ["S008", 3, "สำนักงาน", "ครัวซองต์", "เบเกอรี", 6, 510, 150], ["S009", 3, "ห้างสรรพสินค้า", "ลาเต้", "กาแฟ", 9, 675, 423], ["S010", 3, "มหาวิทยาลัย", "โกโก้", "เครื่องดื่มอื่น", 13, 845, 520], ["S011", 4, "สำนักงาน", "ชีสเค้ก", "เบเกอรี", 13, 1430, 494], ["S012", 4, "ห้างสรรพสินค้า", "คาปูชิโน", "กาแฟ", 12, 900, 576], ["S013", 4, "มหาวิทยาลัย", "ครัวซองต์", "เบเกอรี", 16, 1360, 400], ["S014", 5, "สำนักงาน", "อเมริกาโน", "กาแฟ", 8, 480, 320], ["S015", 5, "ห้างสรรพสินค้า", "ชาไทย", "เครื่องดื่มอื่น", 9, 495, 333], ["S016", 5, "มหาวิทยาลัย", "บราวนี", "เบเกอรี", 19, 1045, 627], ["S017", 5, "สำนักงาน", "คาปูชิโน", "กาแฟ", 5, 375, 240], ["S018", 6, "ห้างสรรพสินค้า", "ครัวซองต์", "เบเกอรี", 2, 170, 50], ["S019", 6, "มหาวิทยาลัย", "อเมริกาโน", "กาแฟ", 16, 960, 640], ["S020", 6, "สำนักงาน", "ชาไทย", "เครื่องดื่มอื่น", 6, 330, 222], ["S021", 7, "ห้างสรรพสินค้า", "บราวนี", "เบเกอรี", 9, 495, 297], ["S022", 7, "มหาวิทยาลัย", "ลาเต้", "กาแฟ", 19, 1425, 893], ["S023", 7, "สำนักงาน", "โกโก้", "เครื่องดื่มอื่น", 9, 585, 360], ["S024", 8, "ห้างสรรพสินค้า", "ชีสเค้ก", "เบเกอรี", 4, 440, 152], ["S025", 8, "มหาวิทยาลัย", "ชาไทย", "เครื่องดื่มอื่น", 8, 440, 296], ["S026", 8, "สำนักงาน", "บราวนี", "เบเกอรี", 14, 770, 462], ["S027", 9, "ห้างสรรพสินค้า", "ลาเต้", "กาแฟ", 9, 675, 423], ["S028", 9, "มหาวิทยาลัย", "โกโก้", "เครื่องดื่มอื่น", 11, 715, 440], ["S029", 9, "สำนักงาน", "ชีสเค้ก", "เบเกอรี", 13, 1430, 494], ["S030", 9, "ห้างสรรพสินค้า", "คาปูชิโน", "กาแฟ", 6, 450, 288], ["S031", 10, "มหาวิทยาลัย", "ครัวซองต์", "เบเกอรี", 12, 1020, 300], ["S032", 10, "สำนักงาน", "อเมริกาโน", "กาแฟ", 6, 360, 240], ["S033", 10, "ห้างสรรพสินค้า", "โกโก้", "เครื่องดื่มอื่น", 11, 715, 440], ["S034", 11, "มหาวิทยาลัย", "ชีสเค้ก", "เบเกอรี", 13, 1430, 494], ["S035", 11, "สำนักงาน", "คาปูชิโน", "กาแฟ", 3, 225, 144], ["S036", 11, "ห้างสรรพสินค้า", "ครัวซองต์", "เบเกอรี", 12, 1020, 300], ["S037", 12, "มหาวิทยาลัย", "อเมริกาโน", "กาแฟ", 14, 840, 560], ["S038", 12, "สำนักงาน", "ชาไทย", "เครื่องดื่มอื่น", 14, 770, 518], ["S039", 12, "ห้างสรรพสินค้า", "บราวนี", "เบเกอรี", 3, 165, 99], ["S040", 13, "มหาวิทยาลัย", "ลาเต้", "กาแฟ", 13, 975, 611], ["S041", 13, "สำนักงาน", "ครัวซองต์", "เบเกอรี", 9, 765, 225], ["S042", 13, "ห้างสรรพสินค้า", "อเมริกาโน", "กาแฟ", 10, 600, 400], ["S043", 14, "มหาวิทยาลัย", "ชาไทย", "เครื่องดื่มอื่น", 14, 770, 518], ["S044", 14, "สำนักงาน", "บราวนี", "เบเกอรี", 4, 220, 132], ["S045", 14, "ห้างสรรพสินค้า", "ลาเต้", "กาแฟ", 3, 225, 141], ["S046", 14, "มหาวิทยาลัย", "โกโก้", "เครื่องดื่มอื่น", 11, 715, 440], ["S047", 15, "สำนักงาน", "ชีสเค้ก", "เบเกอรี", 3, 330, 114], ["S048", 15, "ห้างสรรพสินค้า", "คาปูชิโน", "กาแฟ", 4, 300, 192], ["S049", 15, "มหาวิทยาลัย", "บราวนี", "เบเกอรี", 12, 660, 396], ["S050", 16, "สำนักงาน", "ลาเต้", "กาแฟ", 12, 900, 564], ["S051", 16, "ห้างสรรพสินค้า", "โกโก้", "เครื่องดื่มอื่น", 11, 715, 440], ["S052", 16, "มหาวิทยาลัย", "ชีสเค้ก", "เบเกอรี", 15, 1650, 570], ["S053", 17, "สำนักงาน", "คาปูชิโน", "กาแฟ", 11, 825, 528], ["S054", 17, "ห้างสรรพสินค้า", "ครัวซองต์", "เบเกอรี", 2, 170, 50], ["S055", 17, "มหาวิทยาลัย", "อเมริกาโน", "กาแฟ", 20, 1200, 800], ["S056", 18, "สำนักงาน", "ชาไทย", "เครื่องดื่มอื่น", 14, 770, 518], ["S057", 18, "ห้างสรรพสินค้า", "ชีสเค้ก", "เบเกอรี", 9, 990, 342], ["S058", 18, "มหาวิทยาลัย", "คาปูชิโน", "กาแฟ", 19, 1425, 912], ["S059", 18, "สำนักงาน", "ครัวซองต์", "เบเกอรี", 3, 255, 75], ["S060", 19, "ห้างสรรพสินค้า", "อเมริกาโน", "กาแฟ", 12, 720, 480], ["S061", 19, "มหาวิทยาลัย", "ชาไทย", "เครื่องดื่มอื่น", 10, 550, 370], ["S062", 19, "สำนักงาน", "บราวนี", "เบเกอรี", 4, 220, 132], ["S063", 20, "ห้างสรรพสินค้า", "ลาเต้", "กาแฟ", 15, 1125, 705], ["S064", 20, "มหาวิทยาลัย", "โกโก้", "เครื่องดื่มอื่น", 19, 1235, 760], ["S065", 20, "สำนักงาน", "อเมริกาโน", "กาแฟ", 5, 300, 200], ["S066", 21, "ห้างสรรพสินค้า", "ชาไทย", "เครื่องดื่มอื่น", 2, 110, 74], ["S067", 21, "มหาวิทยาลัย", "บราวนี", "เบเกอรี", 20, 1100, 660], ["S068", 21, "สำนักงาน", "ลาเต้", "กาแฟ", 14, 1050, 658], ["S069", 22, "ห้างสรรพสินค้า", "โกโก้", "เครื่องดื่มอื่น", 5, 325, 200], ["S070", 22, "มหาวิทยาลัย", "ชีสเค้ก", "เบเกอรี", 13, 1430, 494], ["S071", 22, "สำนักงาน", "คาปูชิโน", "กาแฟ", 7, 525, 336], ["S072", 23, "ห้างสรรพสินค้า", "ครัวซองต์", "เบเกอรี", 8, 680, 200], ["S073", 23, "มหาวิทยาลัย", "ลาเต้", "กาแฟ", 10, 750, 470], ["S074", 23, "สำนักงาน", "โกโก้", "เครื่องดื่มอื่น", 2, 130, 80], ["S075", 23, "ห้างสรรพสินค้า", "ชีสเค้ก", "เบเกอรี", 9, 990, 342], ["S076", 24, "มหาวิทยาลัย", "คาปูชิโน", "กาแฟ", 19, 1425, 912], ["S077", 24, "สำนักงาน", "ครัวซองต์", "เบเกอรี", 9, 765, 225], ["S078", 24, "ห้างสรรพสินค้า", "อเมริกาโน", "กาแฟ", 12, 720, 480], ["S079", 25, "มหาวิทยาลัย", "ชาไทย", "เครื่องดื่มอื่น", 8, 440, 296], ["S080", 25, "สำนักงาน", "บราวนี", "เบเกอรี", 10, 550, 330], ["S081", 25, "ห้างสรรพสินค้า", "คาปูชิโน", "กาแฟ", 7, 525, 336], ["S082", 26, "มหาวิทยาลัย", "ครัวซองต์", "เบเกอรี", 9, 765, 225], ["S083", 26, "สำนักงาน", "อเมริกาโน", "กาแฟ", 15, 900, 600], ["S084", 26, "ห้างสรรพสินค้า", "ชาไทย", "เครื่องดื่มอื่น", 10, 550, 370], ["S085", 27, "มหาวิทยาลัย", "บราวนี", "เบเกอรี", 8, 440, 264], ["S086", 27, "สำนักงาน", "ลาเต้", "กาแฟ", 10, 750, 470], ["S087", 27, "ห้างสรรพสินค้า", "โกโก้", "เครื่องดื่มอื่น", 11, 715, 440], ["S088", 27, "มหาวิทยาลัย", "ชีสเค้ก", "เบเกอรี", 7, 770, 266], ["S089", 28, "สำนักงาน", "ชาไทย", "เครื่องดื่มอื่น", 11, 605, 407], ["S090", 28, "ห้างสรรพสินค้า", "บราวนี", "เบเกอรี", 2, 110, 66], ["S091", 28, "มหาวิทยาลัย", "ลาเต้", "กาแฟ", 14, 1050, 658], ["S092", 29, "สำนักงาน", "โกโก้", "เครื่องดื่มอื่น", 10, 650, 400], ["S093", 29, "ห้างสรรพสินค้า", "ชีสเค้ก", "เบเกอรี", 5, 550, 190], ["S094", 29, "มหาวิทยาลัย", "คาปูชิโน", "กาแฟ", 7, 525, 336], ["S095", 30, "สำนักงาน", "ครัวซองต์", "เบเกอรี", 15, 1275, 375], ["S096", 30, "ห้างสรรพสินค้า", "อเมริกาโน", "กาแฟ", 8, 480, 320], ["S097", 30, "มหาวิทยาลัย", "โกโก้", "เครื่องดื่มอื่น", 20, 1300, 800], ["S098", 31, "สำนักงาน", "ชีสเค้ก", "เบเกอรี", 14, 1540, 532], ["S099", 31, "ห้างสรรพสินค้า", "คาปูชิโน", "กาแฟ", 5, 375, 240], ["S100", 31, "มหาวิทยาลัย", "ครัวซองต์", "เบเกอรี", 15, 1275, 375]];
 
-  // Inline SVG Icon Provider (Zero external dependencies)
+  // Product Metadata
+  const PRODUCT_META = {
+    "ชีสเค้ก": { id: "cheesecake", cat: "เบเกอรี", icon: "cake", color: "#f59e0b", price: 110.0, cost: 72.0, img: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&auto=format&fit=crop&q=80" },
+    "ลาเต้": { id: "latte", cat: "กาแฟ", icon: "coffee", color: "#3b82f6", price: 75.0, cost: 28.0, img: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=500&auto=format&fit=crop&q=80" },
+    "ครัวซองต์": { id: "croissant", cat: "เบเกอรี", icon: "bakery", color: "#f97316", price: 85.0, cost: 60.0, img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop&q=80" },
+    "คาปูชิโน": { id: "cappuccino", cat: "กาแฟ", icon: "cafe", color: "#38bdf8", price: 75.0, cost: 27.0, img: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop&q=80" },
+    "โกโก้": { id: "cocoa", cat: "เครื่องดื่มอื่น", icon: "drink", color: "#10b981", price: 65.0, cost: 25.0, img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=500&auto=format&fit=crop&q=80" },
+    "อเมริกาโน": { id: "americano", cat: "กาแฟ", icon: "coffee", color: "#2563eb", price: 60.0, cost: 20.0, img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop&q=80" },
+    "ชาไทย": { id: "thaitea", cat: "เครื่องดื่มอื่น", icon: "tea", color: "#ea580c", price: 55.0, cost: 18.0, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&auto=format&fit=crop&q=80" },
+    "บราวนี": { id: "brownie", cat: "เบเกอรี", icon: "cookie", color: "#b45309", price: 55.0, cost: 22.0, img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&auto=format&fit=crop&q=80" }
+  };
+
+  const BRANCH_CONFIG = [
+    { name: "มหาวิทยาลัย", icon: "school", color: "var(--blue)" },
+    { name: "สำนักงาน", icon: "business", color: "var(--orange)" },
+    { name: "ห้างสรรพสินค้า", icon: "store", color: "var(--green)" }
+  ];
+
+  const CATEGORY_CONFIG = [
+    { name: "เบเกอรี", icon: "cake", color: "var(--red)" },
+    { name: "กาแฟ", icon: "coffee", color: "var(--blue)" },
+    { name: "เครื่องดื่มอื่น", icon: "drink", color: "var(--green)" }
+  ];
+
+  // Inline SVG Icon Provider
   const SVGS = {
     coffee: '<svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>',
     cake: '<svg viewBox="0 0 24 24"><path d="M12 6a2 2 0 0 0 2-2c0-.38-.1-.73-.29-1.03L12 1l-1.71 1.97C10.1 3.27 10 3.62 10 4a2 2 0 0 0 2 2zm6 3h-1V8a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v1H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2z"/></svg>',
@@ -983,6 +1169,8 @@ body {
     percent: '<svg viewBox="0 0 24 24"><path d="M7.5 11C9.43 11 11 9.43 11 7.5S9.43 4 7.5 4 4 5.57 4 7.5 5.57 11 7.5 11zm0-5C8.33 6 9 6.67 9 7.5S8.33 9 7.5 9 6 8.33 6 7.5 6.67 6 7.5 6zm9 7c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm0 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.79-13.71L5.29 19.29l1.42 1.42L21.71 5.71l-1.42-1.42z"/></svg>',
     trophy: '<svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>',
     store: '<svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>',
+    school: '<svg viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>',
+    business: '<svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>',
     calendar: '<svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>',
     category: '<svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zM3 21.5h8v-8H3v8z"/></svg>',
     search: '<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>',
@@ -991,7 +1179,8 @@ body {
     sun: '<svg viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/></svg>',
     moon: '<svg viewBox="0 0 24 24"><path d="M12.3 2a10 10 0 0 0-1.9 19.8 10 10 0 0 0 10.9-10.9A10 10 0 0 0 12.3 2z"/></svg>',
     check: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
-    info: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'
+    info: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
+    reset: '<svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>'
   };
 
   function getIcon(name) {
@@ -1002,10 +1191,279 @@ body {
   const fmtMoney = (n) => '฿' + Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const fmtInt = (n) => Number(n).toLocaleString('th-TH');
 
-  // ==========================================================================
-  // DYNAMIC COMPONENT RENDERERS
-  // ==========================================================================
+  // Filter States
+  let currentBranchFilter = 'all';
+  let currentCatFilter = 'all';
+  let currentProductDisplayMode = 'top3';
 
+  // Global Calculated Store
+  let DASH_DATA = null;
+
+  // ==========================================================================
+  // DYNAMIC AGGREGATION ENGINE
+  // ==========================================================================
+  function computeDashboardData(branchFilter, catFilter) {
+    // 1. Filter Transactions
+    const filtered = RAW_SALES.filter(r => {
+      const bMatch = (branchFilter === 'all' || r[2] === branchFilter);
+      const cMatch = (catFilter === 'all' || r[4] === catFilter);
+      return bMatch && cMatch;
+    });
+
+    // 2. Summary
+    const totalRev = filtered.reduce((acc, r) => acc + r[6], 0);
+    const totalProfit = filtered.reduce((acc, r) => acc + r[7], 0);
+    const totalUnits = filtered.reduce((acc, r) => acc + r[5], 0);
+    const totalCost = totalRev - totalProfit;
+    const bills = filtered.length;
+    const aov = bills > 0 ? (totalRev / bills) : 0;
+    const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(2) + '%' : '0.00%';
+
+    // 3. Products
+    const prodMap = {};
+    Object.keys(PRODUCT_META).forEach(pName => {
+      const meta = PRODUCT_META[pName];
+      prodMap[pName] = {
+        name: pName,
+        id: meta.id,
+        cat: meta.cat,
+        icon: meta.icon,
+        color: meta.color,
+        price: meta.price,
+        cost: meta.cost,
+        img: meta.img,
+        qty: 0,
+        rev: 0,
+        profit: 0,
+        branches: {
+          "มหาวิทยาลัย": { qty: 0, rev: 0, profit: 0 },
+          "สำนักงาน": { qty: 0, rev: 0, profit: 0 },
+          "ห้างสรรพสินค้า": { qty: 0, rev: 0, profit: 0 }
+        }
+      };
+    });
+
+    // Populate from all sales for branch breakdown, and track filtered sales
+    RAW_SALES.forEach(r => {
+      const pName = r[3];
+      const bName = r[2];
+      if (prodMap[pName] && prodMap[pName].branches[bName]) {
+        prodMap[pName].branches[bName].qty += r[5];
+        prodMap[pName].branches[bName].rev += r[6];
+        prodMap[pName].branches[bName].profit += r[7];
+      }
+    });
+
+    // Now populate filtered quantities
+    filtered.forEach(r => {
+      const pName = r[3];
+      if (prodMap[pName]) {
+        prodMap[pName].qty += r[5];
+        prodMap[pName].rev += r[6];
+        prodMap[pName].profit += r[7];
+      }
+    });
+
+    // Compute margins and percentages
+    let productsList = Object.values(prodMap);
+    if (catFilter !== 'all') {
+      productsList = productsList.filter(p => p.cat === catFilter);
+    }
+
+    productsList.forEach(p => {
+      p.margin = p.rev > 0 ? ((p.profit / p.rev) * 100).toFixed(1) + '%' : '0.0%';
+      p.pctOfTotal = totalRev > 0 ? ((p.rev / totalRev) * 100).toFixed(1) + '%' : '0.0%';
+      // Branch percentages inside product
+      const pTotalRev = p.branches["มหาวิทยาลัย"].rev + p.branches["สำนักงาน"].rev + p.branches["ห้างสรรพสินค้า"].rev;
+      ["มหาวิทยาลัย", "สำนักงาน", "ห้างสรรพสินค้า"].forEach(b => {
+        p.branches[b].pct = pTotalRev > 0 ? ((p.branches[b].rev / pTotalRev) * 100).toFixed(1) : 0;
+      });
+    });
+
+    // Sort descending by filtered rev
+    productsList.sort((a, b) => b.rev - a.rev);
+
+    // 4. Branches
+    const branchMap = {};
+    BRANCH_CONFIG.forEach(b => {
+      branchMap[b.name] = { ...b, bills: 0, qty: 0, rev: 0, profit: 0 };
+    });
+    filtered.forEach(r => {
+      const bName = r[2];
+      if (branchMap[bName]) {
+        branchMap[bName].bills++;
+        branchMap[bName].qty += r[5];
+        branchMap[bName].rev += r[6];
+        branchMap[bName].profit += r[7];
+      }
+    });
+    const branchesList = BRANCH_CONFIG.map(b => {
+      const item = branchMap[b.name];
+      item.margin = item.rev > 0 ? ((item.profit / item.rev) * 100).toFixed(1) + '%' : '0.0%';
+      item.pct = totalRev > 0 ? Number(((item.rev / totalRev) * 100).toFixed(1)) : 0;
+      return item;
+    });
+
+    // 5. Categories
+    const catMap = {};
+    CATEGORY_CONFIG.forEach(c => {
+      catMap[c.name] = { ...c, qty: 0, rev: 0, profit: 0 };
+    });
+    filtered.forEach(r => {
+      const cName = r[4];
+      if (catMap[cName]) {
+        catMap[cName].qty += r[5];
+        catMap[cName].rev += r[6];
+        catMap[cName].profit += r[7];
+      }
+    });
+    const categoriesList = CATEGORY_CONFIG.map(c => {
+      const item = catMap[c.name];
+      item.margin = item.rev > 0 ? ((item.profit / item.rev) * 100).toFixed(1) + '%' : '0.0%';
+      item.pct = totalRev > 0 ? Number(((item.rev / totalRev) * 100).toFixed(1)) : 0;
+      return item;
+    });
+
+    // 6. Daily Timeline
+    const dailyMap = {};
+    for (let d = 1; d <= 31; d++) dailyMap[d] = 0;
+    filtered.forEach(r => {
+      dailyMap[r[1]] += r[6];
+    });
+    const weekendDays = [1, 2, 8, 9, 15, 16, 22, 23, 29, 30];
+    let maxDaily = 0;
+    let minDaily = Infinity;
+    let peakDay = 1;
+    let lowDay = 1;
+
+    for (let d = 1; d <= 31; d++) {
+      const val = dailyMap[d];
+      if (val > maxDaily) { maxDaily = val; peakDay = d; }
+      if (val < minDaily && val > 0) { minDaily = val; lowDay = d; }
+    }
+    if (minDaily === Infinity) minDaily = 0;
+
+    const dailyList = [];
+    for (let d = 1; d <= 31; d++) {
+      const revVal = dailyMap[d];
+      const isWe = weekendDays.includes(d);
+      const isPk = (d === peakDay && revVal > 0);
+      const isLw = (d === lowDay && revVal > 0);
+      let lbl = `${d} ส.ค. ฿${fmtInt(revVal)}`;
+      if (isPk) lbl += ' ★PEAK';
+      else if (isLw) lbl += ' LOW';
+      else if (isWe) lbl += ' (วันหยุด)';
+
+      dailyList.push({
+        day: d,
+        rev: revVal,
+        isWeekend: isWe,
+        isPeak: isPk,
+        isLow: isLw,
+        label: lbl
+      });
+    }
+
+    return {
+      summary: {
+        revenue: totalRev,
+        units: totalUnits,
+        profit: totalProfit,
+        cost: totalCost,
+        bills: bills,
+        aov: aov,
+        margin: margin,
+        products_count: productsList.filter(p => p.rev > 0).length
+      },
+      products: productsList,
+      branches: branchesList,
+      categories: categoriesList,
+      daily: dailyList,
+      dailyStats: {
+        peakDay, maxDaily,
+        lowDay, minDaily,
+        avg: bills > 0 ? (totalRev / 31) : 0
+      }
+    };
+  }
+
+  // ==========================================================================
+  // FILTER CONTROLLERS
+  // ==========================================================================
+  function setBranchFilter(branch) {
+    currentBranchFilter = branch;
+    applyFilters();
+  }
+
+  function setCategoryFilter(cat) {
+    currentCatFilter = cat;
+    applyFilters();
+  }
+
+  function resetAllFilters() {
+    currentBranchFilter = 'all';
+    currentCatFilter = 'all';
+    applyFilters();
+  }
+
+  function setProductFilter(mode) {
+    currentProductDisplayMode = mode;
+    const btn3 = document.getElementById('btnTop3');
+    const btnAll = document.getElementById('btnAllProds');
+    const title = document.getElementById('topProductsTitle');
+
+    if (mode === 'top3') {
+      btn3.classList.add('active');
+      btnAll.classList.remove('active');
+      title.innerHTML = 'สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>';
+    } else {
+      btn3.classList.remove('active');
+      btnAll.classList.add('active');
+      title.innerHTML = 'สินค้ารายได้รวมตามเงื่อนไข <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>';
+    }
+    renderTopProducts();
+  }
+
+  function applyFilters() {
+    // 1. Update Buttons
+    document.querySelectorAll('#branchPillGroup .pill-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.branch === currentBranchFilter);
+    });
+    document.querySelectorAll('#catPillGroup .pill-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === currentCatFilter);
+    });
+
+    // 2. Recompute Data
+    DASH_DATA = computeDashboardData(currentBranchFilter, currentCatFilter);
+
+    // 3. Update Status Tag & Reset Button
+    const statusText = document.getElementById('filterStatusText');
+    const resetBtn = document.getElementById('btnResetFilters');
+    const isFiltered = (currentBranchFilter !== 'all' || currentCatFilter !== 'all');
+
+    if (!isFiltered) {
+      statusText.textContent = `แสดงทุกสาขาและทุกหมวดหมู่ (100 รายการ · ฿${fmtInt(DASH_DATA.summary.revenue)})`;
+      resetBtn.style.display = 'none';
+    } else {
+      const bLabel = currentBranchFilter === 'all' ? 'ทุกสาขา' : `สาขา${currentBranchFilter}`;
+      const cLabel = currentCatFilter === 'all' ? 'ทุกหมวด' : `หมวด${currentCatFilter}`;
+      statusText.textContent = `${bLabel} × ${cLabel} (${DASH_DATA.summary.bills} รายการ · ฿${fmtInt(DASH_DATA.summary.revenue)})`;
+      resetBtn.style.display = 'inline-flex';
+    }
+
+    // 4. Render All Dynamic Views
+    renderKPIs();
+    renderTopProducts();
+    renderBranches();
+    renderProductDetailTable();
+    renderDailyTimeline();
+    renderCategories();
+    renderMatrixTable();
+  }
+
+  // ==========================================================================
+  // RENDER VIEWS
+  // ==========================================================================
   function renderStaticIcons() {
     document.getElementById('logoIcon').innerHTML = getIcon('coffee');
     document.getElementById('infoIcon').innerHTML = getIcon('info');
@@ -1018,31 +1476,34 @@ body {
     document.getElementById('searchIcon').innerHTML = getIcon('search');
     document.getElementById('checkIcon1').innerHTML = getIcon('check');
     document.getElementById('chartIcon1').innerHTML = getIcon('category');
+    document.getElementById('filtBranchIcon').innerHTML = getIcon('store');
+    document.getElementById('filtCatIcon').innerHTML = getIcon('category');
+    document.getElementById('resetIcon').innerHTML = getIcon('reset');
   }
 
   function renderKPIs() {
-    const s = APP_DATA.summary;
+    const s = DASH_DATA.summary;
     const container = document.getElementById('kpiGrid');
     container.innerHTML = `
-      <div class="kpi fade" onclick="openProductModal('ชีสเค้ก')">
+      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[0]?.name || 'ชีสเค้ก'}')">
         <div class="kpi-label"><span class="kpi-icon ki-b">${getIcon('payments')}</span> รายได้รวม (Revenue)</div>
         <div class="kpi-val">${fmtInt(s.revenue)}<span class="kpi-unit">บาท</span></div>
         <div class="kpi-sub">AOV ฿${s.aov.toFixed(2)} / บิล · <span style="color:var(--cyan)">ดูรายละเอียด</span></div>
         <div class="kpi-bar"></div>
       </div>
-      <div class="kpi fade" onclick="openProductModal('ลาเต้')">
+      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[1]?.name || 'ลาเต้'}')">
         <div class="kpi-label"><span class="kpi-icon ki-o">${getIcon('inventory')}</span> จำนวนขายรวม (Units)</div>
         <div class="kpi-val">${fmtInt(s.units)}<span class="kpi-unit">หน่วย</span></div>
         <div class="kpi-sub">${s.bills} รายการ · ${s.products_count} สินค้า · <span style="color:var(--orange)">ดูรายละเอียด</span></div>
         <div class="kpi-bar"></div>
       </div>
-      <div class="kpi fade" onclick="openProductModal('ลาเต้')">
+      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[0]?.name || 'ชีสเค้ก'}')">
         <div class="kpi-label"><span class="kpi-icon ki-g">${getIcon('trending_up')}</span> กำไรขั้นต้น (Gross Profit)</div>
         <div class="kpi-val">${fmtInt(s.profit)}<span class="kpi-unit">บาท</span></div>
         <div class="kpi-sub">ต้นทุนรวม ฿${fmtInt(s.cost)} · <span style="color:var(--green)">ดูรายละเอียด</span></div>
         <div class="kpi-bar"></div>
       </div>
-      <div class="kpi fade" onclick="openProductModal('อเมริกาโน')">
+      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[2]?.name || 'อเมริกาโน'}')">
         <div class="kpi-label"><span class="kpi-icon ki-c">${getIcon('percent')}</span> อัตรากำไรขั้นต้น (GP Margin)</div>
         <div class="kpi-val">${s.margin.replace('%','')}<span class="kpi-unit">%</span></div>
         <div class="kpi-sub">กำไร ฿${fmtInt(s.profit)} จาก ฿${fmtInt(s.revenue)}</div>
@@ -1053,16 +1514,21 @@ body {
 
   function renderTopProducts() {
     const container = document.getElementById('topProductsList');
-    const maxRev = APP_DATA.products[0].rev;
-    
-    container.innerHTML = APP_DATA.products.map((p, idx) => {
+    const prods = DASH_DATA.products;
+    if (prods.length === 0 || prods[0].rev === 0) {
+      container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">ไม่มีรายการขายในเงื่อนไขตัวกรองนี้</div>';
+      return;
+    }
+
+    const maxRev = prods[0].rev || 1;
+    container.innerHTML = prods.map((p, idx) => {
       const rank = idx + 1;
       const rankClass = rank <= 3 ? `r${rank}` : 'r4';
       const fillClass = rank === 1 ? 'bf1' : (rank === 2 ? 'bf2' : 'bf3');
       const pct = ((p.rev / maxRev) * 100).toFixed(1);
       const isRest = rank > 3 ? 'bar-rest' : 'bar-top3';
-      const displayStyle = rank > 3 ? 'display:none;' : '';
-      
+      const displayStyle = (rank > 3 && currentProductDisplayMode === 'top3') ? 'display:none;' : '';
+
       return `
         <div class="bar-item ${isRest}" style="${displayStyle}" onclick="openProductModal('${p.name}')">
           <div class="bar-name">
@@ -1083,19 +1549,26 @@ body {
   function renderBranches() {
     const tbody = document.getElementById('branchTbody');
     const tfoot = document.getElementById('branchTfoot');
-    const s = APP_DATA.summary;
-    
-    tbody.innerHTML = APP_DATA.branches.map(b => `
-      <tr>
-        <td><span class="icon branch-icon" style="color:${b.color}">${getIcon(b.icon)}</span> ${b.name}</td>
-        <td>${b.bills}</td>
-        <td>${fmtInt(b.qty)}</td>
-        <td>฿${fmtInt(b.rev)}</td>
-        <td><span class="pbar" style="width:${b.pct}px;background:${b.color}"></span>${b.pct.toFixed(1)}%</td>
-        <td>฿${fmtInt(b.profit)}</td>
-        <td>${b.margin}</td>
-      </tr>
-    `).join('');
+    const s = DASH_DATA.summary;
+
+    tbody.innerHTML = DASH_DATA.branches.map(b => {
+      const isSelected = (currentBranchFilter === b.name);
+      const rowStyle = isSelected ? 'background:rgba(37,99,235,0.08);font-weight:600;' : '';
+      return `
+        <tr style="${rowStyle}" class="clickable-row" onclick="setBranchFilter('${isSelected ? 'all' : b.name}')">
+          <td>
+            <span class="icon branch-icon" style="color:${b.color}">${getIcon(b.icon)}</span> 
+            ${b.name} ${isSelected ? '<span style="font-size:10px;color:var(--cyan);">(กำลังเลือก)</span>' : ''}
+          </td>
+          <td>${b.bills}</td>
+          <td>${fmtInt(b.qty)}</td>
+          <td>฿${fmtInt(b.rev)}</td>
+          <td><span class="pbar" style="width:${b.pct}px;background:${b.color}"></span>${b.pct.toFixed(1)}%</td>
+          <td>฿${fmtInt(b.profit)}</td>
+          <td>${b.margin}</td>
+        </tr>
+      `;
+    }).join('');
 
     tfoot.innerHTML = `
       <tr>
@@ -1112,7 +1585,9 @@ body {
 
   function renderProductDetailTable() {
     const tbody = document.getElementById('productProfitTbody');
-    tbody.innerHTML = APP_DATA.products.map(p => `
+    const prods = DASH_DATA.products.filter(p => p.rev > 0);
+
+    tbody.innerHTML = prods.map(p => `
       <tr class="clickable-row" onclick="openProductModal('${p.name}')">
         <td>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -1134,9 +1609,9 @@ body {
 
   function renderDailyTimeline() {
     const chart = document.getElementById('dailyChartContainer');
-    const maxVal = 3690.0;
-    
-    chart.innerHTML = APP_DATA.daily.map(d => {
+    const maxVal = DASH_DATA.dailyStats.maxDaily || 1;
+
+    chart.innerHTML = DASH_DATA.daily.map(d => {
       const heightPct = ((d.rev / maxVal) * 100).toFixed(1);
       const barClass = d.isPeak ? 'pk' : (d.isWeekend ? 'we' : 'wd');
       return `
@@ -1154,25 +1629,36 @@ body {
 
   function renderCategories() {
     const container = document.getElementById('categoryCardsList');
-    container.innerHTML = APP_DATA.categories.map(c => `
-      <div class="cat-card" onclick="openProductModal('${c.name === "เบเกอรี" ? "ชีสเค้ก" : (c.name === "กาแฟ" ? "ลาเต้" : "โกโก้")}')">
-        <div class="cat-dot" style="background:${c.color}"></div>
-        <div class="cat-info">
-          <div class="cat-name"><span class="icon" style="color:${c.color}">${getIcon(c.icon)}</span> ${c.name}</div>
-          <div class="cat-sub">฿${fmtInt(c.rev)} · ${c.qty} หน่วย · กำไร ฿${fmtInt(c.profit)} (${c.margin})</div>
-          <div class="cat-prog"><div class="cat-prog-fill" style="width:${c.pct}%;background:${c.color}"></div></div>
+    container.innerHTML = DASH_DATA.categories.map(c => {
+      const isSelected = (currentCatFilter === c.name);
+      const cardBorder = isSelected ? 'border: 1px solid var(--cyan); background: rgba(6,182,212,0.06);' : '';
+      return `
+        <div class="cat-card clickable-row" style="${cardBorder}" onclick="setCategoryFilter('${isSelected ? 'all' : c.name}')">
+          <div class="cat-dot" style="background:${c.color}"></div>
+          <div class="cat-info">
+            <div class="cat-name">
+              <span class="icon" style="color:${c.color}">${getIcon(c.icon)}</span> 
+              ${c.name} ${isSelected ? '<span style="font-size:10px;color:var(--cyan);">(กำลังเลือก)</span>' : ''}
+            </div>
+            <div class="cat-sub">฿${fmtInt(c.rev)} · ${fmtInt(c.qty)} หน่วย · กำไร ฿${fmtInt(c.profit)} (${c.margin})</div>
+            <div class="cat-prog"><div class="cat-prog-fill" style="width:${c.pct}%;background:${c.color}"></div></div>
+          </div>
+          <div class="cat-pct" style="color:${c.color}">${c.pct}%</div>
         </div>
-        <div class="cat-pct" style="color:${c.color}">${c.pct}%</div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function renderMatrixTable() {
     const tbody = document.getElementById('matrixTbody');
     const tfoot = document.getElementById('matrixTfoot');
-    const s = APP_DATA.summary;
-    
-    tbody.innerHTML = APP_DATA.products.map(p => `
+    const s = DASH_DATA.summary;
+
+    const b0Hl = (currentBranchFilter === 'มหาวิทยาลัย') ? 'branch-highlight-cell' : '';
+    const b1Hl = (currentBranchFilter === 'สำนักงาน') ? 'branch-highlight-cell' : '';
+    const b2Hl = (currentBranchFilter === 'ห้างสรรพสินค้า') ? 'branch-highlight-cell' : '';
+
+    tbody.innerHTML = DASH_DATA.products.map(p => `
       <tr class="clickable-row" onclick="openProductModal('${p.name}')">
         <td>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -1184,9 +1670,9 @@ body {
           </div>
         </td>
         <td>${p.cat}</td>
-        <td class="num">${fmtInt(p.branches['มหาวิทยาลัย'].rev)}</td>
-        <td class="num">${fmtInt(p.branches['สำนักงาน'].rev)}</td>
-        <td class="num">${fmtInt(p.branches['ห้างสรรพสินค้า'].rev)}</td>
+        <td class="num ${b0Hl}">${fmtInt(p.branches['มหาวิทยาลัย'].rev)}</td>
+        <td class="num ${b1Hl}">${fmtInt(p.branches['สำนักงาน'].rev)}</td>
+        <td class="num ${b2Hl}">${fmtInt(p.branches['ห้างสรรพสินค้า'].rev)}</td>
         <td class="num"><b>${fmtInt(p.rev)}</b></td>
       </tr>
     `).join('');
@@ -1194,42 +1680,23 @@ body {
     tfoot.innerHTML = `
       <tr>
         <td colspan="2">รวมทั้งหมด</td>
-        <td class="num">${fmtInt(APP_DATA.branches[0].rev)}</td>
-        <td class="num">${fmtInt(APP_DATA.branches[1].rev)}</td>
-        <td class="num">${fmtInt(APP_DATA.branches[2].rev)}</td>
+        <td class="num ${b0Hl}">${fmtInt(DASH_DATA.branches[0].rev)}</td>
+        <td class="num ${b1Hl}">${fmtInt(DASH_DATA.branches[1].rev)}</td>
+        <td class="num ${b2Hl}">${fmtInt(DASH_DATA.branches[2].rev)}</td>
         <td class="num">${fmtInt(s.revenue)}</td>
       </tr>
     `;
   }
 
-  // Filter Toggle: Top 3 vs All 8
-  function setProductFilter(mode) {
-    const btn3 = document.getElementById('btnTop3');
-    const btnAll = document.getElementById('btnAllProds');
-    const title = document.getElementById('topProductsTitle');
-    const restItems = document.querySelectorAll('.bar-rest');
-    
-    if (mode === 'top3') {
-      btn3.classList.add('active');
-      btnAll.classList.remove('active');
-      title.innerHTML = 'สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>';
-      restItems.forEach(el => el.style.display = 'none');
-    } else {
-      btn3.classList.remove('active');
-      btnAll.classList.add('active');
-      title.innerHTML = 'สินค้ารายได้รวม 8 รายการ <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>';
-      restItems.forEach(el => el.style.display = 'grid');
-    }
-  }
-
   // ==========================================================================
-  // 2D MINIMALIST MODAL ENGINE (STANDALONE)
+  // 2D MINIMALIST MODAL POP-UP
   // ==========================================================================
   const modalOverlay = document.getElementById('modal2D');
 
   function openProductModal(prodName) {
-    const item = APP_DATA.products.find(p => p.name === prodName) || APP_DATA.products[0];
-    
+    const item = DASH_DATA.products.find(p => p.name === prodName) || DASH_DATA.products[0];
+    if (!item) return;
+
     // Header
     document.getElementById('mTitle').textContent = item.name;
     document.getElementById('mCat').textContent = 'หมวด' + item.cat;
@@ -1238,19 +1705,21 @@ body {
 
     // Hero 2D Card
     document.getElementById('mHeroName').textContent = item.name;
-    document.getElementById('mHeroSub').textContent = `หมวด${item.cat} · สัดส่วน ${item.pctOfTotal} ของรายได้รวม`;
+    document.getElementById('mHeroSub').textContent = `หมวด${item.cat} · สัดส่วน ${item.pctOfTotal} ของยอดขายรวม`;
     document.getElementById('mHeroMargin').textContent = item.margin;
     document.getElementById('mHeroMarginBar').style.width = item.margin;
-    
+
     // Hero Photo with SVG Fallback
     const heroImg = document.getElementById('mHeroImg');
     const heroFallback = document.getElementById('mHeroFallback');
     heroFallback.innerHTML = `<span class="icon" style="color:${item.color}">${getIcon(item.icon)}</span>`;
     heroFallback.style.background = `${item.color}15`;
-    
+
     if (item.img) {
       heroImg.src = item.img;
       heroImg.alt = item.name;
+      heroImg.style.display = 'block';
+      heroFallback.style.display = 'none';
     } else {
       heroImg.style.display = 'none';
       heroFallback.style.display = 'flex';
@@ -1314,13 +1783,7 @@ body {
   // Initial Boot
   window.addEventListener('DOMContentLoaded', () => {
     renderStaticIcons();
-    renderKPIs();
-    renderTopProducts();
-    renderBranches();
-    renderProductDetailTable();
-    renderDailyTimeline();
-    renderCategories();
-    renderMatrixTable();
+    applyFilters();
   });
 </script>
 </body>
