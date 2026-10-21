@@ -452,24 +452,6 @@ body {
 .cat-prog { height: 5px; background: var(--track-bg); border-radius: 3px; margin-top: 4px; overflow: hidden; }
 .cat-prog-fill { height: 100%; border-radius: 3px; }
 
-.insight {
-  margin-top: 16px;
-  padding: 14px;
-  border-radius: 10px;
-  background: var(--card-sub-bg);
-  border: 1px solid var(--border-sub);
-}
-.insight-title {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.insight-body { font-size: 11px; color: var(--txt-sub); line-height: 1.7; }
-
-
 /* DYNAMIC INTERACTIVE FILTER TOOLBAR */
 .filter-toolbar {
   display: flex;
@@ -988,26 +970,13 @@ body {
       </div>
     </div>
 
-    <!-- CATEGORY & BCG MATRIX -->
+    <!-- CATEGORY STRUCTURE -->
     <div class="card fade" style="animation-delay:.3s">
       <div class="section-title">
         <span class="st-icon st-g"><span class="icon" id="categoryIcon"></span></span> 
         โครงสร้างสัดส่วนหมวดหมู่สินค้า
       </div>
       <div class="cat-cards" id="categoryCardsList"></div>
-
-      <!-- BCG INSIGHT -->
-      <div class="insight">
-        <div class="insight-title">
-          <span class="icon" id="searchIcon" style="color:var(--cyan)"></span> BCG-Style Insight (คลิกดูรายละเอียด)
-        </div>
-        <div class="insight-body">
-          <span style="color:var(--amber);cursor:pointer;" onclick="openProductModal('ลาเต้')">★ ดาวเด่น:</span> ลาเต้ (62.7%), คาปูชิโน (64.0%), โกโก้ (61.5%)<br>
-          <span style="color:var(--blue-l);cursor:pointer;" onclick="openProductModal('ชีสเค้ก')">💰 เครื่องจักรเงินสด:</span> ชีสเค้ก (ยอดขาย No.1 ฿13,420 | 34.5%), ครัวซองต์ (29.4%)<br>
-          <span style="color:var(--green);cursor:pointer;" onclick="openProductModal('ชาไทย')">⚡ มีศักยภาพ:</span> อเมริกาโน (66.7%), ชาไทย (กำไรสูงสุด 67.3%)<br>
-          <span style="color:var(--red);cursor:pointer;" onclick="openProductModal('บราวนี')">🐾 ทบทวน:</span> บราวนี (60.0%)
-        </div>
-      </div>
     </div>
   </div>
 
@@ -1473,7 +1442,6 @@ body {
     document.getElementById('categoryIcon').innerHTML = getIcon('category');
     document.getElementById('matrixIcon').innerHTML = getIcon('matrix');
     document.getElementById('receiptIcon').innerHTML = getIcon('receipt');
-    document.getElementById('searchIcon').innerHTML = getIcon('search');
     document.getElementById('checkIcon1').innerHTML = getIcon('check');
     document.getElementById('chartIcon1').innerHTML = getIcon('category');
     document.getElementById('filtBranchIcon').innerHTML = getIcon('store');
