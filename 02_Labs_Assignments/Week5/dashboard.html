@@ -374,11 +374,11 @@ body {
 .daily-chart { display: flex; align-items: flex-end; gap: 2px; height: 150px; min-width: 640px; }
 .dc { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 14px; }
 .dc-area { width: 100%; height: 132px; display: flex; align-items: flex-end; justify-content: center; }
-.dc-bar { width: 65%; border-radius: 3px 3px 0 0; position: relative; cursor: default; transition: transform 0.15s, opacity 0.15s; }
+.dc-bar { width: 65%; border-radius: 3px 3px 0 0; position: relative; cursor: pointer; transition: transform 0.15s, opacity 0.15s; outline: none; }
 .dc-bar.wd{background:var(--blue)}
 .dc-bar.we{background:var(--orange)}
 .dc-bar.pk{background:var(--red)!important}
-.dc-bar:hover { opacity: 0.8; transform: scaleY(1.04); }
+.dc-bar:hover, .dc-bar.active, .dc-bar:focus-visible { opacity: 0.88; transform: scaleY(1.06); outline: 2px solid var(--cyan); }
 .dc-bar .tip {
   display: none;
   position: absolute;
@@ -395,8 +395,9 @@ body {
   z-index: 10;
   border: 1px solid var(--glass-b);
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  pointer-events: none;
 }
-.dc-bar:hover .tip { display: block; }
+.dc-bar:hover .tip, .dc-bar.active .tip, .dc-bar:focus-visible .tip { display: block; }
 .dc-lbl { font-size: 9px; color: var(--muted); margin-top: 4px; }
 .legend { display: flex; gap: 16px; margin-top: 10px; justify-content: center; }
 .leg { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
@@ -604,11 +605,27 @@ body {
   border-radius: 18px;
   width: 100%;
   max-width: 680px;
+  max-height: 90vh;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   animation: modalScaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
+}
+.modal-body {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 300px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 680px) {
+  .modal-body { grid-template-columns: 1fr; }
+}
+.modal-scrollable-content {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(90vh - 75px);
 }
 @keyframes modalScaleUp {
   from { opacity: 0; transform: scale(0.94) translateY(8px); }
@@ -649,14 +666,7 @@ body {
 }
 .modal-close:hover { background: var(--red); color: #fff; }
 
-.modal-body {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 300px;
-}
-@media (max-width: 680px) {
-  .modal-body { grid-template-columns: 1fr; }
-}
+
 
 /* 2D Minimal Hero Card */
 .modal-hero-box {
@@ -802,6 +812,82 @@ body {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
 }
+
+/* ==========================================================================
+   PRINT STYLESHEET (CLEAN & INK-EFFICIENT FOR CTRL+P & PDF EXPORT)
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 10mm;
+  }
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 10pt !important;
+  }
+  .nav, .filter-toolbar, .theme-btn, .filter-reset-btn, .modal-overlay, .bar-hint {
+    display: none !important;
+  }
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .dash-grid {
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+  }
+  .card, .full-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 14px !important;
+    padding: 14px !important;
+  }
+  .kpi-grid {
+    margin-bottom: 14px !important;
+    gap: 10px !important;
+  }
+  .kpi {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    page-break-inside: avoid !important;
+    padding: 12px !important;
+  }
+  .kpi-val, .bar-val, .m-val {
+    color: #0f172a !important;
+  }
+  .bar-fill, .dc-bar, .pbar, .m-b-fill, .st-icon, .bar-rank {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .ft thead th, .bt thead th {
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
+    border-bottom: 2px solid #94a3b8 !important;
+  }
+  .ft tbody td, .bt tbody td {
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+  .ft tfoot td, .bt tfoot td {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border-top: 2px solid #0f172a !important;
+  }
+  .footer {
+    border-top: 1px solid #cbd5e1 !important;
+    color: #475569 !important;
+    margin-top: 14px !important;
+    padding-top: 10px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -817,7 +903,7 @@ body {
   </div>
   
   <div class="nav-right">
-    <button id="themeToggle" class="theme-btn" title="สลับโหมด สว่าง / มืด">
+    <button id="themeToggle" class="theme-btn" title="สลับโหมด สว่าง / มืด" aria-label="สลับโหมด สว่าง / มืด">
       <span class="icon" id="themeIcon"></span>
     </button>
     <span class="badge"><span class="icon" id="infoIcon"></span> ข้อมูลจำลองเพื่อการเรียนรู้ · ส.ค. 2569</span>
@@ -831,7 +917,7 @@ body {
     <div class="filter-toolbar-left">
       <div class="filter-group">
         <span class="filter-label"><span class="icon" id="filtBranchIcon"></span> สาขา:</span>
-        <div class="pill-group" id="branchPillGroup">
+        <div class="pill-group" id="branchPillGroup" role="radiogroup" aria-label="เลือกกรองสาขา">
           <button class="pill-btn active" data-branch="all" onclick="setBranchFilter('all')">ทุกสาขา</button>
           <button class="pill-btn" data-branch="มหาวิทยาลัย" onclick="setBranchFilter('มหาวิทยาลัย')">มหาวิทยาลัย</button>
           <button class="pill-btn" data-branch="สำนักงาน" onclick="setBranchFilter('สำนักงาน')">สำนักงาน</button>
@@ -841,7 +927,7 @@ body {
       
       <div class="filter-group">
         <span class="filter-label"><span class="icon" id="filtCatIcon"></span> หมวดหมู่:</span>
-        <div class="pill-group" id="catPillGroup">
+        <div class="pill-group" id="catPillGroup" role="radiogroup" aria-label="เลือกกรองหมวดหมู่">
           <button class="pill-btn active" data-cat="all" onclick="setCategoryFilter('all')">ทุกหมวด</button>
           <button class="pill-btn" data-cat="เบเกอรี" onclick="setCategoryFilter('เบเกอรี')">เบเกอรี</button>
           <button class="pill-btn" data-cat="กาแฟ" onclick="setCategoryFilter('กาแฟ')">กาแฟ</button>
@@ -880,7 +966,7 @@ body {
       <div class="section-title" id="branchSectionTitle">
         <span class="st-icon st-o"><span class="icon" id="storeIcon1"></span></span> เปรียบเทียบผลประกอบการ 3 สาขา
       </div>
-      <table class="bt" id="branchTable">
+      <table class="bt" id="branchTable" aria-label="ตารางเปรียบเทียบผลประกอบการ 3 สาขา">
         <thead><tr><th>สาขา</th><th>บิล</th><th>ชิ้น</th><th>รายได้</th><th>สัดส่วน</th><th>กำไร</th><th>GP%</th></tr></thead>
         <tbody id="branchTbody"></tbody>
         <tfoot id="branchTfoot"></tfoot>
@@ -923,7 +1009,7 @@ body {
       ตารางรายได้ สินค้า × สาขา (คลิกแถวเพื่อดูรายละเอียด)
     </div>
     <div class="full-card">
-      <table class="ft">
+      <table class="ft" aria-label="ตารางรายได้ สินค้าแยกตามสาขา">
         <thead>
           <tr>
             <th>สินค้า</th>
@@ -948,7 +1034,7 @@ body {
 <!-- ==========================================================================
      2D MINIMALIST DETAIL MODAL POP-UP (100% OFFLINE STANDALONE)
      ========================================================================== -->
-<div id="modal2D" class="modal-overlay" style="display:none;" onclick="closeModalOnBackdrop(event)">
+<div id="modal2D" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="mTitle" onclick="closeModalOnBackdrop(event)">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-header">
       <div class="modal-title-wrap">
@@ -1033,7 +1119,7 @@ body {
 <!-- ==========================================================================
      KPI DETAIL MODAL (DEDICATED FOR KPI CARDS)
      ========================================================================== -->
-<div id="modalKpi" class="modal-overlay" style="display:none;" onclick="closeKpiModalOnBackdrop(event)">
+<div id="modalKpi" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="kpiModalTitle" onclick="closeKpiModalOnBackdrop(event)">
   <div class="modal-card" style="max-width: 620px;" onclick="event.stopPropagation()">
     <div class="modal-header">
       <div class="modal-title-wrap">
@@ -1046,7 +1132,7 @@ body {
       <button class="modal-close" onclick="closeKpiModal()" title="ปิดหน้าต่าง (Esc)">✕</button>
     </div>
     
-    <div style="padding: 22px; display: flex; flex-direction: column; gap: 16px;">
+    <div class="modal-scrollable-content" style="padding: 22px; display: flex; flex-direction: column; gap: 16px;">
       <!-- Hero Stat Card -->
       <div class="m-total-card" style="background: var(--card-sub-bg); border: 1px solid var(--border-sub);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -1414,10 +1500,14 @@ body {
   function applyFilters() {
     // 1. Update Buttons
     document.querySelectorAll('#branchPillGroup .pill-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.branch === currentBranchFilter);
+      const active = (btn.dataset.branch === currentBranchFilter);
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
     });
     document.querySelectorAll('#catPillGroup .pill-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.cat === currentCatFilter);
+      const active = (btn.dataset.cat === currentCatFilter);
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
     });
 
     // 2. Recompute Data
@@ -1624,7 +1714,7 @@ body {
       return `
         <div class="dc">
           <div class="dc-area">
-            <div class="dc-bar ${barClass}" style="height:${heightPct}%">
+            <div class="dc-bar ${barClass}" id="dailyBar_${d.day}" style="height:${heightPct}%" tabindex="0" role="button" aria-label="${d.label}" onclick="selectDailyBar(${d.day})" onkeydown="if(event.key==='Enter'||event.key===' ')selectDailyBar(${d.day})">
               <span class="tip">${d.label}</span>
             </div>
           </div>
@@ -1632,6 +1722,50 @@ body {
         </div>
       `;
     }).join('');
+  }
+
+
+  // Interactive Daily Bar Touch / Tap Inspector
+  let activeDailyDay = null;
+  function selectDailyBar(day) {
+    activeDailyDay = (activeDailyDay === day) ? null : day;
+    document.querySelectorAll('.dc-bar').forEach(b => b.classList.remove('active'));
+    
+    const badges = document.getElementById('dailyStatsBadges');
+    if (!badges) return;
+
+    if (activeDailyDay !== null) {
+      const bar = document.getElementById('dailyBar_' + day);
+      if (bar) bar.classList.add('active');
+      const d = DASH_DATA.daily.find(item => item.day === day);
+      if (d) {
+        const typeStr = d.isPeak ? '★ วันพีคสูงสุด' : (d.isWeekend ? 'วันหยุด' : 'วันธรรมดา');
+        badges.innerHTML = `
+          <span class="ds ds-p" style="font-weight:700;">📅 วันที่ ${d.day} ส.ค. 2569: ฿${fmtInt(d.rev)} (${typeStr})</span>
+          <span class="ds ds-a" style="cursor:pointer;" onclick="selectDailyBar(${day})">✕ ปิดการเลือก</span>
+        `;
+        return;
+      }
+    }
+    // Reset to default overview badges if deselected
+    renderDailyStatsBadges();
+  }
+
+  function renderDailyStatsBadges() {
+    const badges = document.getElementById('dailyStatsBadges');
+    const stats = DASH_DATA.dailyStats;
+    if (!badges) return;
+    if (stats.totalRev > 0) {
+      badges.innerHTML = `
+        <span class="ds ds-p">▲ Peak ${stats.peakDay} ส.ค. ฿${fmtInt(stats.maxDaily)}</span>
+        <span class="ds ds-l">▼ Low ${stats.lowDay} ส.ค. ฿${fmtInt(stats.minDaily)}</span>
+        <span class="ds ds-a">เฉลี่ย ฿${fmtInt(stats.avg)}/วัน</span>
+        <span class="ds ds-w">จ-ศ ฿${fmtInt(stats.wdAvg)}/วัน</span>
+        <span class="ds ds-e">ส-อา ฿${fmtInt(stats.weAvg)}/วัน</span>
+      `;
+    } else {
+      badges.innerHTML = `<span class="ds ds-a">ไม่มีรายการขายในเงื่อนไขตัวกรองนี้</span>`;
+    }
   }
 
   function renderCategories() {
