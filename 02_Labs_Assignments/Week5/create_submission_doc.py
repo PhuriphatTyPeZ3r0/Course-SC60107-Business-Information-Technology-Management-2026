@@ -244,7 +244,7 @@ def build_document():
         caption_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         caption_p.paragraph_format.space_before = Pt(1)
         caption_p.paragraph_format.space_after = Pt(8)
-        rc = caption_p.add_run("ภาพที่ 1: หน้าจอแสดงผล Cafe & Bakery Sales Analytics Dashboard พร้อม Interactive Dynamic Filter, 2D Studio Photography และ KPIs")
+        rc = caption_p.add_run("ภาพที่ 1: หน้าจอแสดงผล Cafe & Bakery Sales Analytics Dashboard พร้อมโครงสร้างมินิมอล, 2D Studio Photography และ KPIs")
         format_run(rc, size_pt=8.5, color_rgb=(100, 116, 139), italic=True)
         
         # 3. Key Feature Highlights Card
@@ -262,10 +262,10 @@ def build_document():
         format_run(rf_h, size_pt=10.5, color_rgb=(15, 23, 42), bold=True)
         
         highlights = [
-            ("⚡ Dynamic Real-time Filters: ", "ระบบตัวกรองสาขา (มหาวิทยาลัย, สำนักงาน, ห้างสรรพสินค้า) และหมวดหมู่สินค้า ที่คำนวณและปรับตัวเลข KPI, สัดส่วน %, กราฟแนวโน้มรายวันแบบเรียลไทม์ 100% Client-side"),
+            ("⚡ Clean Minimalist Architecture: ", "การจัดวางโครงสร้างแบบ Executive Dashboard ที่เรียบหรู กระชับ ไร้ความซ้ำซ้อน นำเสนอตัวเลขผลประกอบการ 3 สาขา, สัดส่วนหมวดหมู่, และตาราง Cross-tab สินค้า × สาขาอย่างถูกต้องตามหลักสถิติ"),
             ("📷 High-res 2D Studio Photography: ", "ภาพถ่ายสินค้าแบบสตูดิโอความละเอียดสูง เพิ่มความน่าเชื่อถือระดับมืออาชีพ พร้อมระบบ Zero-fail Inline SVG Fallback เมื่อเปิดในโหมดออฟไลน์"),
-            ("🎯 100% Strict Compliance: ", "ครอบคลุมครบทั้ง Prompt 1 (KPI รวม ฿72,530, ยอดขาย 1,000 ชิ้น, กำไร ฿38,825 / 53.53%, Top 3 สินค้าสูงสุด) และ Prompt 2 (ตาราง Cross-tab สินค้า × สาขา, สัดส่วนหมวดหมู่, ไทม์ไลน์ 31 วัน)"),
-            ("🚀 Zero-Dependency Architecture: ", "เปิดใช้งานบนเว็บเบราว์เซอร์ได้ทันทีโดยไม่ต้องเชื่อมต่อระบบภายนอกหรือติดตั้งโปรแกรมเสริมใดๆ รองรับ Light/Dark Theme สมบูรณ์แบบ")
+            ("🎯 100% Strict Compliance: ", "ครอบคลุมครบทั้ง Prompt 1 (KPI รวม ฿72,530, ยอดขาย 1,000 ชิ้น, กำไร ฿38,825 / 53.53%, Top 3 สินค้าสูงสุดพร้อม % สัดส่วนที่ถูกต้อง) และ Prompt 2 (ตาราง Cross-tab สินค้า × สาขา, สัดส่วนหมวดหมู่, ไทม์ไลน์ 31 วัน)"),
+            ("🚀 Zero-Dependency Architecture: ", "เปิดใช้งานบนเว็บเบราว์เซอร์ได้ทันทีโดยไม่ต้องเชื่อมต่อระบบภายนอกหรือติดตั้งโปรแกรมเสริมใดๆ รองรับ Light/Dark Theme และ Print Stylesheet สมบูรณ์แบบ")
         ]
         
         for prefix, desc in highlights:

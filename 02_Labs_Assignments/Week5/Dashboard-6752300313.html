@@ -423,130 +423,7 @@ body {
 .cat-prog { height: 5px; background: var(--track-bg); border-radius: 3px; margin-top: 4px; overflow: hidden; }
 .cat-prog-fill { height: 100%; border-radius: 3px; }
 
-/* DYNAMIC INTERACTIVE FILTER TOOLBAR */
-.filter-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
-  background: var(--glass);
-  border: 1px solid var(--glass-b);
-  border-radius: 14px;
-  padding: 12px 18px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow-main);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-.filter-toolbar-left {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 18px;
-}
-.filter-toolbar-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.filter-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.pill-group {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.pill-btn {
-  background: var(--track-bg);
-  color: var(--txt-sub);
-  border: 1px solid var(--glass-b);
-  border-radius: 8px;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  user-select: none;
-}
-.pill-btn:hover {
-  background: var(--card-sub-bg);
-  color: var(--txt);
-  border-color: var(--blue-l);
-}
-.pill-btn.active {
-  background: var(--blue);
-  color: #ffffff;
-  border-color: var(--blue);
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
-}
-.filter-status-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--cyan);
-  background: rgba(6, 182, 212, 0.1);
-  border: 1px solid rgba(6, 182, 212, 0.25);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-variant-numeric: tabular-nums;
-}
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 6px var(--cyan);
-}
-.filter-reset-btn {
-  background: transparent;
-  color: var(--red);
-  border: 1px solid var(--red);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.filter-reset-btn:hover {
-  background: var(--red);
-  color: #ffffff;
-}
-.branch-highlight-cell {
-  background: rgba(37, 99, 235, 0.08) !important;
-  color: var(--blue-l) !important;
-  font-weight: 700;
-}
-.branch-highlight-head {
-  background: rgba(37, 99, 235, 0.12) !important;
-  color: var(--blue-l) !important;
-  font-weight: 700;
-}
+
 
 /* FULL TABLE */
 .full-card {
@@ -830,7 +707,7 @@ body {
     color: #0f172a !important;
     font-size: 10pt !important;
   }
-  .nav, .filter-toolbar, .theme-btn, .filter-reset-btn, .modal-overlay, .bar-hint {
+  .nav, .theme-btn, .modal-overlay, .bar-hint {
     display: none !important;
   }
   .container {
@@ -912,42 +789,7 @@ body {
 
 <div class="container">
 
-    <!-- DYNAMIC INTERACTIVE FILTER TOOLBAR -->
-  <div class="filter-toolbar fade">
-    <div class="filter-toolbar-left">
-      <div class="filter-group">
-        <span class="filter-label"><span class="icon" id="filtBranchIcon"></span> สาขา:</span>
-        <div class="pill-group" id="branchPillGroup" role="radiogroup" aria-label="เลือกกรองสาขา">
-          <button class="pill-btn active" data-branch="all" onclick="setBranchFilter('all')">ทุกสาขา</button>
-          <button class="pill-btn" data-branch="มหาวิทยาลัย" onclick="setBranchFilter('มหาวิทยาลัย')">มหาวิทยาลัย</button>
-          <button class="pill-btn" data-branch="สำนักงาน" onclick="setBranchFilter('สำนักงาน')">สำนักงาน</button>
-          <button class="pill-btn" data-branch="ห้างสรรพสินค้า" onclick="setBranchFilter('ห้างสรรพสินค้า')">ห้างสรรพสินค้า</button>
-        </div>
-      </div>
-      
-      <div class="filter-group">
-        <span class="filter-label"><span class="icon" id="filtCatIcon"></span> หมวดหมู่:</span>
-        <div class="pill-group" id="catPillGroup" role="radiogroup" aria-label="เลือกกรองหมวดหมู่">
-          <button class="pill-btn active" data-cat="all" onclick="setCategoryFilter('all')">ทุกหมวด</button>
-          <button class="pill-btn" data-cat="เบเกอรี" onclick="setCategoryFilter('เบเกอรี')">เบเกอรี</button>
-          <button class="pill-btn" data-cat="กาแฟ" onclick="setCategoryFilter('กาแฟ')">กาแฟ</button>
-          <button class="pill-btn" data-cat="เครื่องดื่มอื่น" onclick="setCategoryFilter('เครื่องดื่มอื่น')">เครื่องดื่มอื่น</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="filter-toolbar-right">
-      <span class="filter-status-tag" id="filterStatusTag">
-        <span class="status-dot"></span>
-        <span id="filterStatusText">แสดงทุกสาขาและทุกหมวดหมู่ (100 รายการ · ฿72,530.00)</span>
-      </span>
-      <button class="filter-reset-btn" id="btnResetFilters" style="display:none;" onclick="resetAllFilters()">
-        <span class="icon" id="resetIcon"></span> รีเซ็ตตัวกรอง
-      </button>
-    </div>
-  </div>
-
-  <!-- KPI CARDS (DYNAMIC) -->
+<!-- KPI CARDS (DYNAMIC) -->
   <div class="kpi-grid" id="kpiGrid"></div>
 
   <!-- SECTION 1: TOP PRODUCTS & BRANCHES -->
@@ -1238,8 +1080,6 @@ body {
   const fmtInt = (n) => Number(n).toLocaleString('th-TH');
 
   // Filter States
-  let currentBranchFilter = 'all';
-  let currentCatFilter = 'all';
 
   // Global Calculated Store
   let DASH_DATA = null;
@@ -1250,13 +1090,9 @@ body {
   // ==========================================================================
   // DYNAMIC AGGREGATION ENGINE (STRICT & ZERO CONFLICT)
   // ==========================================================================
-  function computeDashboardData(branchFilter, catFilter) {
+  function computeDashboardData() {
     // 1. Filtered Transactions
-    const filtered = RAW_SALES.filter(r => {
-      const bMatch = (branchFilter === 'all' || r[2] === branchFilter);
-      const cMatch = (catFilter === 'all' || r[4] === catFilter);
-      return bMatch && cMatch;
-    });
+    const filtered = RAW_SALES;
 
     // 2. Summary of Filtered Scope
     const totalRev = filtered.reduce((acc, r) => acc + r[6], 0);
@@ -1476,63 +1312,7 @@ body {
   // ==========================================================================
   // FILTER CONTROLLERS (TWO-WAY TOGGLE)
   // ==========================================================================
-  function setBranchFilter(branch) {
-    currentBranchFilter = (currentBranchFilter === branch) ? 'all' : branch;
-    applyFilters();
-  }
 
-  function setCategoryFilter(cat) {
-    currentCatFilter = (currentCatFilter === cat) ? 'all' : cat;
-    applyFilters();
-  }
-
-  function resetAllFilters() {
-    currentBranchFilter = 'all';
-    currentCatFilter = 'all';
-    applyFilters();
-  }
-
-
-
-  function applyFilters() {
-    // 1. Update Buttons
-    document.querySelectorAll('#branchPillGroup .pill-btn').forEach(btn => {
-      const active = (btn.dataset.branch === currentBranchFilter);
-      btn.classList.toggle('active', active);
-      btn.setAttribute('aria-checked', active ? 'true' : 'false');
-    });
-    document.querySelectorAll('#catPillGroup .pill-btn').forEach(btn => {
-      const active = (btn.dataset.cat === currentCatFilter);
-      btn.classList.toggle('active', active);
-      btn.setAttribute('aria-checked', active ? 'true' : 'false');
-    });
-
-    // 2. Recompute Data
-    DASH_DATA = computeDashboardData(currentBranchFilter, currentCatFilter);
-
-    // 3. Update Status Tag & Reset Button
-    const statusText = document.getElementById('filterStatusText');
-    const resetBtn = document.getElementById('btnResetFilters');
-    const isFiltered = (currentBranchFilter !== 'all' || currentCatFilter !== 'all');
-
-    if (!isFiltered) {
-      statusText.textContent = `แสดงทุกสาขาและทุกหมวดหมู่ (100 รายการ · ฿${fmtInt(DASH_DATA.summary.revenue)})`;
-      resetBtn.style.display = 'none';
-    } else {
-      const bLabel = currentBranchFilter === 'all' ? 'ทุกสาขา' : `สาขา${currentBranchFilter}`;
-      const cLabel = currentCatFilter === 'all' ? 'ทุกหมวด' : `หมวด${currentCatFilter}`;
-      statusText.textContent = `${bLabel} × ${cLabel} (${DASH_DATA.summary.bills} รายการ · ฿${fmtInt(DASH_DATA.summary.revenue)})`;
-      resetBtn.style.display = 'inline-flex';
-    }
-
-    // 4. Render All Dynamic Views
-    renderKPIs();
-    renderTopProducts();
-    renderBranches();
-    renderDailyTimeline();
-    renderCategories();
-    renderMatrixTable();
-  }
 
   // ==========================================================================
   // RENDER VIEWS (HARMONIZED & ZERO CONFLICT)
@@ -1545,9 +1325,6 @@ body {
     document.getElementById('calendarIcon').innerHTML = getIcon('calendar');
     document.getElementById('categoryIcon').innerHTML = getIcon('category');
     document.getElementById('matrixIcon').innerHTML = getIcon('matrix');
-    document.getElementById('filtBranchIcon').innerHTML = getIcon('store');
-    document.getElementById('filtCatIcon').innerHTML = getIcon('category');
-    document.getElementById('resetIcon').innerHTML = getIcon('reset');
   }
 
   function renderKPIs() {
@@ -1583,33 +1360,17 @@ body {
 
   function renderTopProducts() {
     const container = document.getElementById('topProductsList');
-    const title = document.getElementById('topProductsTitle');
-    const prods = DASH_DATA.products.filter(p => p.rev > 0);
-
-    if (title) {
-      if (currentCatFilter !== 'all' && currentBranchFilter !== 'all') {
-        title.innerHTML = `สินค้ารายได้สูงสุด (Top 3) · สาขา${currentBranchFilter} × หมวด${currentCatFilter}`;
-      } else if (currentCatFilter !== 'all') {
-        title.innerHTML = `สินค้ารายได้สูงสุด (Top 3) · หมวด${currentCatFilter}`;
-      } else if (currentBranchFilter !== 'all') {
-        title.innerHTML = `สินค้ารายได้สูงสุด (Top 3) · สาขา${currentBranchFilter}`;
-      } else {
-        title.innerHTML = `3 อันดับสินค้าที่มียอดขายสูงสุด (Top 3 Products)`;
-      }
-    }
-
-    if (prods.length === 0) {
-      container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">ไม่มีรายการขายในเงื่อนไขตัวกรองนี้</div>';
-      return;
-    }
-
+    const prods = DASH_DATA.products;
     const top3Prods = prods.slice(0, 3);
+    const totalRev = DASH_DATA.summary.revenue || 1;
     const maxRev = top3Prods[0]?.rev || 1;
+
     container.innerHTML = top3Prods.map((p, idx) => {
       const rank = idx + 1;
       const rankClass = `r${rank}`;
       const fillClass = rank === 1 ? 'bf1' : (rank === 2 ? 'bf2' : 'bf3');
-      const pct = ((p.rev / maxRev) * 100).toFixed(1);
+      const shareOfTotal = ((p.rev / totalRev) * 100).toFixed(1);
+      const barWidth = ((p.rev / maxRev) * 100).toFixed(1);
 
       return `
         <div class="bar-item bar-top3" onclick="openProductModal('${p.name}')">
@@ -1621,7 +1382,7 @@ body {
             </div>
             <span>${p.name}</span>
           </div>
-          <div class="bar-track"><div class="bar-fill ${fillClass}" style="width:${pct}%">${pct}%</div></div>
+          <div class="bar-track" title="${p.name}: ฿${fmtInt(p.rev)} (${shareOfTotal}% ของยอดขายรวม)"><div class="bar-fill ${fillClass}" style="width:${barWidth}%">${shareOfTotal}%</div></div>
           <div class="bar-val"><span>฿${fmtInt(p.rev)}</span><span class="bar-hint">คลิกดู</span></div>
         </div>
       `;
@@ -1634,27 +1395,19 @@ body {
     const title = document.getElementById('branchSectionTitle');
 
     if (title) {
-      if (currentCatFilter !== 'all') {
-        title.innerHTML = `<span class="st-icon st-o"><span class="icon" id="storeIcon1">${getIcon('store')}</span></span> เปรียบเทียบผลประกอบการ 3 สาขา <span style="font-size:11px;color:var(--cyan);font-weight:400;">(หมวด${currentCatFilter})</span>`;
-      } else if (currentBranchFilter !== 'all') {
-        title.innerHTML = `<span class="st-icon st-o"><span class="icon" id="storeIcon1">${getIcon('store')}</span></span> เปรียบเทียบผลประกอบการ 3 สาขา <span style="font-size:11px;color:var(--blue-l);font-weight:400;">(ไฮไลท์สาขา${currentBranchFilter})</span>`;
-      } else {
-        title.innerHTML = `<span class="st-icon st-o"><span class="icon" id="storeIcon1">${getIcon('store')}</span></span> เปรียบเทียบผลประกอบการ 3 สาขา`;
-      }
+      title.innerHTML = `<span class="st-icon st-o"><span class="icon" id="storeIcon1">${getIcon('store')}</span></span> เปรียบเทียบผลประกอบการ 3 สาขา`;
     }
 
     const branches = DASH_DATA.branches;
     const totalBranchRev = branches.reduce((acc, b) => acc + b.rev, 0) || 1;
 
     tbody.innerHTML = branches.map(b => {
-      const isSelected = (currentBranchFilter === b.name);
-      const rowStyle = isSelected ? 'background:rgba(37,99,235,0.08);font-weight:600;' : '';
       const bPct = ((b.rev / totalBranchRev) * 100).toFixed(1);
       return `
-        <tr style="${rowStyle}" class="clickable-row" onclick="setBranchFilter('${b.name}')">
+        <tr>
           <td>
             <span class="icon branch-icon" style="color:${b.color}">${getIcon(b.icon)}</span> 
-            ${b.name} ${isSelected ? '<span style="font-size:10px;color:var(--cyan);">(กำลังเลือก)</span>' : ''}
+            ${b.name}
           </td>
           <td>${b.bills}</td>
           <td>${fmtInt(b.qty)}</td>
@@ -1770,31 +1523,22 @@ body {
     const title = document.getElementById('categorySectionTitle');
 
     if (title) {
-      if (currentBranchFilter !== 'all') {
-        title.innerHTML = `<span class="st-icon st-g"><span class="icon" id="categoryIcon">${getIcon('category')}</span></span> โครงสร้างสัดส่วนหมวดหมู่สินค้า <span style="font-size:11px;color:var(--blue-l);font-weight:400;">(สาขา${currentBranchFilter})</span>`;
-      } else {
-        title.innerHTML = `<span class="st-icon st-g"><span class="icon" id="categoryIcon">${getIcon('category')}</span></span> โครงสร้างสัดส่วนหมวดหมู่สินค้า`;
-      }
+      title.innerHTML = `<span class="st-icon st-g"><span class="icon" id="categoryIcon">${getIcon('category')}</span></span> โครงสร้างสัดส่วนหมวดหมู่สินค้า`;
     }
 
     const categories = DASH_DATA.categories;
     const totalCatRev = categories.reduce((acc, c) => acc + c.rev, 0) || 1;
 
     container.innerHTML = categories.map(c => {
-      const isSelected = (currentCatFilter === c.name);
-      const isMuted = (currentCatFilter !== 'all' && !isSelected);
-      const cardBorder = isSelected 
-        ? 'border: 1px solid var(--cyan); background: rgba(6,182,212,0.08);' 
-        : (isMuted ? 'opacity: 0.55;' : '');
       const cPct = ((c.rev / totalCatRev) * 100).toFixed(1);
 
       return `
-        <div class="cat-card clickable-row" style="${cardBorder}" onclick="setCategoryFilter('${c.name}')">
+        <div class="cat-card">
           <div class="cat-dot" style="background:${c.color}"></div>
           <div class="cat-info">
             <div class="cat-name">
               <span class="icon" style="color:${c.color}">${getIcon(c.icon)}</span> 
-              ${c.name} ${isSelected ? '<span style="font-size:10px;color:var(--cyan);">(กำลังเลือก)</span>' : ''}
+              ${c.name}
             </div>
             <div class="cat-sub">฿${fmtInt(c.rev)} · ${fmtInt(c.qty)} หน่วย · กำไร ฿${fmtInt(c.profit)} (${c.margin})</div>
             <div class="cat-prog"><div class="cat-prog-fill" style="width:${cPct}%;background:${c.color}"></div></div>
@@ -1809,10 +1553,7 @@ body {
     const tbody = document.getElementById('matrixTbody');
     const tfoot = document.getElementById('matrixTfoot');
 
-    let prodsToShow = Object.keys(PRODUCT_META);
-    if (currentCatFilter !== 'all') {
-      prodsToShow = prodsToShow.filter(pName => PRODUCT_META[pName].cat === currentCatFilter);
-    }
+    const prodsToShow = Object.keys(PRODUCT_META);
 
     prodsToShow.sort((a, b) => {
       const revA = DASH_DATA.productRevenueMap[a] || 0;
@@ -1820,9 +1561,6 @@ body {
       return revB - revA;
     });
 
-    const b0Hl = (currentBranchFilter === 'มหาวิทยาลัย') ? 'branch-highlight-cell' : '';
-    const b1Hl = (currentBranchFilter === 'สำนักงาน') ? 'branch-highlight-cell' : '';
-    const b2Hl = (currentBranchFilter === 'ห้างสรรพสินค้า') ? 'branch-highlight-cell' : '';
 
     let col0Sum = 0;
     let col1Sum = 0;
@@ -1852,9 +1590,9 @@ body {
             </div>
           </td>
           <td>${meta.cat}</td>
-          <td class="num ${b0Hl}">฿${fmtInt(r0)}</td>
-          <td class="num ${b1Hl}">฿${fmtInt(r1)}</td>
-          <td class="num ${b2Hl}">฿${fmtInt(r2)}</td>
+          <td class="num">฿${fmtInt(r0)}</td>
+          <td class="num">฿${fmtInt(r1)}</td>
+          <td class="num">฿${fmtInt(r2)}</td>
           <td class="num"><b>฿${fmtInt(rowSum)}</b></td>
         </tr>
       `;
@@ -1864,9 +1602,9 @@ body {
     tfoot.innerHTML = `
       <tr>
         <td colspan="2">รวมทั้งหมด (${prodsToShow.length} รายการ)</td>
-        <td class="num ${b0Hl}">฿${fmtInt(col0Sum)}</td>
-        <td class="num ${b1Hl}">฿${fmtInt(col1Sum)}</td>
-        <td class="num ${b2Hl}">฿${fmtInt(col2Sum)}</td>
+        <td class="num">฿${fmtInt(col0Sum)}</td>
+        <td class="num">฿${fmtInt(col1Sum)}</td>
+        <td class="num">฿${fmtInt(col2Sum)}</td>
         <td class="num"><b>฿${fmtInt(grandTotal)}</b></td>
       </tr>
     `;
@@ -2189,7 +1927,7 @@ body {
   // Initial Boot
   window.addEventListener('DOMContentLoaded', () => {
     renderStaticIcons();
-    applyFilters();
+    renderAll();
   });
 </script>
 </body>
