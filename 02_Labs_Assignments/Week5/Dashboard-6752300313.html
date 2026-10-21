@@ -1027,7 +1027,7 @@ body {
   </div>
 
   <div class="footer">
-    Amazon Quick Workshop · SC60107 การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ · 6752300313 ภูริภัทร์ ยังพะเนียด · Standalone 100%
+    Amazon Quick Workshop · SC60107 การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ · 6752300313 ภูริภัทร์ ยังพะเนียด
   </div>
 </div>
 
@@ -1066,9 +1066,6 @@ body {
           <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
             <div id="mHeroMarginBar" style="height:100%;width:34.5%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px;"></div>
           </div>
-        </div>
-        <div style="font-size:10px;color:var(--green);display:flex;align-items:center;gap:4px;">
-          ✓ Standalone 100% · ไม่พึ่งพาบริการภายนอก
         </div>
       </div>
 
@@ -1126,7 +1123,7 @@ body {
         <span class="modal-cat-icon" id="kpiModalIcon"></span>
         <div>
           <h3 id="kpiModalTitle" style="font-size:18px;font-weight:700;">เจาะลึก KPI</h3>
-          <span id="kpiModalBadge" class="badge" style="font-size:10px;padding:2px 8px;">สูตรคำนวณตามข้อกำหนด</span>
+          <span id="kpiModalBadge" class="badge" style="font-size:10px;padding:2px 8px;">สูตรคำนวณตัวชี้วัด</span>
         </div>
       </div>
       <button class="modal-close" onclick="closeKpiModal()" title="ปิดหน้าต่าง (Esc)">✕</button>
@@ -1963,7 +1960,7 @@ body {
       icon = 'payments';
       iconColor = 'var(--blue)';
       title = 'เจาะลึก: รายได้รวม (Total Revenue)';
-      badge = 'Prompt 1: ผลรวมยอดขาย';
+      badge = 'ผลรวมยอดขายสุทธิ';
       formula = 'สูตร: ผลรวม (จำนวนขาย × ราคาขายต่อหน่วย)';
       heroLabel = 'ยอดขายสุทธิทั้งหมด';
       heroVal = '฿' + fmtInt(s.revenue) + ' บาท';
@@ -1998,7 +1995,7 @@ body {
       icon = 'inventory';
       iconColor = 'var(--orange)';
       title = 'เจาะลึก: จำนวนขายรวม (Total Units)';
-      badge = 'Prompt 1: ปริมาณการจำหน่าย';
+      badge = 'ปริมาณการจำหน่ายรวม';
       formula = 'สูตร: ผลรวมจำนวนชิ้นที่จำหน่ายได้';
       heroLabel = 'ปริมาณสินค้าที่ขายได้ทั้งหมด';
       heroVal = fmtInt(s.units) + ' หน่วย';
@@ -2039,7 +2036,7 @@ body {
       icon = 'trending_up';
       iconColor = 'var(--green)';
       title = 'เจาะลึก: กำไรขั้นต้น (Gross Profit)';
-      badge = 'Prompt 1: กำไรจากการขาย';
+      badge = 'กำไรขั้นต้นรวม';
       formula = 'สูตร: ผลรวม จำนวนขาย × (ราคาขาย − ต้นทุน)';
       heroLabel = 'กำไรขั้นต้นรวม';
       heroVal = '฿' + fmtInt(s.profit) + ' บาท';
