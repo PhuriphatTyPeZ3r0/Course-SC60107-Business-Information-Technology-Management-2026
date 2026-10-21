@@ -3,6 +3,7 @@
 *.PDF
 *.pptx
 *.PPTX
+!02_Labs_Assignments/Week5/Dashboard-6752300313-Submission.pdf
 
 # Obsidian
 .obsidian/workspace.json
