@@ -1088,45 +1088,26 @@ body {
   // DYNAMIC AGGREGATION ENGINE
   // ==========================================================================
   // ==========================================================================
-  // DYNAMIC AGGREGATION ENGINE (STRICT & ZERO CONFLICT)
+  // AGGREGATION & DATA ENGINE (100% GROUND TRUTH)
   // ==========================================================================
   function computeDashboardData() {
-    // 1. Filtered Transactions
-    const filtered = RAW_SALES;
-
-    // 2. Summary of Filtered Scope
-    const totalRev = filtered.reduce((acc, r) => acc + r[6], 0);
-    const totalProfit = filtered.reduce((acc, r) => acc + r[7], 0);
-    const totalUnits = filtered.reduce((acc, r) => acc + r[5], 0);
+    const totalRev = RAW_SALES.reduce((acc, r) => acc + r[6], 0);
+    const totalProfit = RAW_SALES.reduce((acc, r) => acc + r[7], 0);
+    const totalUnits = RAW_SALES.reduce((acc, r) => acc + r[5], 0);
     const totalCost = totalRev - totalProfit;
-    const bills = filtered.length;
+    const bills = RAW_SALES.length;
     const aov = bills > 0 ? (totalRev / bills) : 0;
     const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(2) + '%' : '0.00%';
 
-    // 3. Product Branch Matrix for Cross-tab Table
-    // When catFilter is active, show only products in that category across all 3 branches
+    // 1. Matrix and Products aggregation
     const productBranchMatrix = {};
     const productRevenueMap = {};
-    Object.keys(PRODUCT_META).forEach(pName => {
-      productBranchMatrix[pName] = { 'มหาวิทยาลัย': 0, 'สำนักงาน': 0, 'ห้างสรรพสินค้า': 0 };
-      productRevenueMap[pName] = 0;
-    });
-
-    RAW_SALES.forEach(r => {
-      const pName = r[3];
-      const bName = r[2];
-      const cName = r[4];
-      if (catFilter === 'all' || cName === catFilter) {
-        if (productBranchMatrix[pName] && productBranchMatrix[pName][bName] !== undefined) {
-          productBranchMatrix[pName][bName] += r[6];
-        }
-      }
-    });
-
-    // 4. Products in active filtered scope
     const prodMap = {};
+
     Object.keys(PRODUCT_META).forEach(pName => {
       const meta = PRODUCT_META[pName];
+      productBranchMatrix[pName] = { 'มหาวิทยาลัย': 0, 'สำนักงาน': 0, 'ห้างสรรพสินค้า': 0 };
+      productRevenueMap[pName] = 0;
       prodMap[pName] = {
         name: pName,
         id: meta.id,
@@ -1140,60 +1121,55 @@ body {
         rev: 0,
         profit: 0,
         branches: {
-          "มหาวิทยาลัย": { qty: 0, rev: 0, profit: 0 },
-          "สำนักงาน": { qty: 0, rev: 0, profit: 0 },
-          "ห้างสรรพสินค้า": { qty: 0, rev: 0, profit: 0 }
+          'มหาวิทยาลัย': { qty: 0, rev: 0, profit: 0 },
+          'สำนักงาน': { qty: 0, rev: 0, profit: 0 },
+          'ห้างสรรพสินค้า': { qty: 0, rev: 0, profit: 0 }
         }
       };
     });
 
-    // Baseline branch quantities for product modal
     RAW_SALES.forEach(r => {
-      const pName = r[3];
       const bName = r[2];
-      if (prodMap[pName] && prodMap[pName].branches[bName]) {
-        prodMap[pName].branches[bName].qty += r[5];
-        prodMap[pName].branches[bName].rev += r[6];
-        prodMap[pName].branches[bName].profit += r[7];
-      }
-    });
-
-    // Populate filtered quantities
-    filtered.forEach(r => {
       const pName = r[3];
+      const qty = r[5];
+      const rev = r[6];
+      const profit = r[7];
+
+      if (productBranchMatrix[pName] && productBranchMatrix[pName][bName] !== undefined) {
+        productBranchMatrix[pName][bName] += rev;
+      }
+
       if (prodMap[pName]) {
-        prodMap[pName].qty += r[5];
-        prodMap[pName].rev += r[6];
-        prodMap[pName].profit += r[7];
+        prodMap[pName].qty += qty;
+        prodMap[pName].rev += rev;
+        prodMap[pName].profit += profit;
+        if (prodMap[pName].branches[bName]) {
+          prodMap[pName].branches[bName].qty += qty;
+          prodMap[pName].branches[bName].rev += rev;
+          prodMap[pName].branches[bName].profit += profit;
+        }
       }
     });
 
-    let productsList = Object.values(prodMap);
-    if (catFilter !== 'all') {
-      productsList = productsList.filter(p => p.cat === catFilter);
-    }
-
+    const productsList = Object.values(prodMap);
     productsList.forEach(p => {
       productRevenueMap[p.name] = p.rev;
       p.margin = p.rev > 0 ? ((p.profit / p.rev) * 100).toFixed(1) + '%' : '0.0%';
       p.pctOfTotal = totalRev > 0 ? ((p.rev / totalRev) * 100).toFixed(1) + '%' : '0.0%';
-      const pTotalRev = p.branches["มหาวิทยาลัย"].rev + p.branches["สำนักงาน"].rev + p.branches["ห้างสรรพสินค้า"].rev;
-      ["มหาวิทยาลัย", "สำนักงาน", "ห้างสรรพสินค้า"].forEach(b => {
+      const pTotalRev = p.branches['มหาวิทยาลัย'].rev + p.branches['สำนักงาน'].rev + p.branches['ห้างสรรพสินค้า'].rev;
+      ['มหาวิทยาลัย', 'สำนักงาน', 'ห้างสรรพสินค้า'].forEach(b => {
         p.branches[b].pct = pTotalRev > 0 ? ((p.branches[b].rev / pTotalRev) * 100).toFixed(1) : 0;
       });
     });
-
     productsList.sort((a, b) => b.rev - a.rev);
 
-    // 5. Branches Breakdown
-    // Shows performance across branches within active category scope
+    // 2. Branches Breakdown
     const branchMap = {};
     BRANCH_CONFIG.forEach(b => {
       branchMap[b.name] = { ...b, bills: 0, qty: 0, rev: 0, profit: 0 };
     });
 
-    const catFilteredSales = RAW_SALES.filter(r => (catFilter === 'all' || r[4] === catFilter));
-    catFilteredSales.forEach(r => {
+    RAW_SALES.forEach(r => {
       const bName = r[2];
       if (branchMap[bName]) {
         branchMap[bName].bills++;
@@ -1203,23 +1179,20 @@ body {
       }
     });
 
-    const totalCatScopeRev = catFilteredSales.reduce((acc, r) => acc + r[6], 0) || 1;
     const branchesList = BRANCH_CONFIG.map(b => {
       const item = branchMap[b.name];
       item.margin = item.rev > 0 ? ((item.profit / item.rev) * 100).toFixed(1) + '%' : '0.0%';
-      item.pct = Number(((item.rev / totalCatScopeRev) * 100).toFixed(1));
+      item.pct = Number(((item.rev / totalRev) * 100).toFixed(1));
       return item;
     });
 
-    // 6. Categories Breakdown
-    // Shows categories within active branch scope
+    // 3. Categories Breakdown
     const catMap = {};
     CATEGORY_CONFIG.forEach(c => {
       catMap[c.name] = { ...c, qty: 0, rev: 0, profit: 0 };
     });
 
-    const branchFilteredSales = RAW_SALES.filter(r => (branchFilter === 'all' || r[2] === branchFilter));
-    branchFilteredSales.forEach(r => {
+    RAW_SALES.forEach(r => {
       const cName = r[4];
       if (catMap[cName]) {
         catMap[cName].qty += r[5];
@@ -1228,18 +1201,17 @@ body {
       }
     });
 
-    const totalBranchScopeRev = branchFilteredSales.reduce((acc, r) => acc + r[6], 0) || 1;
     const categoriesList = CATEGORY_CONFIG.map(c => {
       const item = catMap[c.name];
       item.margin = item.rev > 0 ? ((item.profit / item.rev) * 100).toFixed(1) + '%' : '0.0%';
-      item.pct = Number(((item.rev / totalBranchScopeRev) * 100).toFixed(1));
+      item.pct = Number(((item.rev / totalRev) * 100).toFixed(1));
       return item;
     });
 
-    // 7. Daily Timeline of Filtered Scope
+    // 4. Daily Timeline (31 days)
     const dailyMap = {};
     for (let d = 1; d <= 31; d++) dailyMap[d] = 0;
-    filtered.forEach(r => {
+    RAW_SALES.forEach(r => {
       dailyMap[r[1]] += r[6];
     });
 
@@ -1310,14 +1282,22 @@ body {
   }
 
   // ==========================================================================
-  // FILTER CONTROLLERS (TWO-WAY TOGGLE)
+  // MASTER RENDER CONTROLLER
   // ==========================================================================
+  function renderAll() {
+    DASH_DATA = computeDashboardData();
+    renderKPIs();
+    renderTopProducts();
+    renderBranches();
+    renderDailyTimeline();
+    renderCategories();
+    renderMatrixTable();
+  }
 
-
   // ==========================================================================
-  // RENDER VIEWS (HARMONIZED & ZERO CONFLICT)
+  // RENDER VIEWS
   // ==========================================================================
-  function renderStaticIcons() {
+    function renderStaticIcons() {
     document.getElementById('logoIcon').innerHTML = getIcon('coffee');
     document.getElementById('infoIcon').innerHTML = getIcon('info');
     document.getElementById('trophyIcon').innerHTML = getIcon('trophy');
