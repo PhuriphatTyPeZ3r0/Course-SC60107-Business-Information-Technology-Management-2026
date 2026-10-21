@@ -262,37 +262,7 @@ body {
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* VIEW TOGGLE */
-.view-toggle-wrap {
-  display: inline-flex;
-  background: var(--track-bg);
-  padding: 3px;
-  border-radius: 9px;
-  border: 1px solid var(--glass-b);
-  gap: 4px;
-}
-.filter-btn {
-  padding: 5px 12px;
-  font-size: 11px;
-  border-radius: 7px;
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  font-family: var(--font);
-  font-weight: 500;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-.filter-btn:hover { color: var(--txt); }
-.filter-btn.active {
-  background: var(--blue);
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
-}
+
 
 /* BARS (TOP PRODUCTS) */
 .bar-list { display: flex; flex-direction: column; gap: 10px; }
@@ -898,24 +868,14 @@ body {
   <div class="dash-grid">
     <!-- TOP PRODUCTS -->
     <div class="card fade" style="animation-delay:.15s">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
-        <div class="section-title" style="margin-bottom:0;">
-          <span class="st-icon st-a"><span class="icon" id="trophyIcon"></span></span> 
-          <span id="topProductsTitle">สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span></span>
-        </div>
-        <div class="view-toggle-wrap" id="productViewToggle">
-          <button id="btnTop3" class="filter-btn active" onclick="setProductFilter('top3')">
-            <span class="icon" id="checkIcon1"></span> Top 3 สูงสุด (ตามโจทย์ 1)
-          </button>
-          <button id="btnAllProds" class="filter-btn" onclick="setProductFilter('all')">
-            <span class="icon" id="chartIcon1"></span> ครบ 8 รายการ (Prompt 2)
-          </button>
-        </div>
+      <div class="section-title">
+        <span class="st-icon st-a"><span class="icon" id="trophyIcon"></span></span> 
+        <span id="topProductsTitle">3 อันดับสินค้าที่มียอดขายสูงสุด (Top 3 Products)</span>
       </div>
       <div class="bar-list" id="topProductsList"></div>
     </div>
 
-    <!-- BRANCH COMPARISON & PROFIT DETAILS -->
+    <!-- BRANCH COMPARISON -->
     <div class="card fade" style="animation-delay:.2s">
       <div class="section-title" id="branchSectionTitle">
         <span class="st-icon st-o"><span class="icon" id="storeIcon1"></span></span> เปรียบเทียบผลประกอบการ 3 สาขา
@@ -925,22 +885,6 @@ body {
         <tbody id="branchTbody"></tbody>
         <tfoot id="branchTfoot"></tfoot>
       </table>
-
-      <!-- Product detail table with click to Modal -->
-      <div style="margin-top:16px">
-        <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;">
-          <span style="display:flex;align-items:center;gap:4px">
-            <span class="icon" id="receiptIcon" style="font-size:14px"></span> รายละเอียดสินค้า × กำไร
-          </span>
-          <span style="font-size:11px;color:var(--cyan);display:flex;align-items:center;gap:3px;">
-            คลิกแถวเพื่อดูสรุปเจาะลึก
-          </span>
-        </div>
-        <table class="bt" style="font-size:11px">
-          <thead><tr><th>สินค้า</th><th>ชิ้น</th><th>รายได้</th><th>กำไร</th><th>GP%</th><th>สัดส่วน</th></tr></thead>
-          <tbody id="productProfitTbody"></tbody>
-        </table>
-      </div>
     </div>
   </div>
 
@@ -997,7 +941,7 @@ body {
   </div>
 
   <div class="footer">
-    ระบบวิเคราะห์ข้อมูลการขายร้านกาแฟและเบเกอรี (Amazon Quick Workshop) · สร้างจากข้อมูล 100 รายการ · รายได้ = จำนวนขาย × ราคาขาย | กำไร = จำนวนขาย × (ราคาขาย − ต้นทุน) · ตรวจสอบ 100%
+    Amazon Quick Workshop · SC60107 การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ · 6752300313 ภูริภัทร์ ยังพะเนียด · Standalone 100%
   </div>
 </div>
 
@@ -1213,7 +1157,6 @@ body {
   // Filter States
   let currentBranchFilter = 'all';
   let currentCatFilter = 'all';
-  let currentProductDisplayMode = 'top3';
 
   // Global Calculated Store
   let DASH_DATA = null;
@@ -1466,21 +1409,7 @@ body {
     applyFilters();
   }
 
-  function setProductFilter(mode) {
-    currentProductDisplayMode = mode;
-    const btn3 = document.getElementById('btnTop3');
-    const btnAll = document.getElementById('btnAllProds');
-    if (btn3 && btnAll) {
-      if (mode === 'top3') {
-        btn3.classList.add('active');
-        btnAll.classList.remove('active');
-      } else {
-        btn3.classList.remove('active');
-        btnAll.classList.add('active');
-      }
-    }
-    renderTopProducts();
-  }
+
 
   function applyFilters() {
     // 1. Update Buttons
@@ -1513,7 +1442,6 @@ body {
     renderKPIs();
     renderTopProducts();
     renderBranches();
-    renderProductDetailTable();
     renderDailyTimeline();
     renderCategories();
     renderMatrixTable();
@@ -1530,9 +1458,6 @@ body {
     document.getElementById('calendarIcon').innerHTML = getIcon('calendar');
     document.getElementById('categoryIcon').innerHTML = getIcon('category');
     document.getElementById('matrixIcon').innerHTML = getIcon('matrix');
-    document.getElementById('receiptIcon').innerHTML = getIcon('receipt');
-    document.getElementById('checkIcon1').innerHTML = getIcon('check');
-    document.getElementById('chartIcon1').innerHTML = getIcon('category');
     document.getElementById('filtBranchIcon').innerHTML = getIcon('store');
     document.getElementById('filtCatIcon').innerHTML = getIcon('category');
     document.getElementById('resetIcon').innerHTML = getIcon('reset');
@@ -1572,30 +1497,17 @@ body {
   function renderTopProducts() {
     const container = document.getElementById('topProductsList');
     const title = document.getElementById('topProductsTitle');
-    const toggleWrap = document.getElementById('productViewToggle');
     const prods = DASH_DATA.products.filter(p => p.rev > 0);
 
     if (title) {
       if (currentCatFilter !== 'all' && currentBranchFilter !== 'all') {
-        title.innerHTML = `สินค้ารายได้สูงสุด · สาขา${currentBranchFilter} × หมวด${currentCatFilter} <span style="font-size:11px;color:var(--cyan);font-weight:400;">(${prods.length} รายการ)</span>`;
+        title.innerHTML = `สินค้ารายได้สูงสุด (Top 3) · สาขา${currentBranchFilter} × หมวด${currentCatFilter}`;
       } else if (currentCatFilter !== 'all') {
-        title.innerHTML = `สินค้ารายได้สูงสุด · หมวด${currentCatFilter} <span style="font-size:11px;color:var(--cyan);font-weight:400;">(${prods.length} รายการ)</span>`;
+        title.innerHTML = `สินค้ารายได้สูงสุด (Top 3) · หมวด${currentCatFilter}`;
       } else if (currentBranchFilter !== 'all') {
-        title.innerHTML = `สินค้ารายได้สูงสุด · สาขา${currentBranchFilter} <span style="font-size:11px;color:var(--blue-l);font-weight:400;">(${prods.length} รายการ)</span>`;
+        title.innerHTML = `สินค้ารายได้สูงสุด (Top 3) · สาขา${currentBranchFilter}`;
       } else {
-        if (currentProductDisplayMode === 'top3') {
-          title.innerHTML = `สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>`;
-        } else {
-          title.innerHTML = `สินค้ารายได้รวม 8 รายการ <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>`;
-        }
-      }
-    }
-
-    if (toggleWrap) {
-      if (prods.length <= 3) {
-        toggleWrap.style.display = 'none';
-      } else {
-        toggleWrap.style.display = 'flex';
+        title.innerHTML = `3 อันดับสินค้าที่มียอดขายสูงสุด (Top 3 Products)`;
       }
     }
 
@@ -1604,17 +1516,16 @@ body {
       return;
     }
 
-    const maxRev = prods[0].rev || 1;
-    container.innerHTML = prods.map((p, idx) => {
+    const top3Prods = prods.slice(0, 3);
+    const maxRev = top3Prods[0]?.rev || 1;
+    container.innerHTML = top3Prods.map((p, idx) => {
       const rank = idx + 1;
-      const rankClass = rank <= 3 ? `r${rank}` : 'r4';
+      const rankClass = `r${rank}`;
       const fillClass = rank === 1 ? 'bf1' : (rank === 2 ? 'bf2' : 'bf3');
       const pct = ((p.rev / maxRev) * 100).toFixed(1);
-      const isRest = rank > 3 ? 'bar-rest' : 'bar-top3';
-      const displayStyle = (rank > 3 && currentProductDisplayMode === 'top3' && prods.length > 3) ? 'display:none;' : '';
 
       return `
-        <div class="bar-item ${isRest}" style="${displayStyle}" onclick="openProductModal('${p.name}')">
+        <div class="bar-item bar-top3" onclick="openProductModal('${p.name}')">
           <div class="bar-name">
             <span class="bar-rank ${rankClass}">${rank}</span>
             <div class="prod-thumb-wrap">
@@ -1686,33 +1597,6 @@ body {
     `;
   }
 
-  function renderProductDetailTable() {
-    const tbody = document.getElementById('productProfitTbody');
-    const prods = DASH_DATA.products.filter(p => p.rev > 0);
-    const totalRev = DASH_DATA.summary.revenue || 1;
-
-    tbody.innerHTML = prods.map(p => {
-      const pShare = ((p.rev / totalRev) * 100).toFixed(1) + '%';
-      return `
-        <tr class="clickable-row" onclick="openProductModal('${p.name}')">
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="prod-thumb-wrap">
-                <img src="${p.img}" alt="${p.name}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <span class="icon prod-thumb-fallback" style="display:none;color:${p.color};">${getIcon(p.icon)}</span>
-              </div>
-              <span>${p.name}</span>
-            </div>
-          </td>
-          <td>${fmtInt(p.qty)}</td>
-          <td>฿${fmtInt(p.rev)}</td>
-          <td>฿${fmtInt(p.profit)}</td>
-          <td>${p.margin}</td>
-          <td>${pShare}</td>
-        </tr>
-      `;
-    }).join('');
-  }
 
   function renderDailyTimeline() {
     const chart = document.getElementById('dailyChartContainer');
