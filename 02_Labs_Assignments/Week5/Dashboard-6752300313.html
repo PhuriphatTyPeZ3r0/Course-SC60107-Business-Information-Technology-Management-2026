@@ -903,7 +903,7 @@ body {
           <span class="st-icon st-a"><span class="icon" id="trophyIcon"></span></span> 
           <span id="topProductsTitle">สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span></span>
         </div>
-        <div class="view-toggle-wrap">
+        <div class="view-toggle-wrap" id="productViewToggle">
           <button id="btnTop3" class="filter-btn active" onclick="setProductFilter('top3')">
             <span class="icon" id="checkIcon1"></span> Top 3 สูงสุด (ตามโจทย์ 1)
           </button>
@@ -917,9 +917,8 @@ body {
 
     <!-- BRANCH COMPARISON & PROFIT DETAILS -->
     <div class="card fade" style="animation-delay:.2s">
-      <div class="section-title">
-        <span class="st-icon st-o"><span class="icon" id="storeIcon1"></span></span> 
-        เปรียบเทียบผลประกอบการ 3 สาขา
+      <div class="section-title" id="branchSectionTitle">
+        <span class="st-icon st-o"><span class="icon" id="storeIcon1"></span></span> เปรียบเทียบผลประกอบการ 3 สาขา
       </div>
       <table class="bt" id="branchTable">
         <thead><tr><th>สาขา</th><th>บิล</th><th>ชิ้น</th><th>รายได้</th><th>สัดส่วน</th><th>กำไร</th><th>GP%</th></tr></thead>
@@ -953,13 +952,7 @@ body {
         <span class="st-icon st-c"><span class="icon" id="calendarIcon"></span></span> 
         แนวโน้มรายได้รายวัน · สิงหาคม 2569
       </div>
-      <div class="daily-stats">
-        <span class="ds ds-p">▲ Peak 4 ส.ค. ฿3,690</span>
-        <span class="ds ds-l">▼ Low 15 ส.ค. ฿1,290</span>
-        <span class="ds ds-a">เฉลี่ย ฿2,340/วัน</span>
-        <span class="ds ds-w">จ-ศ ฿2,343/วัน</span>
-        <span class="ds ds-e">ส-อา ฿2,332/วัน</span>
-      </div>
+      <div class="daily-stats" id="dailyStatsBadges"></div>
       <div class="daily-wrap">
         <div class="daily-chart" id="dailyChartContainer"></div>
       </div>
@@ -972,9 +965,8 @@ body {
 
     <!-- CATEGORY STRUCTURE -->
     <div class="card fade" style="animation-delay:.3s">
-      <div class="section-title">
-        <span class="st-icon st-g"><span class="icon" id="categoryIcon"></span></span> 
-        โครงสร้างสัดส่วนหมวดหมู่สินค้า
+      <div class="section-title" id="categorySectionTitle">
+        <span class="st-icon st-g"><span class="icon" id="categoryIcon"></span></span> โครงสร้างสัดส่วนหมวดหมู่สินค้า
       </div>
       <div class="cat-cards" id="categoryCardsList"></div>
     </div>
@@ -1229,15 +1221,18 @@ body {
   // ==========================================================================
   // DYNAMIC AGGREGATION ENGINE
   // ==========================================================================
+  // ==========================================================================
+  // DYNAMIC AGGREGATION ENGINE (STRICT & ZERO CONFLICT)
+  // ==========================================================================
   function computeDashboardData(branchFilter, catFilter) {
-    // 1. Filter Transactions
+    // 1. Filtered Transactions
     const filtered = RAW_SALES.filter(r => {
       const bMatch = (branchFilter === 'all' || r[2] === branchFilter);
       const cMatch = (catFilter === 'all' || r[4] === catFilter);
       return bMatch && cMatch;
     });
 
-    // 2. Summary
+    // 2. Summary of Filtered Scope
     const totalRev = filtered.reduce((acc, r) => acc + r[6], 0);
     const totalProfit = filtered.reduce((acc, r) => acc + r[7], 0);
     const totalUnits = filtered.reduce((acc, r) => acc + r[5], 0);
@@ -1246,7 +1241,27 @@ body {
     const aov = bills > 0 ? (totalRev / bills) : 0;
     const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(2) + '%' : '0.00%';
 
-    // 3. Products
+    // 3. Product Branch Matrix for Cross-tab Table
+    // When catFilter is active, show only products in that category across all 3 branches
+    const productBranchMatrix = {};
+    const productRevenueMap = {};
+    Object.keys(PRODUCT_META).forEach(pName => {
+      productBranchMatrix[pName] = { 'มหาวิทยาลัย': 0, 'สำนักงาน': 0, 'ห้างสรรพสินค้า': 0 };
+      productRevenueMap[pName] = 0;
+    });
+
+    RAW_SALES.forEach(r => {
+      const pName = r[3];
+      const bName = r[2];
+      const cName = r[4];
+      if (catFilter === 'all' || cName === catFilter) {
+        if (productBranchMatrix[pName] && productBranchMatrix[pName][bName] !== undefined) {
+          productBranchMatrix[pName][bName] += r[6];
+        }
+      }
+    });
+
+    // 4. Products in active filtered scope
     const prodMap = {};
     Object.keys(PRODUCT_META).forEach(pName => {
       const meta = PRODUCT_META[pName];
@@ -1270,7 +1285,7 @@ body {
       };
     });
 
-    // Populate from all sales for branch breakdown, and track filtered sales
+    // Baseline branch quantities for product modal
     RAW_SALES.forEach(r => {
       const pName = r[3];
       const bName = r[2];
@@ -1281,7 +1296,7 @@ body {
       }
     });
 
-    // Now populate filtered quantities
+    // Populate filtered quantities
     filtered.forEach(r => {
       const pName = r[3];
       if (prodMap[pName]) {
@@ -1291,31 +1306,32 @@ body {
       }
     });
 
-    // Compute margins and percentages
     let productsList = Object.values(prodMap);
     if (catFilter !== 'all') {
       productsList = productsList.filter(p => p.cat === catFilter);
     }
 
     productsList.forEach(p => {
+      productRevenueMap[p.name] = p.rev;
       p.margin = p.rev > 0 ? ((p.profit / p.rev) * 100).toFixed(1) + '%' : '0.0%';
       p.pctOfTotal = totalRev > 0 ? ((p.rev / totalRev) * 100).toFixed(1) + '%' : '0.0%';
-      // Branch percentages inside product
       const pTotalRev = p.branches["มหาวิทยาลัย"].rev + p.branches["สำนักงาน"].rev + p.branches["ห้างสรรพสินค้า"].rev;
       ["มหาวิทยาลัย", "สำนักงาน", "ห้างสรรพสินค้า"].forEach(b => {
         p.branches[b].pct = pTotalRev > 0 ? ((p.branches[b].rev / pTotalRev) * 100).toFixed(1) : 0;
       });
     });
 
-    // Sort descending by filtered rev
     productsList.sort((a, b) => b.rev - a.rev);
 
-    // 4. Branches
+    // 5. Branches Breakdown
+    // Shows performance across branches within active category scope
     const branchMap = {};
     BRANCH_CONFIG.forEach(b => {
       branchMap[b.name] = { ...b, bills: 0, qty: 0, rev: 0, profit: 0 };
     });
-    filtered.forEach(r => {
+
+    const catFilteredSales = RAW_SALES.filter(r => (catFilter === 'all' || r[4] === catFilter));
+    catFilteredSales.forEach(r => {
       const bName = r[2];
       if (branchMap[bName]) {
         branchMap[bName].bills++;
@@ -1324,19 +1340,24 @@ body {
         branchMap[bName].profit += r[7];
       }
     });
+
+    const totalCatScopeRev = catFilteredSales.reduce((acc, r) => acc + r[6], 0) || 1;
     const branchesList = BRANCH_CONFIG.map(b => {
       const item = branchMap[b.name];
       item.margin = item.rev > 0 ? ((item.profit / item.rev) * 100).toFixed(1) + '%' : '0.0%';
-      item.pct = totalRev > 0 ? Number(((item.rev / totalRev) * 100).toFixed(1)) : 0;
+      item.pct = Number(((item.rev / totalCatScopeRev) * 100).toFixed(1));
       return item;
     });
 
-    // 5. Categories
+    // 6. Categories Breakdown
+    // Shows categories within active branch scope
     const catMap = {};
     CATEGORY_CONFIG.forEach(c => {
       catMap[c.name] = { ...c, qty: 0, rev: 0, profit: 0 };
     });
-    filtered.forEach(r => {
+
+    const branchFilteredSales = RAW_SALES.filter(r => (branchFilter === 'all' || r[2] === branchFilter));
+    branchFilteredSales.forEach(r => {
       const cName = r[4];
       if (catMap[cName]) {
         catMap[cName].qty += r[5];
@@ -1344,29 +1365,36 @@ body {
         catMap[cName].profit += r[7];
       }
     });
+
+    const totalBranchScopeRev = branchFilteredSales.reduce((acc, r) => acc + r[6], 0) || 1;
     const categoriesList = CATEGORY_CONFIG.map(c => {
       const item = catMap[c.name];
       item.margin = item.rev > 0 ? ((item.profit / item.rev) * 100).toFixed(1) + '%' : '0.0%';
-      item.pct = totalRev > 0 ? Number(((item.rev / totalRev) * 100).toFixed(1)) : 0;
+      item.pct = Number(((item.rev / totalBranchScopeRev) * 100).toFixed(1));
       return item;
     });
 
-    // 6. Daily Timeline
+    // 7. Daily Timeline of Filtered Scope
     const dailyMap = {};
     for (let d = 1; d <= 31; d++) dailyMap[d] = 0;
     filtered.forEach(r => {
       dailyMap[r[1]] += r[6];
     });
+
     const weekendDays = [1, 2, 8, 9, 15, 16, 22, 23, 29, 30];
     let maxDaily = 0;
     let minDaily = Infinity;
     let peakDay = 1;
     let lowDay = 1;
+    let wdSum = 0;
+    let weSum = 0;
 
     for (let d = 1; d <= 31; d++) {
       const val = dailyMap[d];
       if (val > maxDaily) { maxDaily = val; peakDay = d; }
       if (val < minDaily && val > 0) { minDaily = val; lowDay = d; }
+      if (weekendDays.includes(d)) weSum += val;
+      else wdSum += val;
     }
     if (minDaily === Infinity) minDaily = 0;
 
@@ -1403,27 +1431,32 @@ body {
         products_count: productsList.filter(p => p.rev > 0).length
       },
       products: productsList,
+      productBranchMatrix,
+      productRevenueMap,
       branches: branchesList,
       categories: categoriesList,
       daily: dailyList,
       dailyStats: {
         peakDay, maxDaily,
         lowDay, minDaily,
-        avg: bills > 0 ? (totalRev / 31) : 0
+        avg: totalRev / 31,
+        wdAvg: wdSum / 21,
+        weAvg: weSum / 10,
+        totalRev
       }
     };
   }
 
   // ==========================================================================
-  // FILTER CONTROLLERS
+  // FILTER CONTROLLERS (TWO-WAY TOGGLE)
   // ==========================================================================
   function setBranchFilter(branch) {
-    currentBranchFilter = branch;
+    currentBranchFilter = (currentBranchFilter === branch) ? 'all' : branch;
     applyFilters();
   }
 
   function setCategoryFilter(cat) {
-    currentCatFilter = cat;
+    currentCatFilter = (currentCatFilter === cat) ? 'all' : cat;
     applyFilters();
   }
 
@@ -1437,16 +1470,14 @@ body {
     currentProductDisplayMode = mode;
     const btn3 = document.getElementById('btnTop3');
     const btnAll = document.getElementById('btnAllProds');
-    const title = document.getElementById('topProductsTitle');
-
-    if (mode === 'top3') {
-      btn3.classList.add('active');
-      btnAll.classList.remove('active');
-      title.innerHTML = 'สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>';
-    } else {
-      btn3.classList.remove('active');
-      btnAll.classList.add('active');
-      title.innerHTML = 'สินค้ารายได้รวมตามเงื่อนไข <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>';
+    if (btn3 && btnAll) {
+      if (mode === 'top3') {
+        btn3.classList.add('active');
+        btnAll.classList.remove('active');
+      } else {
+        btn3.classList.remove('active');
+        btnAll.classList.add('active');
+      }
     }
     renderTopProducts();
   }
@@ -1489,7 +1520,7 @@ body {
   }
 
   // ==========================================================================
-  // RENDER VIEWS
+  // RENDER VIEWS (HARMONIZED & ZERO CONFLICT)
   // ==========================================================================
   function renderStaticIcons() {
     document.getElementById('logoIcon').innerHTML = getIcon('coffee');
@@ -1507,7 +1538,7 @@ body {
     document.getElementById('resetIcon').innerHTML = getIcon('reset');
   }
 
-    function renderKPIs() {
+  function renderKPIs() {
     const s = DASH_DATA.summary;
     const container = document.getElementById('kpiGrid');
     container.innerHTML = `
@@ -1540,8 +1571,35 @@ body {
 
   function renderTopProducts() {
     const container = document.getElementById('topProductsList');
-    const prods = DASH_DATA.products;
-    if (prods.length === 0 || prods[0].rev === 0) {
+    const title = document.getElementById('topProductsTitle');
+    const toggleWrap = document.getElementById('productViewToggle');
+    const prods = DASH_DATA.products.filter(p => p.rev > 0);
+
+    if (title) {
+      if (currentCatFilter !== 'all' && currentBranchFilter !== 'all') {
+        title.innerHTML = `สินค้ารายได้สูงสุด · สาขา${currentBranchFilter} × หมวด${currentCatFilter} <span style="font-size:11px;color:var(--cyan);font-weight:400;">(${prods.length} รายการ)</span>`;
+      } else if (currentCatFilter !== 'all') {
+        title.innerHTML = `สินค้ารายได้สูงสุด · หมวด${currentCatFilter} <span style="font-size:11px;color:var(--cyan);font-weight:400;">(${prods.length} รายการ)</span>`;
+      } else if (currentBranchFilter !== 'all') {
+        title.innerHTML = `สินค้ารายได้สูงสุด · สาขา${currentBranchFilter} <span style="font-size:11px;color:var(--blue-l);font-weight:400;">(${prods.length} รายการ)</span>`;
+      } else {
+        if (currentProductDisplayMode === 'top3') {
+          title.innerHTML = `สินค้ารายได้รวมสูงสุด 3 อันดับ <span style="font-size:11px;color:var(--orange);font-weight:400;">(ตรงตามโจทย์ 1)</span>`;
+        } else {
+          title.innerHTML = `สินค้ารายได้รวม 8 รายการ <span style="font-size:11px;color:var(--cyan);font-weight:400;">(Prompt 2: วิเคราะห์ละเอียด)</span>`;
+        }
+      }
+    }
+
+    if (toggleWrap) {
+      if (prods.length <= 3) {
+        toggleWrap.style.display = 'none';
+      } else {
+        toggleWrap.style.display = 'flex';
+      }
+    }
+
+    if (prods.length === 0) {
       container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">ไม่มีรายการขายในเงื่อนไขตัวกรองนี้</div>';
       return;
     }
@@ -1553,7 +1611,7 @@ body {
       const fillClass = rank === 1 ? 'bf1' : (rank === 2 ? 'bf2' : 'bf3');
       const pct = ((p.rev / maxRev) * 100).toFixed(1);
       const isRest = rank > 3 ? 'bar-rest' : 'bar-top3';
-      const displayStyle = (rank > 3 && currentProductDisplayMode === 'top3') ? 'display:none;' : '';
+      const displayStyle = (rank > 3 && currentProductDisplayMode === 'top3' && prods.length > 3) ? 'display:none;' : '';
 
       return `
         <div class="bar-item ${isRest}" style="${displayStyle}" onclick="openProductModal('${p.name}')">
@@ -1575,13 +1633,27 @@ body {
   function renderBranches() {
     const tbody = document.getElementById('branchTbody');
     const tfoot = document.getElementById('branchTfoot');
-    const s = DASH_DATA.summary;
+    const title = document.getElementById('branchSectionTitle');
 
-    tbody.innerHTML = DASH_DATA.branches.map(b => {
+    if (title) {
+      if (currentCatFilter !== 'all') {
+        title.innerHTML = `<span class="st-icon st-o"><span class="icon" id="storeIcon1">${getIcon('store')}</span></span> เปรียบเทียบผลประกอบการ 3 สาขา <span style="font-size:11px;color:var(--cyan);font-weight:400;">(หมวด${currentCatFilter})</span>`;
+      } else if (currentBranchFilter !== 'all') {
+        title.innerHTML = `<span class="st-icon st-o"><span class="icon" id="storeIcon1">${getIcon('store')}</span></span> เปรียบเทียบผลประกอบการ 3 สาขา <span style="font-size:11px;color:var(--blue-l);font-weight:400;">(ไฮไลท์สาขา${currentBranchFilter})</span>`;
+      } else {
+        title.innerHTML = `<span class="st-icon st-o"><span class="icon" id="storeIcon1">${getIcon('store')}</span></span> เปรียบเทียบผลประกอบการ 3 สาขา`;
+      }
+    }
+
+    const branches = DASH_DATA.branches;
+    const totalBranchRev = branches.reduce((acc, b) => acc + b.rev, 0) || 1;
+
+    tbody.innerHTML = branches.map(b => {
       const isSelected = (currentBranchFilter === b.name);
       const rowStyle = isSelected ? 'background:rgba(37,99,235,0.08);font-weight:600;' : '';
+      const bPct = ((b.rev / totalBranchRev) * 100).toFixed(1);
       return `
-        <tr style="${rowStyle}" class="clickable-row" onclick="setBranchFilter('${isSelected ? 'all' : b.name}')">
+        <tr style="${rowStyle}" class="clickable-row" onclick="setBranchFilter('${b.name}')">
           <td>
             <span class="icon branch-icon" style="color:${b.color}">${getIcon(b.icon)}</span> 
             ${b.name} ${isSelected ? '<span style="font-size:10px;color:var(--cyan);">(กำลังเลือก)</span>' : ''}
@@ -1589,22 +1661,27 @@ body {
           <td>${b.bills}</td>
           <td>${fmtInt(b.qty)}</td>
           <td>฿${fmtInt(b.rev)}</td>
-          <td><span class="pbar" style="width:${b.pct}px;background:${b.color}"></span>${b.pct.toFixed(1)}%</td>
+          <td><span class="pbar" style="width:${bPct}px;background:${b.color}"></span>${bPct}%</td>
           <td>฿${fmtInt(b.profit)}</td>
           <td>${b.margin}</td>
         </tr>
       `;
     }).join('');
 
+    const totalBranchBills = branches.reduce((acc, b) => acc + b.bills, 0);
+    const totalBranchQty = branches.reduce((acc, b) => acc + b.qty, 0);
+    const totalBranchProfit = branches.reduce((acc, b) => acc + b.profit, 0);
+    const totalBranchMargin = totalBranchRev > 0 ? ((totalBranchProfit / totalBranchRev) * 100).toFixed(1) + '%' : '0.0%';
+
     tfoot.innerHTML = `
       <tr>
         <td>รวมทั้งหมด</td>
-        <td>${s.bills}</td>
-        <td>${fmtInt(s.units)}</td>
-        <td>฿${fmtInt(s.revenue)}</td>
+        <td>${totalBranchBills}</td>
+        <td>${fmtInt(totalBranchQty)}</td>
+        <td>฿${fmtInt(totalBranchRev)}</td>
         <td>100%</td>
-        <td>฿${fmtInt(s.profit)}</td>
-        <td>${s.margin}</td>
+        <td>฿${fmtInt(totalBranchProfit)}</td>
+        <td>${totalBranchMargin}</td>
       </tr>
     `;
   }
@@ -1612,33 +1689,53 @@ body {
   function renderProductDetailTable() {
     const tbody = document.getElementById('productProfitTbody');
     const prods = DASH_DATA.products.filter(p => p.rev > 0);
+    const totalRev = DASH_DATA.summary.revenue || 1;
 
-    tbody.innerHTML = prods.map(p => `
-      <tr class="clickable-row" onclick="openProductModal('${p.name}')">
-        <td>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div class="prod-thumb-wrap">
-              <img src="${p.img}" alt="${p.name}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-              <span class="icon prod-thumb-fallback" style="display:none;color:${p.color};">${getIcon(p.icon)}</span>
+    tbody.innerHTML = prods.map(p => {
+      const pShare = ((p.rev / totalRev) * 100).toFixed(1) + '%';
+      return `
+        <tr class="clickable-row" onclick="openProductModal('${p.name}')">
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="prod-thumb-wrap">
+                <img src="${p.img}" alt="${p.name}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="icon prod-thumb-fallback" style="display:none;color:${p.color};">${getIcon(p.icon)}</span>
+              </div>
+              <span>${p.name}</span>
             </div>
-            <span>${p.name}</span>
-          </div>
-        </td>
-        <td>${fmtInt(p.qty)}</td>
-        <td>฿${fmtInt(p.rev)}</td>
-        <td>฿${fmtInt(p.profit)}</td>
-        <td>${p.margin}</td>
-        <td>${p.pctOfTotal}</td>
-      </tr>
-    `).join('');
+          </td>
+          <td>${fmtInt(p.qty)}</td>
+          <td>฿${fmtInt(p.rev)}</td>
+          <td>฿${fmtInt(p.profit)}</td>
+          <td>${p.margin}</td>
+          <td>${pShare}</td>
+        </tr>
+      `;
+    }).join('');
   }
 
   function renderDailyTimeline() {
     const chart = document.getElementById('dailyChartContainer');
-    const maxVal = DASH_DATA.dailyStats.maxDaily || 1;
+    const badges = document.getElementById('dailyStatsBadges');
+    const stats = DASH_DATA.dailyStats;
+    const maxVal = stats.maxDaily || 1;
+
+    if (badges) {
+      if (stats.totalRev > 0) {
+        badges.innerHTML = `
+          <span class="ds ds-p">▲ Peak ${stats.peakDay} ส.ค. ฿${fmtInt(stats.maxDaily)}</span>
+          <span class="ds ds-l">▼ Low ${stats.lowDay} ส.ค. ฿${fmtInt(stats.minDaily)}</span>
+          <span class="ds ds-a">เฉลี่ย ฿${fmtInt(stats.avg)}/วัน</span>
+          <span class="ds ds-w">จ-ศ ฿${fmtInt(stats.wdAvg)}/วัน</span>
+          <span class="ds ds-e">ส-อา ฿${fmtInt(stats.weAvg)}/วัน</span>
+        `;
+      } else {
+        badges.innerHTML = `<span class="ds ds-a">ไม่มีรายการขายในเงื่อนไขตัวกรองนี้</span>`;
+      }
+    }
 
     chart.innerHTML = DASH_DATA.daily.map(d => {
-      const heightPct = ((d.rev / maxVal) * 100).toFixed(1);
+      const heightPct = maxVal > 0 ? ((d.rev / maxVal) * 100).toFixed(1) : 0;
       const barClass = d.isPeak ? 'pk' : (d.isWeekend ? 'we' : 'wd');
       return `
         <div class="dc">
@@ -1655,11 +1752,29 @@ body {
 
   function renderCategories() {
     const container = document.getElementById('categoryCardsList');
-    container.innerHTML = DASH_DATA.categories.map(c => {
+    const title = document.getElementById('categorySectionTitle');
+
+    if (title) {
+      if (currentBranchFilter !== 'all') {
+        title.innerHTML = `<span class="st-icon st-g"><span class="icon" id="categoryIcon">${getIcon('category')}</span></span> โครงสร้างสัดส่วนหมวดหมู่สินค้า <span style="font-size:11px;color:var(--blue-l);font-weight:400;">(สาขา${currentBranchFilter})</span>`;
+      } else {
+        title.innerHTML = `<span class="st-icon st-g"><span class="icon" id="categoryIcon">${getIcon('category')}</span></span> โครงสร้างสัดส่วนหมวดหมู่สินค้า`;
+      }
+    }
+
+    const categories = DASH_DATA.categories;
+    const totalCatRev = categories.reduce((acc, c) => acc + c.rev, 0) || 1;
+
+    container.innerHTML = categories.map(c => {
       const isSelected = (currentCatFilter === c.name);
-      const cardBorder = isSelected ? 'border: 1px solid var(--cyan); background: rgba(6,182,212,0.06);' : '';
+      const isMuted = (currentCatFilter !== 'all' && !isSelected);
+      const cardBorder = isSelected 
+        ? 'border: 1px solid var(--cyan); background: rgba(6,182,212,0.08);' 
+        : (isMuted ? 'opacity: 0.55;' : '');
+      const cPct = ((c.rev / totalCatRev) * 100).toFixed(1);
+
       return `
-        <div class="cat-card clickable-row" style="${cardBorder}" onclick="setCategoryFilter('${isSelected ? 'all' : c.name}')">
+        <div class="cat-card clickable-row" style="${cardBorder}" onclick="setCategoryFilter('${c.name}')">
           <div class="cat-dot" style="background:${c.color}"></div>
           <div class="cat-info">
             <div class="cat-name">
@@ -1667,9 +1782,9 @@ body {
               ${c.name} ${isSelected ? '<span style="font-size:10px;color:var(--cyan);">(กำลังเลือก)</span>' : ''}
             </div>
             <div class="cat-sub">฿${fmtInt(c.rev)} · ${fmtInt(c.qty)} หน่วย · กำไร ฿${fmtInt(c.profit)} (${c.margin})</div>
-            <div class="cat-prog"><div class="cat-prog-fill" style="width:${c.pct}%;background:${c.color}"></div></div>
+            <div class="cat-prog"><div class="cat-prog-fill" style="width:${cPct}%;background:${c.color}"></div></div>
           </div>
-          <div class="cat-pct" style="color:${c.color}">${c.pct}%</div>
+          <div class="cat-pct" style="color:${c.color}">${cPct}%</div>
         </div>
       `;
     }).join('');
@@ -1678,45 +1793,70 @@ body {
   function renderMatrixTable() {
     const tbody = document.getElementById('matrixTbody');
     const tfoot = document.getElementById('matrixTfoot');
-    const s = DASH_DATA.summary;
+
+    let prodsToShow = Object.keys(PRODUCT_META);
+    if (currentCatFilter !== 'all') {
+      prodsToShow = prodsToShow.filter(pName => PRODUCT_META[pName].cat === currentCatFilter);
+    }
+
+    prodsToShow.sort((a, b) => {
+      const revA = DASH_DATA.productRevenueMap[a] || 0;
+      const revB = DASH_DATA.productRevenueMap[b] || 0;
+      return revB - revA;
+    });
 
     const b0Hl = (currentBranchFilter === 'มหาวิทยาลัย') ? 'branch-highlight-cell' : '';
     const b1Hl = (currentBranchFilter === 'สำนักงาน') ? 'branch-highlight-cell' : '';
     const b2Hl = (currentBranchFilter === 'ห้างสรรพสินค้า') ? 'branch-highlight-cell' : '';
 
-    tbody.innerHTML = DASH_DATA.products.map(p => `
-      <tr class="clickable-row" onclick="openProductModal('${p.name}')">
-        <td>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div class="prod-thumb-wrap">
-              <img src="${p.img}" alt="${p.name}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-              <span class="icon prod-thumb-fallback" style="display:none;color:${p.color};">${getIcon(p.icon)}</span>
-            </div>
-            <span>${p.name}</span>
-          </div>
-        </td>
-        <td>${p.cat}</td>
-        <td class="num ${b0Hl}">${fmtInt(p.branches['มหาวิทยาลัย'].rev)}</td>
-        <td class="num ${b1Hl}">${fmtInt(p.branches['สำนักงาน'].rev)}</td>
-        <td class="num ${b2Hl}">${fmtInt(p.branches['ห้างสรรพสินค้า'].rev)}</td>
-        <td class="num"><b>${fmtInt(p.rev)}</b></td>
-      </tr>
-    `).join('');
+    let col0Sum = 0;
+    let col1Sum = 0;
+    let col2Sum = 0;
 
+    tbody.innerHTML = prodsToShow.map(pName => {
+      const meta = PRODUCT_META[pName];
+      const bMap = DASH_DATA.productBranchMatrix[pName] || { 'มหาวิทยาลัย': 0, 'สำนักงาน': 0, 'ห้างสรรพสินค้า': 0 };
+      const r0 = bMap['มหาวิทยาลัย'];
+      const r1 = bMap['สำนักงาน'];
+      const r2 = bMap['ห้างสรรพสินค้า'];
+      const rowSum = r0 + r1 + r2;
+
+      col0Sum += r0;
+      col1Sum += r1;
+      col2Sum += r2;
+
+      return `
+        <tr class="clickable-row" onclick="openProductModal('${pName}')">
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="prod-thumb-wrap">
+                <img src="${meta.img}" alt="${pName}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="icon prod-thumb-fallback" style="display:none;color:${meta.color};">${getIcon(meta.icon)}</span>
+              </div>
+              <span>${pName}</span>
+            </div>
+          </td>
+          <td>${meta.cat}</td>
+          <td class="num ${b0Hl}">฿${fmtInt(r0)}</td>
+          <td class="num ${b1Hl}">฿${fmtInt(r1)}</td>
+          <td class="num ${b2Hl}">฿${fmtInt(r2)}</td>
+          <td class="num"><b>฿${fmtInt(rowSum)}</b></td>
+        </tr>
+      `;
+    }).join('');
+
+    const grandTotal = col0Sum + col1Sum + col2Sum;
     tfoot.innerHTML = `
       <tr>
-        <td colspan="2">รวมทั้งหมด</td>
-        <td class="num ${b0Hl}">${fmtInt(DASH_DATA.branches[0].rev)}</td>
-        <td class="num ${b1Hl}">${fmtInt(DASH_DATA.branches[1].rev)}</td>
-        <td class="num ${b2Hl}">${fmtInt(DASH_DATA.branches[2].rev)}</td>
-        <td class="num">${fmtInt(s.revenue)}</td>
+        <td colspan="2">รวมทั้งหมด (${prodsToShow.length} รายการ)</td>
+        <td class="num ${b0Hl}">฿${fmtInt(col0Sum)}</td>
+        <td class="num ${b1Hl}">฿${fmtInt(col1Sum)}</td>
+        <td class="num ${b2Hl}">฿${fmtInt(col2Sum)}</td>
+        <td class="num"><b>฿${fmtInt(grandTotal)}</b></td>
       </tr>
     `;
   }
 
-  // ==========================================================================
-  // 2D MINIMALIST MODAL POP-UP
-  // ==========================================================================
   const modalOverlay = document.getElementById('modal2D');
 
   function openProductModal(prodName) {
