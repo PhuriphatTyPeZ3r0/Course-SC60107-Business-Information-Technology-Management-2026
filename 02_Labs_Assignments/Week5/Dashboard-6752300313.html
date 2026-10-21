@@ -1094,6 +1094,64 @@ body {
   </div>
 </div>
 
+<!-- ==========================================================================
+     KPI DETAIL MODAL (DEDICATED FOR KPI CARDS)
+     ========================================================================== -->
+<div id="modalKpi" class="modal-overlay" style="display:none;" onclick="closeKpiModalOnBackdrop(event)">
+  <div class="modal-card" style="max-width: 620px;" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-cat-icon" id="kpiModalIcon"></span>
+        <div>
+          <h3 id="kpiModalTitle" style="font-size:18px;font-weight:700;">เจาะลึก KPI</h3>
+          <span id="kpiModalBadge" class="badge" style="font-size:10px;padding:2px 8px;">สูตรคำนวณตามข้อกำหนด</span>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeKpiModal()" title="ปิดหน้าต่าง (Esc)">✕</button>
+    </div>
+    
+    <div style="padding: 22px; display: flex; flex-direction: column; gap: 16px;">
+      <!-- Hero Stat Card -->
+      <div class="m-total-card" style="background: var(--card-sub-bg); border: 1px solid var(--border-sub);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:12px; color:var(--muted); font-weight:600;" id="kpiHeroLabel">ตัวชี้วัดหลัก</span>
+          <span id="kpiFormula" style="font-size:11px; color:var(--cyan); font-family:var(--font); font-weight:500;"></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span id="kpiHeroValue" style="font-size:26px; font-weight:800; font-variant-numeric:tabular-nums;">฿0.00</span>
+          <span id="kpiHeroSub" style="font-size:13px; font-weight:600; color:var(--txt-sub);"></span>
+        </div>
+      </div>
+
+      <!-- Breakdown 1: By Branch -->
+      <div>
+        <div style="font-size:12px; font-weight:600; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between;">
+          <span id="kpiBreakdown1Title">สัดส่วนแยกตาม 3 สาขา</span>
+          <span style="font-size:11px; color:var(--txt-sub);">มูลค่า (% สัดส่วน)</span>
+        </div>
+        <div class="m-branch-list" id="kpiBranchList"></div>
+      </div>
+
+      <!-- Breakdown 2: By Category -->
+      <div>
+        <div style="font-size:12px; font-weight:600; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between;">
+          <span id="kpiBreakdown2Title">สัดส่วนแยกตาม 3 หมวดหมู่</span>
+          <span style="font-size:11px; color:var(--txt-sub);">มูลค่า (% สัดส่วน)</span>
+        </div>
+        <div class="m-branch-list" id="kpiCategoryList"></div>
+      </div>
+
+      <!-- Top Contributors -->
+      <div>
+        <div style="font-size:12px; font-weight:600; color:var(--muted); margin-bottom:8px;" id="kpiTopTitle">
+          สินค้าที่มีผลต่อตัวชี้วัดนี้สูงสุด 3 อันดับ
+        </div>
+        <div class="m-branch-list" id="kpiTopList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   // Raw Transactions Store (100 records from Sales sheet)
   // Format: [id, day, branch, product, category, qty, revenue, profit]
@@ -1449,32 +1507,32 @@ body {
     document.getElementById('resetIcon').innerHTML = getIcon('reset');
   }
 
-  function renderKPIs() {
+    function renderKPIs() {
     const s = DASH_DATA.summary;
     const container = document.getElementById('kpiGrid');
     container.innerHTML = `
-      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[0]?.name || 'ชีสเค้ก'}')">
+      <div class="kpi fade" onclick="openKpiModal('revenue')" title="คลิกเพื่อดูเจาะลึกรายได้รวม">
         <div class="kpi-label"><span class="kpi-icon ki-b">${getIcon('payments')}</span> รายได้รวม (Revenue)</div>
         <div class="kpi-val">${fmtInt(s.revenue)}<span class="kpi-unit">บาท</span></div>
-        <div class="kpi-sub">AOV ฿${s.aov.toFixed(2)} / บิล · <span style="color:var(--cyan)">ดูรายละเอียด</span></div>
+        <div class="kpi-sub">AOV ฿${s.aov.toFixed(2)} / บิล · <span style="color:var(--cyan)">คลิกดูเจาะลึกรายได้</span></div>
         <div class="kpi-bar"></div>
       </div>
-      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[1]?.name || 'ลาเต้'}')">
+      <div class="kpi fade" onclick="openKpiModal('units')" title="คลิกเพื่อดูเจาะลึกจำนวนขายรวม">
         <div class="kpi-label"><span class="kpi-icon ki-o">${getIcon('inventory')}</span> จำนวนขายรวม (Units)</div>
         <div class="kpi-val">${fmtInt(s.units)}<span class="kpi-unit">หน่วย</span></div>
-        <div class="kpi-sub">${s.bills} รายการ · ${s.products_count} สินค้า · <span style="color:var(--orange)">ดูรายละเอียด</span></div>
+        <div class="kpi-sub">${s.bills} รายการ · ${s.products_count} สินค้า · <span style="color:var(--orange)">คลิกดูเจาะลึกยอดขาย</span></div>
         <div class="kpi-bar"></div>
       </div>
-      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[0]?.name || 'ชีสเค้ก'}')">
+      <div class="kpi fade" onclick="openKpiModal('profit')" title="คลิกเพื่อดูเจาะลึกกำไรขั้นต้น">
         <div class="kpi-label"><span class="kpi-icon ki-g">${getIcon('trending_up')}</span> กำไรขั้นต้น (Gross Profit)</div>
         <div class="kpi-val">${fmtInt(s.profit)}<span class="kpi-unit">บาท</span></div>
-        <div class="kpi-sub">ต้นทุนรวม ฿${fmtInt(s.cost)} · <span style="color:var(--green)">ดูรายละเอียด</span></div>
+        <div class="kpi-sub">ต้นทุนรวม ฿${fmtInt(s.cost)} · <span style="color:var(--green)">คลิกดูโครงสร้างกำไร</span></div>
         <div class="kpi-bar"></div>
       </div>
-      <div class="kpi fade" onclick="openProductModal('${DASH_DATA.products[2]?.name || 'อเมริกาโน'}')">
+      <div class="kpi fade" onclick="openKpiModal('margin')" title="คลิกเพื่อดูเจาะลึกอัตรากำไร">
         <div class="kpi-label"><span class="kpi-icon ki-c">${getIcon('percent')}</span> อัตรากำไรขั้นต้น (GP Margin)</div>
         <div class="kpi-val">${s.margin.replace('%','')}<span class="kpi-unit">%</span></div>
-        <div class="kpi-sub">กำไร ฿${fmtInt(s.profit)} จาก ฿${fmtInt(s.revenue)}</div>
+        <div class="kpi-sub">กำไร ฿${fmtInt(s.profit)} จาก ฿${fmtInt(s.revenue)} · <span style="color:var(--cyan)">คลิกดูมาร์จิ้น</span></div>
         <div class="kpi-bar"></div>
       </div>
     `;
@@ -1718,6 +1776,231 @@ body {
     modalOverlay.style.display = 'flex';
   }
 
+  
+  // ==========================================================================
+  // KPI DETAIL MODAL ENGINE
+  // ==========================================================================
+  const modalKpiOverlay = document.getElementById('modalKpi');
+
+  function openKpiModal(type) {
+    const s = DASH_DATA.summary;
+    const branches = DASH_DATA.branches;
+    const categories = DASH_DATA.categories;
+    const prods = [...DASH_DATA.products];
+
+    let icon = 'payments';
+    let iconColor = 'var(--blue)';
+    let title = '';
+    let badge = 'ตัวชี้วัดหลัก';
+    let formula = '';
+    let heroLabel = '';
+    let heroVal = '';
+    let heroSub = '';
+    
+    let branchItems = [];
+    let catItems = [];
+    let topItems = [];
+
+    if (type === 'revenue') {
+      icon = 'payments';
+      iconColor = 'var(--blue)';
+      title = 'เจาะลึก: รายได้รวม (Total Revenue)';
+      badge = 'Prompt 1: ผลรวมยอดขาย';
+      formula = 'สูตร: ผลรวม (จำนวนขาย × ราคาขายต่อหน่วย)';
+      heroLabel = 'ยอดขายสุทธิทั้งหมด';
+      heroVal = '฿' + fmtInt(s.revenue) + ' บาท';
+      heroSub = `เฉลี่ย ฿${s.aov.toFixed(2)} / บิล · ${s.bills} รายการขาย`;
+
+      branchItems = branches.map(b => ({
+        name: b.name,
+        color: b.color,
+        val: '฿' + fmtInt(b.rev),
+        sub: `${b.pct.toFixed(1)}%`,
+        pct: b.pct
+      }));
+
+      catItems = categories.map(c => ({
+        name: c.name,
+        color: c.color,
+        val: '฿' + fmtInt(c.rev),
+        sub: `${c.pct.toFixed(1)}%`,
+        pct: c.pct
+      }));
+
+      prods.sort((a, b) => b.rev - a.rev);
+      const maxPRev = prods[0]?.rev || 1;
+      topItems = prods.slice(0, 3).map(p => ({
+        name: p.name,
+        color: p.color,
+        val: '฿' + fmtInt(p.rev),
+        sub: `${p.pctOfTotal} ของยอดขาย`,
+        pct: (p.rev / maxPRev) * 100
+      }));
+    } else if (type === 'units') {
+      icon = 'inventory';
+      iconColor = 'var(--orange)';
+      title = 'เจาะลึก: จำนวนขายรวม (Total Units)';
+      badge = 'Prompt 1: ปริมาณการจำหน่าย';
+      formula = 'สูตร: ผลรวมจำนวนชิ้นที่จำหน่ายได้';
+      heroLabel = 'ปริมาณสินค้าที่ขายได้ทั้งหมด';
+      heroVal = fmtInt(s.units) + ' หน่วย';
+      heroSub = `${s.bills} รายการขาย · เฉลี่ย ${(s.units / (s.bills || 1)).toFixed(1)} ชิ้น/บิล`;
+
+      branchItems = branches.map(b => {
+        const pct = s.units > 0 ? (b.qty / s.units) * 100 : 0;
+        return {
+          name: b.name,
+          color: b.color,
+          val: fmtInt(b.qty) + ' ชิ้น',
+          sub: `${pct.toFixed(1)}%`,
+          pct: pct
+        };
+      });
+
+      catItems = categories.map(c => {
+        const pct = s.units > 0 ? (c.qty / s.units) * 100 : 0;
+        return {
+          name: c.name,
+          color: c.color,
+          val: fmtInt(c.qty) + ' ชิ้น',
+          sub: `${pct.toFixed(1)}%`,
+          pct: pct
+        };
+      });
+
+      prods.sort((a, b) => b.qty - a.qty);
+      const maxPQty = prods[0]?.qty || 1;
+      topItems = prods.slice(0, 3).map(p => ({
+        name: p.name,
+        color: p.color,
+        val: fmtInt(p.qty) + ' ชิ้น',
+        sub: `${s.units > 0 ? ((p.qty / s.units) * 100).toFixed(1) : 0}% ของยอดรวม`,
+        pct: (p.qty / maxPQty) * 100
+      }));
+    } else if (type === 'profit') {
+      icon = 'trending_up';
+      iconColor = 'var(--green)';
+      title = 'เจาะลึก: กำไรขั้นต้น (Gross Profit)';
+      badge = 'Prompt 1: กำไรจากการขาย';
+      formula = 'สูตร: ผลรวม จำนวนขาย × (ราคาขาย − ต้นทุน)';
+      heroLabel = 'กำไรขั้นต้นรวม';
+      heroVal = '฿' + fmtInt(s.profit) + ' บาท';
+      heroSub = `ต้นทุนรวม ฿${fmtInt(s.cost)} · คิดเป็น ${s.revenue > 0 ? ((s.cost / s.revenue) * 100).toFixed(1) : 0}% ของรายได้`;
+
+      branchItems = branches.map(b => {
+        const pctOfProfit = s.profit > 0 ? (b.profit / s.profit) * 100 : 0;
+        return {
+          name: b.name,
+          color: b.color,
+          val: '฿' + fmtInt(b.profit),
+          sub: `GP ${b.margin} (${pctOfProfit.toFixed(1)}%)`,
+          pct: pctOfProfit
+        };
+      });
+
+      catItems = categories.map(c => {
+        const pctOfProfit = s.profit > 0 ? (c.profit / s.profit) * 100 : 0;
+        return {
+          name: c.name,
+          color: c.color,
+          val: '฿' + fmtInt(c.profit),
+          sub: `GP ${c.margin} (${pctOfProfit.toFixed(1)}%)`,
+          pct: pctOfProfit
+        };
+      });
+
+      prods.sort((a, b) => b.profit - a.profit);
+      const maxPProf = prods[0]?.profit || 1;
+      topItems = prods.slice(0, 3).map(p => ({
+        name: p.name,
+        color: p.color,
+        val: '฿' + fmtInt(p.profit),
+        sub: `GP ${p.margin} (กำไรอันดับต้น)`,
+        pct: (p.profit / maxPProf) * 100
+      }));
+    } else if (type === 'margin') {
+      icon = 'percent';
+      iconColor = 'var(--cyan)';
+      title = 'เจาะลึก: อัตรากำไรขั้นต้น (GP Margin)';
+      badge = 'ตัวชี้วัดประสิทธิภาพกำไร';
+      formula = 'สูตร: (กำไรขั้นต้น ÷ รายได้รวม) × 100%';
+      heroLabel = 'อัตรากำไรขั้นต้นเฉลี่ย';
+      heroVal = s.margin;
+      heroSub = `กำไร ฿${fmtInt(s.profit)} จากยอดขาย ฿${fmtInt(s.revenue)}`;
+
+      branchItems = branches.map(b => {
+        const mVal = parseFloat(b.margin) || 0;
+        return {
+          name: b.name,
+          color: b.color,
+          val: b.margin,
+          sub: `กำไร ฿${fmtInt(b.profit)}`,
+          pct: mVal
+        };
+      });
+
+      catItems = categories.map(c => {
+        const mVal = parseFloat(c.margin) || 0;
+        return {
+          name: c.name,
+          color: c.color,
+          val: c.margin,
+          sub: `กำไร ฿${fmtInt(c.profit)}`,
+          pct: mVal
+        };
+      });
+
+      prods.sort((a, b) => parseFloat(b.margin) - parseFloat(a.margin));
+      topItems = prods.slice(0, 3).map(p => ({
+        name: p.name,
+        color: p.color,
+        val: p.margin,
+        sub: `กำไร ฿${p.price - p.cost} / ชิ้น`,
+        pct: parseFloat(p.margin)
+      }));
+    }
+
+    // Populate DOM
+    document.getElementById('kpiModalIcon').innerHTML = getIcon(icon);
+    document.getElementById('kpiModalIcon').style.color = iconColor;
+    document.getElementById('kpiModalTitle').textContent = title;
+    document.getElementById('kpiModalBadge').textContent = badge;
+    document.getElementById('kpiFormula').textContent = formula;
+    document.getElementById('kpiHeroLabel').textContent = heroLabel;
+    document.getElementById('kpiHeroValue').textContent = heroVal;
+    document.getElementById('kpiHeroValue').style.color = iconColor;
+    document.getElementById('kpiHeroSub').textContent = heroSub;
+
+    const renderList = (items, containerId) => {
+      document.getElementById(containerId).innerHTML = items.map(item => `
+        <div class="m-branch-row" style="grid-template-columns: 110px 1fr 140px;">
+          <div class="m-b-name">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${item.color};"></span>
+            ${item.name}
+          </div>
+          <div class="m-b-track"><div class="m-b-fill" style="background:${item.color};width:${Math.min(item.pct, 100)}%;"></div></div>
+          <div class="m-b-val" style="font-size:11px;">
+            <b style="color:${item.color}">${item.val}</b> <span style="font-size:10px;color:var(--muted)">(${item.sub})</span>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    renderList(branchItems, 'kpiBranchList');
+    renderList(catItems, 'kpiCategoryList');
+    renderList(topItems, 'kpiTopList');
+
+    modalKpiOverlay.style.display = 'flex';
+  }
+
+  function closeKpiModal() {
+    modalKpiOverlay.style.display = 'none';
+  }
+
+  function closeKpiModalOnBackdrop(e) {
+    if (e.target === modalKpiOverlay) closeKpiModal();
+  }
+
   function closeProductModal() {
     modalOverlay.style.display = 'none';
   }
@@ -1727,7 +2010,7 @@ body {
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeProductModal();
+    if (e.key === 'Escape') { closeProductModal(); closeKpiModal(); }
   });
 
   // Theme Switcher
