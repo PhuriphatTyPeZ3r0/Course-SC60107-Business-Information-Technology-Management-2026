@@ -298,7 +298,7 @@ body {
 .bar-list { display: flex; flex-direction: column; gap: 10px; }
 .bar-item {
   display: grid;
-  grid-template-columns: 140px 1fr 110px;
+  grid-template-columns: 165px 1fr 110px;
   align-items: center;
   gap: 12px;
   padding: 6px 10px;
@@ -592,6 +592,62 @@ body {
   gap: 12px;
   background: radial-gradient(circle at center, rgba(37,99,235,.07) 0%, transparent 75%);
 }
+
+/* PRODUCT THUMBNAILS & HERO IMAGE */
+.prod-thumb-wrap {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--track-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--glass-b);
+}
+.prod-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.prod-thumb-fallback {
+  font-size: 14px;
+}
+
+.hero-img-wrap {
+  width: 130px;
+  height: 130px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+  border: 2px solid var(--glass-b);
+  background: var(--track-bg);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  display: block;
+}
+.hero-img:hover {
+  transform: scale(1.06);
+}
+.hero-icon-fallback {
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .hero-icon-wrap {
   width: 76px;
   height: 76px;
@@ -656,7 +712,7 @@ body {
 @media (max-width: 900px) {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .dash-grid { grid-template-columns: 1fr; }
-  .bar-item { grid-template-columns: 110px 1fr 85px; }
+  .bar-item { grid-template-columns: 135px 1fr 85px; }
 }
 @media (max-width: 500px) {
   .kpi-grid { grid-template-columns: 1fr; }
@@ -840,10 +896,11 @@ body {
     </div>
     
     <div class="modal-body">
-      <!-- 2D Minimalist Hero Card -->
+      <!-- 2D Minimalist Hero Card with Photo & Fallback -->
       <div class="modal-hero-box">
-        <div class="hero-icon-wrap" id="mHeroIconWrap">
-          <span id="mHeroIcon"></span>
+        <div class="hero-img-wrap" id="mHeroImgWrap">
+          <img id="mHeroImg" src="" alt="" class="hero-img" onerror="this.style.display='none'; document.getElementById('mHeroFallback').style.display='flex';" onload="this.style.display='block'; document.getElementById('mHeroFallback').style.display='none';">
+          <div id="mHeroFallback" class="hero-icon-fallback" style="display:none;"></div>
         </div>
         <div>
           <div id="mHeroName" style="font-size:18px;font-weight:700;color:var(--txt);">ชีสเค้ก</div>
@@ -909,7 +966,7 @@ body {
 
 <script>
   // Normalized Data Store
-  const APP_DATA = {"summary": {"revenue": 72530.0, "units": 1000, "profit": 38825.0, "margin": "53.53%", "cost": 33705.0, "aov": 725.3, "bills": 100, "products_count": 8}, "products": [{"id": "cheesecake", "name": "ชีสเค้ก", "cat": "เบเกอรี", "icon": "cake", "color": "#f59e0b", "price": 110.0, "cost": 72.0, "qty": 122, "rev": 13420.0, "profit": 4636.0, "margin": "34.5%", "pctOfTotal": "18.5%", "branches": {"มหาวิทยาลัย": {"qty": 48, "rev": 5280.0, "profit": 1824.0, "pct": 39.3}, "สำนักงาน": {"qty": 43, "rev": 4730.0, "profit": 1634.0, "pct": 35.2}, "ห้างสรรพสินค้า": {"qty": 31, "rev": 3410.0, "profit": 1178.0, "pct": 25.4}}}, {"id": "latte", "name": "ลาเต้", "cat": "กาแฟ", "icon": "coffee", "color": "#3b82f6", "price": 75.0, "cost": 28.0, "qty": 135, "rev": 10125.0, "profit": 6345.0, "margin": "62.7%", "pctOfTotal": "14.0%", "branches": {"มหาวิทยาลัย": {"qty": 63, "rev": 4725.0, "profit": 2961.0, "pct": 46.7}, "สำนักงาน": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}, "ห้างสรรพสินค้า": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}}}, {"id": "croissant", "name": "ครัวซองต์", "cat": "เบเกอรี", "icon": "bakery", "color": "#f97316", "price": 85.0, "cost": 60.0, "qty": 118, "rev": 10030.0, "profit": 2950.0, "margin": "29.4%", "pctOfTotal": "13.8%", "branches": {"มหาวิทยาลัย": {"qty": 52, "rev": 4420.0, "profit": 1300.0, "pct": 44.1}, "สำนักงาน": {"qty": 42, "rev": 3570.0, "profit": 1050.0, "pct": 35.6}, "ห้างสรรพสินค้า": {"qty": 24, "rev": 2040.0, "profit": 600.0, "pct": 20.3}}}, {"id": "cappuccino", "name": "คาปูชิโน", "cat": "กาแฟ", "icon": "cafe", "color": "#38bdf8", "price": 75.0, "cost": 27.0, "qty": 125, "rev": 9375.0, "profit": 6000.0, "margin": "64.0%", "pctOfTotal": "12.9%", "branches": {"มหาวิทยาลัย": {"qty": 65, "rev": 4875.0, "profit": 3120.0, "pct": 52.0}, "สำนักงาน": {"qty": 26, "rev": 1950.0, "profit": 1248.0, "pct": 20.8}, "ห้างสรรพสินค้า": {"qty": 34, "rev": 2550.0, "profit": 1632.0, "pct": 27.2}}}, {"id": "cocoa", "name": "โกโก้", "cat": "เครื่องดื่มอื่น", "icon": "drink", "color": "#10b981", "price": 65.0, "cost": 25.0, "qty": 138, "rev": 8970.0, "profit": 5520.0, "margin": "61.5%", "pctOfTotal": "12.4%", "branches": {"มหาวิทยาลัย": {"qty": 74, "rev": 4810.0, "profit": 2960.0, "pct": 53.6}, "สำนักงาน": {"qty": 26, "rev": 1690.0, "profit": 1040.0, "pct": 18.8}, "ห้างสรรพสินค้า": {"qty": 38, "rev": 2470.0, "profit": 1520.0, "pct": 27.5}}}, {"id": "americano", "name": "อเมริกาโน", "cat": "กาแฟ", "icon": "coffee", "color": "#2563eb", "price": 60.0, "cost": 20.0, "qty": 140, "rev": 8400.0, "profit": 5600.0, "margin": "66.7%", "pctOfTotal": "11.6%", "branches": {"มหาวิทยาลัย": {"qty": 64, "rev": 3840.0, "profit": 2560.0, "pct": 45.7}, "สำนักงาน": {"qty": 34, "rev": 2040.0, "profit": 1360.0, "pct": 24.3}, "ห้างสรรพสินค้า": {"qty": 42, "rev": 2520.0, "profit": 1680.0, "pct": 30.0}}}, {"id": "thaitea", "name": "ชาไทย", "cat": "เครื่องดื่มอื่น", "icon": "tea", "color": "#ea580c", "price": 55.0, "cost": 18.0, "qty": 112, "rev": 6160.0, "profit": 4144.0, "margin": "67.3%", "pctOfTotal": "8.5%", "branches": {"มหาวิทยาลัย": {"qty": 40, "rev": 2200.0, "profit": 1480.0, "pct": 35.7}, "สำนักงาน": {"qty": 51, "rev": 2805.0, "profit": 1887.0, "pct": 45.5}, "ห้างสรรพสินค้า": {"qty": 21, "rev": 1155.0, "profit": 777.0, "pct": 18.8}}}, {"id": "brownie", "name": "บราวนี", "cat": "เบเกอรี", "icon": "cookie", "color": "#b45309", "price": 55.0, "cost": 22.0, "qty": 110, "rev": 6050.0, "profit": 3630.0, "margin": "60.0%", "pctOfTotal": "8.3%", "branches": {"มหาวิทยาลัย": {"qty": 59, "rev": 3245.0, "profit": 1947.0, "pct": 53.6}, "สำนักงาน": {"qty": 32, "rev": 1760.0, "profit": 1056.0, "pct": 29.1}, "ห้างสรรพสินค้า": {"qty": 19, "rev": 1045.0, "profit": 627.0, "pct": 17.3}}}], "branches": [{"name": "มหาวิทยาลัย", "icon": "school", "bills": 34, "qty": 465, "rev": 33395.0, "profit": 18152.0, "margin": "54.4%", "pct": 46.0, "color": "var(--blue)"}, {"name": "สำนักงาน", "icon": "business", "bills": 33, "qty": 290, "rev": 21245.0, "profit": 10967.0, "margin": "51.6%", "pct": 29.3, "color": "var(--orange)"}, {"name": "ห้างสรรพสินค้า", "icon": "store", "bills": 33, "qty": 245, "rev": 17890.0, "profit": 9706.0, "margin": "54.3%", "pct": 24.7, "color": "var(--green)"}], "categories": [{"name": "เบเกอรี", "icon": "cake", "rev": 29500.0, "qty": 350, "profit": 11216.0, "margin": "38.0%", "pct": 40.7, "color": "var(--red)"}, {"name": "กาแฟ", "icon": "coffee", "rev": 27900.0, "qty": 400, "profit": 17945.0, "margin": "64.3%", "pct": 38.5, "color": "var(--blue)"}, {"name": "เครื่องดื่มอื่น", "icon": "drink", "rev": 15130.0, "qty": 250, "profit": 9664.0, "margin": "63.9%", "pct": 20.9, "color": "var(--green)"}], "daily": [{"day": 1, "rev": 1970.0, "isWeekend": true, "label": "1 ส.ค. ฿1,970 (ส)"}, {"day": 2, "rev": 2265.0, "isWeekend": true, "label": "2 ส.ค. ฿2,265 (อา)"}, {"day": 3, "rev": 2030.0, "isWeekend": false, "label": "3 ส.ค. ฿2,030"}, {"day": 4, "rev": 3690.0, "isWeekend": false, "isPeak": true, "label": "4 ส.ค. ฿3,690 ★PEAK"}, {"day": 5, "rev": 2395.0, "isWeekend": false, "label": "5 ส.ค. ฿2,395"}, {"day": 6, "rev": 1460.0, "isWeekend": false, "label": "6 ส.ค. ฿1,460"}, {"day": 7, "rev": 2505.0, "isWeekend": false, "label": "7 ส.ค. ฿2,505"}, {"day": 8, "rev": 1650.0, "isWeekend": true, "label": "8 ส.ค. ฿1,650 (ส)"}, {"day": 9, "rev": 3270.0, "isWeekend": true, "label": "9 ส.ค. ฿3,270 (อา)"}, {"day": 10, "rev": 2095.0, "isWeekend": false, "label": "10 ส.ค. ฿2,095"}, {"day": 11, "rev": 2675.0, "isWeekend": false, "label": "11 ส.ค. ฿2,675"}, {"day": 12, "rev": 1775.0, "isWeekend": false, "label": "12 ส.ค. ฿1,775"}, {"day": 13, "rev": 2340.0, "isWeekend": false, "label": "13 ส.ค. ฿2,340"}, {"day": 14, "rev": 1930.0, "isWeekend": false, "label": "14 ส.ค. ฿1,930"}, {"day": 15, "rev": 1290.0, "isWeekend": true, "isLow": true, "label": "15 ส.ค. ฿1,290 (ส) LOW"}, {"day": 16, "rev": 3265.0, "isWeekend": true, "label": "16 ส.ค. ฿3,265 (อา)"}, {"day": 17, "rev": 2195.0, "isWeekend": false, "label": "17 ส.ค. ฿2,195"}, {"day": 18, "rev": 3440.0, "isWeekend": false, "label": "18 ส.ค. ฿3,440"}, {"day": 19, "rev": 1490.0, "isWeekend": false, "label": "19 ส.ค. ฿1,490"}, {"day": 20, "rev": 2660.0, "isWeekend": false, "label": "20 ส.ค. ฿2,660"}, {"day": 21, "rev": 2260.0, "isWeekend": false, "label": "21 ส.ค. ฿2,260"}, {"day": 22, "rev": 2280.0, "isWeekend": true, "label": "22 ส.ค. ฿2,280 (ส)"}, {"day": 23, "rev": 2550.0, "isWeekend": true, "label": "23 ส.ค. ฿2,550 (อา)"}, {"day": 24, "rev": 2910.0, "isWeekend": false, "label": "24 ส.ค. ฿2,910"}, {"day": 25, "rev": 1515.0, "isWeekend": false, "label": "25 ส.ค. ฿1,515"}, {"day": 26, "rev": 2215.0, "isWeekend": false, "label": "26 ส.ค. ฿2,215"}, {"day": 27, "rev": 2675.0, "isWeekend": false, "label": "27 ส.ค. ฿2,675"}, {"day": 28, "rev": 1765.0, "isWeekend": false, "label": "28 ส.ค. ฿1,765"}, {"day": 29, "rev": 1725.0, "isWeekend": true, "label": "29 ส.ค. ฿1,725 (ส)"}, {"day": 30, "rev": 3055.0, "isWeekend": true, "label": "30 ส.ค. ฿3,055 (อา)"}, {"day": 31, "rev": 3190.0, "isWeekend": false, "label": "31 ส.ค. ฿3,190"}]};
+  const APP_DATA = {"summary": {"revenue": 72530.0, "units": 1000, "profit": 38825.0, "margin": "53.53%", "cost": 33705.0, "aov": 725.3, "bills": 100, "products_count": 8}, "products": [{"id": "cheesecake", "name": "ชีสเค้ก", "cat": "เบเกอรี", "icon": "cake", "color": "#f59e0b", "price": 110.0, "cost": 72.0, "qty": 122, "rev": 13420.0, "profit": 4636.0, "margin": "34.5%", "pctOfTotal": "18.5%", "branches": {"มหาวิทยาลัย": {"qty": 48, "rev": 5280.0, "profit": 1824.0, "pct": 39.3}, "สำนักงาน": {"qty": 43, "rev": 4730.0, "profit": 1634.0, "pct": 35.2}, "ห้างสรรพสินค้า": {"qty": 31, "rev": 3410.0, "profit": 1178.0, "pct": 25.4}}, "img": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&auto=format&fit=crop&q=80"}, {"id": "latte", "name": "ลาเต้", "cat": "กาแฟ", "icon": "coffee", "color": "#3b82f6", "price": 75.0, "cost": 28.0, "qty": 135, "rev": 10125.0, "profit": 6345.0, "margin": "62.7%", "pctOfTotal": "14.0%", "branches": {"มหาวิทยาลัย": {"qty": 63, "rev": 4725.0, "profit": 2961.0, "pct": 46.7}, "สำนักงาน": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}, "ห้างสรรพสินค้า": {"qty": 36, "rev": 2700.0, "profit": 1692.0, "pct": 26.7}}, "img": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=500&auto=format&fit=crop&q=80"}, {"id": "croissant", "name": "ครัวซองต์", "cat": "เบเกอรี", "icon": "bakery", "color": "#f97316", "price": 85.0, "cost": 60.0, "qty": 118, "rev": 10030.0, "profit": 2950.0, "margin": "29.4%", "pctOfTotal": "13.8%", "branches": {"มหาวิทยาลัย": {"qty": 52, "rev": 4420.0, "profit": 1300.0, "pct": 44.1}, "สำนักงาน": {"qty": 42, "rev": 3570.0, "profit": 1050.0, "pct": 35.6}, "ห้างสรรพสินค้า": {"qty": 24, "rev": 2040.0, "profit": 600.0, "pct": 20.3}}, "img": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop&q=80"}, {"id": "cappuccino", "name": "คาปูชิโน", "cat": "กาแฟ", "icon": "cafe", "color": "#38bdf8", "price": 75.0, "cost": 27.0, "qty": 125, "rev": 9375.0, "profit": 6000.0, "margin": "64.0%", "pctOfTotal": "12.9%", "branches": {"มหาวิทยาลัย": {"qty": 65, "rev": 4875.0, "profit": 3120.0, "pct": 52.0}, "สำนักงาน": {"qty": 26, "rev": 1950.0, "profit": 1248.0, "pct": 20.8}, "ห้างสรรพสินค้า": {"qty": 34, "rev": 2550.0, "profit": 1632.0, "pct": 27.2}}, "img": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop&q=80"}, {"id": "cocoa", "name": "โกโก้", "cat": "เครื่องดื่มอื่น", "icon": "drink", "color": "#10b981", "price": 65.0, "cost": 25.0, "qty": 138, "rev": 8970.0, "profit": 5520.0, "margin": "61.5%", "pctOfTotal": "12.4%", "branches": {"มหาวิทยาลัย": {"qty": 74, "rev": 4810.0, "profit": 2960.0, "pct": 53.6}, "สำนักงาน": {"qty": 26, "rev": 1690.0, "profit": 1040.0, "pct": 18.8}, "ห้างสรรพสินค้า": {"qty": 38, "rev": 2470.0, "profit": 1520.0, "pct": 27.5}}, "img": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=500&auto=format&fit=crop&q=80"}, {"id": "americano", "name": "อเมริกาโน", "cat": "กาแฟ", "icon": "coffee", "color": "#2563eb", "price": 60.0, "cost": 20.0, "qty": 140, "rev": 8400.0, "profit": 5600.0, "margin": "66.7%", "pctOfTotal": "11.6%", "branches": {"มหาวิทยาลัย": {"qty": 64, "rev": 3840.0, "profit": 2560.0, "pct": 45.7}, "สำนักงาน": {"qty": 34, "rev": 2040.0, "profit": 1360.0, "pct": 24.3}, "ห้างสรรพสินค้า": {"qty": 42, "rev": 2520.0, "profit": 1680.0, "pct": 30.0}}, "img": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop&q=80"}, {"id": "thaitea", "name": "ชาไทย", "cat": "เครื่องดื่มอื่น", "icon": "tea", "color": "#ea580c", "price": 55.0, "cost": 18.0, "qty": 112, "rev": 6160.0, "profit": 4144.0, "margin": "67.3%", "pctOfTotal": "8.5%", "branches": {"มหาวิทยาลัย": {"qty": 40, "rev": 2200.0, "profit": 1480.0, "pct": 35.7}, "สำนักงาน": {"qty": 51, "rev": 2805.0, "profit": 1887.0, "pct": 45.5}, "ห้างสรรพสินค้า": {"qty": 21, "rev": 1155.0, "profit": 777.0, "pct": 18.8}}, "img": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&auto=format&fit=crop&q=80"}, {"id": "brownie", "name": "บราวนี", "cat": "เบเกอรี", "icon": "cookie", "color": "#b45309", "price": 55.0, "cost": 22.0, "qty": 110, "rev": 6050.0, "profit": 3630.0, "margin": "60.0%", "pctOfTotal": "8.3%", "branches": {"มหาวิทยาลัย": {"qty": 59, "rev": 3245.0, "profit": 1947.0, "pct": 53.6}, "สำนักงาน": {"qty": 32, "rev": 1760.0, "profit": 1056.0, "pct": 29.1}, "ห้างสรรพสินค้า": {"qty": 19, "rev": 1045.0, "profit": 627.0, "pct": 17.3}}, "img": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&auto=format&fit=crop&q=80"}], "branches": [{"name": "มหาวิทยาลัย", "icon": "school", "bills": 34, "qty": 465, "rev": 33395.0, "profit": 18152.0, "margin": "54.4%", "pct": 46.0, "color": "var(--blue)"}, {"name": "สำนักงาน", "icon": "business", "bills": 33, "qty": 290, "rev": 21245.0, "profit": 10967.0, "margin": "51.6%", "pct": 29.3, "color": "var(--orange)"}, {"name": "ห้างสรรพสินค้า", "icon": "store", "bills": 33, "qty": 245, "rev": 17890.0, "profit": 9706.0, "margin": "54.3%", "pct": 24.7, "color": "var(--green)"}], "categories": [{"name": "เบเกอรี", "icon": "cake", "rev": 29500.0, "qty": 350, "profit": 11216.0, "margin": "38.0%", "pct": 40.7, "color": "var(--red)"}, {"name": "กาแฟ", "icon": "coffee", "rev": 27900.0, "qty": 400, "profit": 17945.0, "margin": "64.3%", "pct": 38.5, "color": "var(--blue)"}, {"name": "เครื่องดื่มอื่น", "icon": "drink", "rev": 15130.0, "qty": 250, "profit": 9664.0, "margin": "63.9%", "pct": 20.9, "color": "var(--green)"}], "daily": [{"day": 1, "rev": 1970.0, "isWeekend": true, "label": "1 ส.ค. ฿1,970 (ส)"}, {"day": 2, "rev": 2265.0, "isWeekend": true, "label": "2 ส.ค. ฿2,265 (อา)"}, {"day": 3, "rev": 2030.0, "isWeekend": false, "label": "3 ส.ค. ฿2,030"}, {"day": 4, "rev": 3690.0, "isWeekend": false, "isPeak": true, "label": "4 ส.ค. ฿3,690 ★PEAK"}, {"day": 5, "rev": 2395.0, "isWeekend": false, "label": "5 ส.ค. ฿2,395"}, {"day": 6, "rev": 1460.0, "isWeekend": false, "label": "6 ส.ค. ฿1,460"}, {"day": 7, "rev": 2505.0, "isWeekend": false, "label": "7 ส.ค. ฿2,505"}, {"day": 8, "rev": 1650.0, "isWeekend": true, "label": "8 ส.ค. ฿1,650 (ส)"}, {"day": 9, "rev": 3270.0, "isWeekend": true, "label": "9 ส.ค. ฿3,270 (อา)"}, {"day": 10, "rev": 2095.0, "isWeekend": false, "label": "10 ส.ค. ฿2,095"}, {"day": 11, "rev": 2675.0, "isWeekend": false, "label": "11 ส.ค. ฿2,675"}, {"day": 12, "rev": 1775.0, "isWeekend": false, "label": "12 ส.ค. ฿1,775"}, {"day": 13, "rev": 2340.0, "isWeekend": false, "label": "13 ส.ค. ฿2,340"}, {"day": 14, "rev": 1930.0, "isWeekend": false, "label": "14 ส.ค. ฿1,930"}, {"day": 15, "rev": 1290.0, "isWeekend": true, "isLow": true, "label": "15 ส.ค. ฿1,290 (ส) LOW"}, {"day": 16, "rev": 3265.0, "isWeekend": true, "label": "16 ส.ค. ฿3,265 (อา)"}, {"day": 17, "rev": 2195.0, "isWeekend": false, "label": "17 ส.ค. ฿2,195"}, {"day": 18, "rev": 3440.0, "isWeekend": false, "label": "18 ส.ค. ฿3,440"}, {"day": 19, "rev": 1490.0, "isWeekend": false, "label": "19 ส.ค. ฿1,490"}, {"day": 20, "rev": 2660.0, "isWeekend": false, "label": "20 ส.ค. ฿2,660"}, {"day": 21, "rev": 2260.0, "isWeekend": false, "label": "21 ส.ค. ฿2,260"}, {"day": 22, "rev": 2280.0, "isWeekend": true, "label": "22 ส.ค. ฿2,280 (ส)"}, {"day": 23, "rev": 2550.0, "isWeekend": true, "label": "23 ส.ค. ฿2,550 (อา)"}, {"day": 24, "rev": 2910.0, "isWeekend": false, "label": "24 ส.ค. ฿2,910"}, {"day": 25, "rev": 1515.0, "isWeekend": false, "label": "25 ส.ค. ฿1,515"}, {"day": 26, "rev": 2215.0, "isWeekend": false, "label": "26 ส.ค. ฿2,215"}, {"day": 27, "rev": 2675.0, "isWeekend": false, "label": "27 ส.ค. ฿2,675"}, {"day": 28, "rev": 1765.0, "isWeekend": false, "label": "28 ส.ค. ฿1,765"}, {"day": 29, "rev": 1725.0, "isWeekend": true, "label": "29 ส.ค. ฿1,725 (ส)"}, {"day": 30, "rev": 3055.0, "isWeekend": true, "label": "30 ส.ค. ฿3,055 (อา)"}, {"day": 31, "rev": 3190.0, "isWeekend": false, "label": "31 ส.ค. ฿3,190"}]};
 
   // Inline SVG Icon Provider (Zero external dependencies)
   const SVGS = {
@@ -1008,7 +1065,14 @@ body {
       
       return `
         <div class="bar-item ${isRest}" style="${displayStyle}" onclick="openProductModal('${p.name}')">
-          <div class="bar-name"><span class="bar-rank ${rankClass}">${rank}</span>${p.name}</div>
+          <div class="bar-name">
+            <span class="bar-rank ${rankClass}">${rank}</span>
+            <div class="prod-thumb-wrap">
+              <img src="${p.img}" alt="${p.name}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <span class="icon prod-thumb-fallback" style="display:none;color:${p.color};">${getIcon(p.icon)}</span>
+            </div>
+            <span>${p.name}</span>
+          </div>
           <div class="bar-track"><div class="bar-fill ${fillClass}" style="width:${pct}%">${pct}%</div></div>
           <div class="bar-val"><span>฿${fmtInt(p.rev)}</span><span class="bar-hint">คลิกดู</span></div>
         </div>
@@ -1050,7 +1114,15 @@ body {
     const tbody = document.getElementById('productProfitTbody');
     tbody.innerHTML = APP_DATA.products.map(p => `
       <tr class="clickable-row" onclick="openProductModal('${p.name}')">
-        <td>${p.name}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="prod-thumb-wrap">
+              <img src="${p.img}" alt="${p.name}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <span class="icon prod-thumb-fallback" style="display:none;color:${p.color};">${getIcon(p.icon)}</span>
+            </div>
+            <span>${p.name}</span>
+          </div>
+        </td>
         <td>${fmtInt(p.qty)}</td>
         <td>฿${fmtInt(p.rev)}</td>
         <td>฿${fmtInt(p.profit)}</td>
@@ -1102,7 +1174,15 @@ body {
     
     tbody.innerHTML = APP_DATA.products.map(p => `
       <tr class="clickable-row" onclick="openProductModal('${p.name}')">
-        <td>${p.name}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="prod-thumb-wrap">
+              <img src="${p.img}" alt="${p.name}" class="prod-thumb" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <span class="icon prod-thumb-fallback" style="display:none;color:${p.color};">${getIcon(p.icon)}</span>
+            </div>
+            <span>${p.name}</span>
+          </div>
+        </td>
         <td>${p.cat}</td>
         <td class="num">${fmtInt(p.branches['มหาวิทยาลัย'].rev)}</td>
         <td class="num">${fmtInt(p.branches['สำนักงาน'].rev)}</td>
@@ -1162,10 +1242,19 @@ body {
     document.getElementById('mHeroMargin').textContent = item.margin;
     document.getElementById('mHeroMarginBar').style.width = item.margin;
     
-    const heroWrap = document.getElementById('mHeroIconWrap');
-    heroWrap.style.background = `${item.color}22`;
-    heroWrap.style.color = item.color;
-    document.getElementById('mHeroIcon').innerHTML = getIcon(item.icon);
+    // Hero Photo with SVG Fallback
+    const heroImg = document.getElementById('mHeroImg');
+    const heroFallback = document.getElementById('mHeroFallback');
+    heroFallback.innerHTML = `<span class="icon" style="color:${item.color}">${getIcon(item.icon)}</span>`;
+    heroFallback.style.background = `${item.color}15`;
+    
+    if (item.img) {
+      heroImg.src = item.img;
+      heroImg.alt = item.name;
+    } else {
+      heroImg.style.display = 'none';
+      heroFallback.style.display = 'flex';
+    }
 
     // Stats Grid
     document.getElementById('mPrice').textContent = fmtMoney(item.price);
