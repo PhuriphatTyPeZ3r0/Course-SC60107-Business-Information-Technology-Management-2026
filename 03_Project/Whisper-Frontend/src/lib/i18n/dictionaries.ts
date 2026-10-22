@@ -67,7 +67,7 @@ export const dictionaries = {
     },
     profile: {
       title: "โปรไฟล์",
-      subtitle: "ข้อมูลบัญชีและโควตาการใช้งานของคุณ",
+      subtitle: "ข้อมูลบัญชีของคุณ",
       email: "อีเมล",
       displayNameLabel: "ชื่อที่แสดง",
       save: "บันทึก",
@@ -180,7 +180,7 @@ export const dictionaries = {
     },
     profile: {
       title: "Profile",
-      subtitle: "Your account details and usage quota",
+      subtitle: "Your account details",
       email: "Email",
       displayNameLabel: "Display name",
       save: "Save",

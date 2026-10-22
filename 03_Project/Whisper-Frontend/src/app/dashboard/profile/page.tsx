@@ -10,21 +10,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/lib/i18n/context";
 import { useAuth } from "@/lib/auth/context";
 import { api } from "@/lib/api/client";
-import type { UsageStatus } from "@/lib/types";
 
 export default function ProfilePage() {
   const { t } = useLanguage();
   const { session, updateUser } = useAuth();
   const [displayName, setDisplayName] = useState(session?.user.displayName ?? "");
-  const [usage, setUsage] = useState<UsageStatus | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     api
       .getProfile()
-      .then(({ user, usage }) => {
+      .then(({ user }) => {
         setDisplayName(user.displayName);
-        setUsage(usage);
         updateUser(user);
       })
       .catch(() => {});
@@ -42,9 +39,8 @@ export default function ProfilePage() {
 
     setIsSaving(true);
     try {
-      const { user, usage } = await api.updateDisplayName(trimmed);
+      const { user } = await api.updateDisplayName(trimmed);
       updateUser(user);
-      setUsage(usage);
       toast.success(t.profile.saved);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -73,7 +69,7 @@ export default function ProfilePage() {
         </CardContent>
       </Card>
 
-      <Card className="glass-panel mb-6">
+      <Card className="glass-panel">
         <CardHeader>
           <CardTitle className="text-base">{t.profile.displayNameLabel}</CardTitle>
         </CardHeader>
@@ -93,31 +89,6 @@ export default function ProfilePage() {
               {t.profile.save}
             </Button>
           </form>
-        </CardContent>
-      </Card>
-
-      <Card className="glass-panel">
-        <CardHeader>
-          <CardTitle className="text-base">{t.profile.usageTitle}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {usage && (
-            <>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">{t.profile.usagePersonal}</span>
-                <span className="font-medium">
-                  {usage.personal.used} / {usage.personal.limit}
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">{t.profile.usageGlobal}</span>
-                <span className="font-medium">
-                  {usage.global.used} / {usage.global.limit}
-                </span>
-              </div>
-            </>
-          )}
-          <p className="text-xs text-muted-foreground">{t.profile.usageResetNote}</p>
         </CardContent>
       </Card>
     </div>
