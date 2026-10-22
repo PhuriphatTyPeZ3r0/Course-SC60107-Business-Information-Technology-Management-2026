@@ -15,8 +15,9 @@ import type {
 // Mirrors the real backend's caps (see Whisper_Cloudflare_API/src/db.ts) so
 // the local mock demos the same rate-limit UX without needing a real
 // Cloudflare deployment.
-const PERSONAL_DAILY_LIMIT = 2;
-const GLOBAL_DAILY_LIMIT = 6;
+// Usage limits unlocked
+const PERSONAL_DAILY_LIMIT = 999999;
+const GLOBAL_DAILY_LIMIT = 999999;
 
 // In-memory mock backend. Lives for the lifetime of the Next.js dev/server
 // process — good enough to demo the full flow locally (see the "local dev

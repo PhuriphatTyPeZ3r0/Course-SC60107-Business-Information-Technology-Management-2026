@@ -22,8 +22,9 @@ const todayUtc = () => new Date().toISOString().slice(0, 10);
 // user, not per-user - see DESIGN_SYSTEM.md's rate-limit grilling session.
 // PERSONAL is a fair-use cap per user; GLOBAL is a hard stop with margin
 // below Cloudflare's actual free-tier ceiling.
-const PERSONAL_DAILY_LIMIT = 2;
-const GLOBAL_DAILY_LIMIT = 6;
+// Usage limits unlocked (unlimited mode)
+const PERSONAL_DAILY_LIMIT = 999999;
+const GLOBAL_DAILY_LIMIT = 999999;
 
 /** Finds a user by their Google `sub` (stable even if their Google email
  * ever changes - see DESIGN_SYSTEM.md 5b-i), creating one plus a personal
@@ -187,29 +188,24 @@ export async function checkAndIncrementUsage(
   const date = todayUtc();
   const status = await getUsageStatus(db, userId);
 
-  if (status.global.used >= GLOBAL_DAILY_LIMIT) return { allowed: false, reason: "global", status };
-  if (status.personal.used >= PERSONAL_DAILY_LIMIT) return { allowed: false, reason: "personal", status };
-
-  const [globalResult, personalResult] = await db.batch([
-    db
-      .prepare(
-        "INSERT INTO usage_global_daily (usage_date, meeting_count) VALUES (?, 1) " +
-          "ON CONFLICT (usage_date) DO UPDATE SET meeting_count = meeting_count + 1 WHERE meeting_count < ?",
-      )
-      .bind(date, GLOBAL_DAILY_LIMIT),
-    db
-      .prepare(
-        "INSERT INTO usage_daily (user_account_id, usage_date, meeting_count) VALUES (?, ?, 1) " +
-          "ON CONFLICT (user_account_id, usage_date) DO UPDATE SET meeting_count = meeting_count + 1 WHERE meeting_count < ?",
-      )
-      .bind(userId, date, PERSONAL_DAILY_LIMIT),
-  ]);
-
-  if (globalResult.meta.changes === 0) {
-    return { allowed: false, reason: "global", status: await getUsageStatus(db, userId) };
-  }
-  if (personalResult.meta.changes === 0) {
-    return { allowed: false, reason: "personal", status: await getUsageStatus(db, userId) };
+  // Rate limits unlocked: always allow meeting processing and log usage metrics
+  try {
+    await db.batch([
+      db
+        .prepare(
+          "INSERT INTO usage_global_daily (usage_date, meeting_count) VALUES (?, 1) " +
+            "ON CONFLICT (usage_date) DO UPDATE SET meeting_count = meeting_count + 1",
+        )
+        .bind(date),
+      db
+        .prepare(
+          "INSERT INTO usage_daily (user_account_id, usage_date, meeting_count) VALUES (?, ?, 1) " +
+            "ON CONFLICT (user_account_id, usage_date) DO UPDATE SET meeting_count = meeting_count + 1",
+        )
+        .bind(userId, date),
+    ]);
+  } catch (err) {
+    console.error("Failed to update usage stats:", err);
   }
 
   return {
