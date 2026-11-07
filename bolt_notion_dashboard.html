@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Bolt.new & Notion Agile Task Dashboard - 6752300313</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #F8FAFC; margin: 0; padding: 24px; color: #0F172A; }
+  .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); padding: 32px; }
+  .header { border-bottom: 2px solid #F1F5F9; padding-bottom: 20px; margin-bottom: 24px; }
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .metric-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 18px; }
+  .metric-val { font-size: 28px; font-weight: bold; color: #2563EB; margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+  th { background: #0F172A; color: white; padding: 12px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <span style="color: #64748B; font-size: 13px;">SC60107 Business IT Management · Workshop: Bolt.new & Notion</span>
+    <h1 style="margin: 6px 0 0 0; font-size: 24px;">🚀 Agile Sprint Status & Task Dashboard</h1>
+    <p style="margin: 4px 0 0 0; color: #475569;">ผู้รับผิดชอบ: นายภูริพัฒน์ เหมกุล (6752300313) · กลุ่ม 1.2-1</p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric-card">
+      <div style="color: #64748B; font-size: 13px;">งานทั้งหมดใน Sprint</div>
+      <div class="metric-val">5 Tasks</div>
+    </div>
+    <div class="metric-card">
+      <div style="color: #64748B; font-size: 13px;">สถานะงานที่เสร็จสิ้น (Done)</div>
+      <div class="metric-val" style="color: #16A34A;">60% (3/5)</div>
+    </div>
+    <div class="metric-card">
+      <div style="color: #64748B; font-size: 13px;">กำหนดส่งรอบปัจจุบัน</div>
+      <div class="metric-val" style="color: #D97706; font-size: 20px;">18 ต.ค. 2569</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>รหัสงาน</th>
+        <th>ชื่องาน / รายละเอียด</th>
+        <th>ประเภท</th>
+        <th>หมวดงาน</th>
+        <th>สถานะ</th>
+        <th>ผู้รับผิดชอบ</th>
+        <th>กำหนดส่ง</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr style="border-bottom: 1px solid #E2E8F0;">
+            <td style="padding: 12px; font-weight: bold; color: #1E293B;">TASK-101</td>
+            <td style="padding: 12px; color: #0F172A;"><strong>ออกแบบ UI หน้า Login & Auth Flow</strong><br/><span style="font-size: 12px; color: #64748B;">จัดทำ Mockup หน้าจอเข้าสู่ระบบ รองรับ Email/Password และ Single Sign-On (PIM Account)</span></td>
+            <td style="padding: 12px;"><span style="background: #EEF2FF; color: #4338CA; padding: 4px 10px; border-radius: 9999px; font-size: 12px;">Design / UI</span></td>
+            <td style="padding: 12px; color: #475569;">Authentication</td>
+            <td style="padding: 12px;"><span style="background: #16A34A20; color: #16A34A; padding: 4px 10px; border-radius: 9999px; font-weight: bold; font-size: 12px;">● Done</span></td>
+            <td style="padding: 12px; color: #334155;">นายภูริพัฒน์ เหมกุล</td>
+            <td style="padding: 12px; color: #64748B;">2026-10-14</td>
+        </tr>
+        
+        <tr style="border-bottom: 1px solid #E2E8F0;">
+            <td style="padding: 12px; font-weight: bold; color: #1E293B;">TASK-102</td>
+            <td style="padding: 12px; color: #0F172A;"><strong>พัฒนา API Backend ระบบตรวจสอบสิทธิ์</strong><br/><span style="font-size: 12px; color: #64748B;">สร้าง Endpoint /api/login ตรวจสอบ Credential และออก JWT Session Token</span></td>
+            <td style="padding: 12px;"><span style="background: #EEF2FF; color: #4338CA; padding: 4px 10px; border-radius: 9999px; font-size: 12px;">Backend</span></td>
+            <td style="padding: 12px; color: #475569;">Authentication</td>
+            <td style="padding: 12px;"><span style="background: #16A34A20; color: #16A34A; padding: 4px 10px; border-radius: 9999px; font-weight: bold; font-size: 12px;">● Done</span></td>
+            <td style="padding: 12px; color: #334155;">ธีรภัทร ทองตำลึง</td>
+            <td style="padding: 12px; color: #64748B;">2026-10-15</td>
+        </tr>
+        
+        <tr style="border-bottom: 1px solid #E2E8F0;">
+            <td style="padding: 12px; font-weight: bold; color: #1E293B;">TASK-103</td>
+            <td style="padding: 12px; color: #0F172A;"><strong>เชื่อมต่อระบบฐานข้อมูลผู้ใช้งาน</strong><br/><span style="font-size: 12px; color: #64748B;">ออกแบบตาราง Users พร้อมเข้ารหัสผ่านด้วย bcrypt และตั้งค่าสิทธิ์ RBAC</span></td>
+            <td style="padding: 12px;"><span style="background: #EEF2FF; color: #4338CA; padding: 4px 10px; border-radius: 9999px; font-size: 12px;">Database</span></td>
+            <td style="padding: 12px; color: #475569;">Security</td>
+            <td style="padding: 12px;"><span style="background: #16A34A20; color: #16A34A; padding: 4px 10px; border-radius: 9999px; font-weight: bold; font-size: 12px;">● Done</span></td>
+            <td style="padding: 12px; color: #334155;">จิมมี่ โกรทเฮีนร์</td>
+            <td style="padding: 12px; color: #64748B;">2026-10-16</td>
+        </tr>
+        
+        <tr style="border-bottom: 1px solid #E2E8F0;">
+            <td style="padding: 12px; font-weight: bold; color: #1E293B;">TASK-104</td>
+            <td style="padding: 12px; color: #0F172A;"><strong>ทดสอบระบบความปลอดภัย & Brute-force Prevention</strong><br/><span style="font-size: 12px; color: #64748B;">เขียน Unit & Integration test ดักจับ Rate-limiting และป้องกัน SQL Injection</span></td>
+            <td style="padding: 12px;"><span style="background: #EEF2FF; color: #4338CA; padding: 4px 10px; border-radius: 9999px; font-size: 12px;">QA & Security</span></td>
+            <td style="padding: 12px; color: #475569;">Quality Assurance</td>
+            <td style="padding: 12px;"><span style="background: #CA8A0420; color: #CA8A04; padding: 4px 10px; border-radius: 9999px; font-weight: bold; font-size: 12px;">● In Progress</span></td>
+            <td style="padding: 12px; color: #334155;">พงษ์ดนัย สมภาร</td>
+            <td style="padding: 12px; color: #64748B;">2026-10-18</td>
+        </tr>
+        
+        <tr style="border-bottom: 1px solid #E2E8F0;">
+            <td style="padding: 12px; font-weight: bold; color: #1E293B;">TASK-105</td>
+            <td style="padding: 12px; color: #0F172A;"><strong>Deploy Live Environment บน Cloudflare/Vercel</strong><br/><span style="font-size: 12px; color: #64748B;">ตั้งค่า CI/CD Pipeline เชื่อมต่อ GitHub Actions เข้ากับ Vercel Production</span></td>
+            <td style="padding: 12px;"><span style="background: #EEF2FF; color: #4338CA; padding: 4px 10px; border-radius: 9999px; font-size: 12px;">DevOps</span></td>
+            <td style="padding: 12px; color: #475569;">Infrastructure</td>
+            <td style="padding: 12px;"><span style="background: #64748B20; color: #64748B; padding: 4px 10px; border-radius: 9999px; font-weight: bold; font-size: 12px;">● Pending</span></td>
+            <td style="padding: 12px; color: #334155;">กิตติภัทร์ เพ้งน้ำคำ</td>
+            <td style="padding: 12px; color: #64748B;">2026-10-20</td>
+        </tr>
+        
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+Created At: 2026-10-22T09:04:45+07:00
+Completed At: 2026-10-22T09:04:45+07:00
+## Latest page snapshot
+uid=3_0 RootWebArea "SciSpace Workshop Guide" url="https://claude.ai/artifact/DWbQvAAzs228D8b6LZv4Dk"
+  uid=3_1 banner "ส่วนควบคุมอาร์ติแฟกต์"
+    uid=3_2 link "หน้าแรก" url="https://claude.ai/"
+    uid=3_3 button "SciSpace Workshop Guide" expandable haspopup="menu"
+    uid=3_4 "เนื้อหาสร้างขึ้นโดยผู้ใช้และยังไม่ได้รับการยืนยัน"
+    uid=3_5 button "คุณ" expandable haspopup="dialog"
+    uid=3_6 button "แชร์" expandable haspopup="dialog"
+    uid=3_7 status atomic live="polite" relevant="additions text"
+    uid=3_8 alert atomic live="assertive" relevant="additions text"
+  uid=3_9 main
+    uid=3_10 Iframe "User-generated artifact content" focusable focused
+      uid=3_11 RootWebArea "SciSpace Workshop Guide" url="https://654f70cc-3c80-49bb-b811-57ed2328c8b7.frame.claudeusercontent.com/_f/1792620977-adf2/?__frame_v=manifest.7983c81158f7a8ae.json"
+        uid=3_9 banner
+          uid=3_12 "SCISPACE · WORKSHOP"
+          uid=3_13 heading "วิธีใช้ Literature Review และ Reference generator" level="1"
+          uid=3_14 "ทำตามทีละขั้น กดปุ่ม "คัดลอก" เพื่อเอาคำค้นหาหรือข้อมูลไปวางในเครื่องมือได้เลย"
+          uid=3_15 "แหล่งรวมบทความของเรา"
+          uid=3_16 "ลิงก์บทความและแบบกรอกเองทั้งหมด อยู่ใน Google Sheets"
+          uid=3_17 link "เปิด Google Sheets" url="https://docs.google.com/spreadsheets/d/1VJL02mUBUBh3bvH55Ol2GYbsNbX2tzuJQDdGM03x1uo/edit?usp=sharing"
+        uid=3_19 navigation "เลือกฟีเจอร์"
+          uid=3_20 link "1 · Literature Review
+<truncated 5983 bytes>
+ั้ง" level="3"
+        uid=3_94 "เปเปอร์ที่ไม่ใช่ Open Access ระบบอ่านได้แค่บทคัดย่อ ข้อมูลอาจไม่ครบ"
+        uid=3_95 "AI อาจสรุปตัวเลขหรือวิธีวิจัยผิด ให้คลิกดูประโยคใน PDF ต้นฉบับ"
+        uid=3_96 "กราฟและตารางซับซ้อนอ่านได้ไม่ดี"
+        uid=3_97 "บัญชีฟรีมีโควตาจำกัด และถ้าสั่งหลายคอลัมน์พร้อมกันจะประมวลผลนาน"
+        uid=3_98 "เมื่อได้ตารางที่ต้องการ กด Export มุมขวาบน เพื่อบันทึกเป็น CSV หรือ Excel"
+        uid=3_99 contentinfo
+          uid=3_100 "เนื้อหา Literature Review มาจากไฟล์ workshop ของทีม ส่วน Reference generator ทดสอบในระบบแล้วเมื่อ 22 ต.ค. 2569 ผลอาจต่างกันตามบัญชีและเวลา"
+  uid=3_76 alert atomic live="assertive" relevant="additions text"
+  uid=3_101 status atomic live="polite" relevant="additions text"
+  uid=3_102 status atomic live="polite" relevant="additions text"
+  uid=3_77 status atomic live="polite" relevant="additions text"
+  uid=3_103 status atomic live="polite" relevant="additions text"
+  uid=3_78 status atomic live="polite" relevant="additions text"
+  uid=3_79 status atomic live="polite" relevant="additions text"
+  uid=3_104 status atomic live="polite" relevant="additions text"
+  uid=3_105 status atomic live="polite" relevant="additions text"
+  uid=3_80 status atomic live="polite" relevant="additions text"
+  uid=3_81 status atomic live="polite" relevant="additions text"
+  uid=3_106 status atomic live="polite" relevant="additions text"

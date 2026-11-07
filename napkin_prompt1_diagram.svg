@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="gradHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#F8FAFC" rx="16"/>
+
+  <!-- Top Banner -->
+  <rect x="30" y="25" width="840" height="70" rx="12" fill="url(#gradHeader)"/>
+  <text x="50" y="68" fill="#FFFFFF" font-family="'Sarabun', 'Segoe UI', sans-serif" font-size="22" font-weight="bold">📌 แผนผังขั้นตอนการตรวจเยี่ยมการฝึกงาน (สร้างด้วย Napkin AI)</text>
+
+  <!-- Card 1: กำหนดการและรูปแบบ -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="125" width="250" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="40" y="125" width="250" height="45" rx="14" fill="#EFF6FF"/>
+    <text x="60" y="154" fill="#1E40AF" font-family="'Sarabun', sans-serif" font-size="16" font-weight="bold">📅 1. กำหนดการ &amp; รูปแบบ</text>
+    <text x="60" y="200" fill="#334155" font-family="'Sarabun', sans-serif" font-size="14">• 15 ก.ค. - 31 ส.ค.</text>
+    <text x="60" y="235" fill="#334155" font-family="'Sarabun', sans-serif" font-size="14">• รูปแบบ Onsite / Online</text>
+    <text x="60" y="270" fill="#334155" font-family="'Sarabun', sans-serif" font-size="14">• พี่ตาลประสานวัน/เวลานัด</text>
+    <text x="60" y="305" fill="#334155" font-family="'Sarabun', sans-serif" font-size="14">• ส่งลิงก์ห้องประชุมส่วนตัว</text>
+    <circle cx="165" cy="385" r="32" fill="#DBEAFE"/>
+    <text x="151" y="394" font-size="28">🗓️</text>
+  </g>
+
+  <!-- Card 2: ขั้นตอนการตรวจเยี่ยม -->
+  <g filter="url(#shadow)">
+    <rect x="325" y="125" width="250" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="325" y="125" width="250" height="45" rx="14" fill="#FDF2F8"/>
+    <text x="345" y="154" fill="#9D174D" font-family="'Sarabun', sans-serif" font-size="16" font-weight="bold">👥 2. ลำดับขั้นตอนประชุม</text>
+    <text x="345" y="195" fill="#0F172A" font-family="'Sarabun', sans-serif" font-size="14" font-weight="bold">ช่วงที่ 1: คุยหัวหน้างาน</text>
+    <text x="345" y="220" fill="#64748B" font-family="'Sarabun', sans-serif" font-size="13">• ฟัง Feedback พฤติกรรม</text>
+    <text x="345" y="240" fill="#64748B" font-family="'Sarabun', sans-serif" font-size="13">• นศ. ยังไม่ต้องเข้าห้อง</text>
+    <text x="345" y="275" fill="#0F172A" font-family="'Sarabun', sans-serif" font-size="14" font-weight="bold">ช่วงที่ 2: นศ. เข้าพรีเซนต์</text>
+    <text x="345" y="300" fill="#64748B" font-family="'Sarabun', sans-serif" font-size="13">• นำเสนอผลงานตามสไลด์</text>
+    <text x="345" y="320" fill="#64748B" font-family="'Sarabun', sans-serif" font-size="13">• รับคำปรึกษาจากอาจารย์</text>
+    <circle cx="450" cy="385" r="32" fill="#FCE7F3"/>
+    <text x="436" y="394" font-size="28">🤝</text>
+  </g>
+
+  <!-- Card 3: สิ่งที่ต้องเตรียมส่ง -->
+  <g filter="url(#shadow)">
+    <rect x="610" y="125" width="250" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="610" y="125" width="250" height="45" rx="14" fill="#F0FDF4"/>
+    <text x="630" y="154" fill="#166534" font-family="'Sarabun', sans-serif" font-size="16" font-weight="bold">📊 3. สไลด์นำเสนอ (.PPT)</text>
+    <text x="630" y="195" fill="#334155" font-family="'Sarabun', sans-serif" font-size="13">• ข้อมูลองค์กร &amp; ตำแหน่งงาน</text>
+    <text x="630" y="225" fill="#334155" font-family="'Sarabun', sans-serif" font-size="13">• ชิ้นงาน / Project Showcase</text>
+    <text x="630" y="255" fill="#334155" font-family="'Sarabun', sans-serif" font-size="13">• ปัญหาที่พบ &amp; วิธีแก้ไข</text>
+    <text x="630" y="285" fill="#334155" font-family="'Sarabun', sans-serif" font-size="13">• ทักษะและความรู้ที่ได้รับ</text>
+    <text x="630" y="315" fill="#334155" font-family="'Sarabun', sans-serif" font-size="13">• สถิติการลา / การมาสาย</text>
+    <circle cx="735" cy="385" r="32" fill="#DCFCE7"/>
+    <text x="721" y="394" font-size="28">📑</text>
+  </g>
+
+  <!-- Connector Arrows -->
+  <path d="M 290 295 L 325 295" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5" fill="none"/>
+  <path d="M 575 295 L 610 295" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5" fill="none"/>
+</svg>

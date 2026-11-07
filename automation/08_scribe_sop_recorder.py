@@ -1,0 +1,71 @@
+"""
+Workshop 8: Scribe AI Process Documentation & Auto-SOP Generator
+Student: นายภูริพัฒน์ เหมกุล (6752300313)
+Course: SC60107 Business IT Management
+Objective: Auto-capture SOP Guide for submitting AI Workshops on PIM e-Learning
+"""
+
+def generate_scribe_sop_html(output_file="scribe_sop_guide.html"):
+    html = """<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Scribe SOP: ขั้นตอนการส่งงาน AI Coaching บน PIM e-Learning</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #F8FAFC; margin: 0; padding: 30px; color: #1E293B; }
+  .guide-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; padding: 36px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .badge { background: #EEF2FF; color: #4F46E5; padding: 4px 12px; border-radius: 9999px; font-weight: bold; font-size: 13px; }
+  .step-card { border-left: 4px solid #4F46E5; padding-left: 20px; margin: 24px 0; }
+  .step-num { font-size: 14px; font-weight: bold; color: #4F46E5; text-transform: uppercase; }
+  .step-title { font-size: 18px; font-weight: bold; margin: 4px 0 8px 0; }
+  .step-box { background: #F1F5F9; border: 1px dashed #CBD5E1; border-radius: 8px; padding: 16px; margin-top: 10px; font-family: monospace; font-size: 13px; color: #334155; }
+</style>
+</head>
+<body>
+<div class="guide-container">
+  <span class="badge">Created with Scribe AI</span>
+  <h1 style="margin: 12px 0 6px 0;">คู่มือมาตรฐาน (SOP): ขั้นตอนการส่งผลงาน Workshop AI Coaching</h1>
+  <p style="color: #64748B; margin-top: 0;">ผู้จัดทำ: นายภูริพัฒน์ เหมกุล (6752300313) · วิชา SC60107 Business IT Management</p>
+  <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 20px 0;"/>
+
+  <div class="step-card">
+    <div class="step-num">Step 1</div>
+    <div class="step-title">เข้าสู่ระบบ PIM e-Learning</div>
+    <p>เปิดเว็บเบราว์เซอร์ไปที่ <code>https://new-elearning.pim.ac.th/</code> และเข้าสู่ระบบด้วยรหัสนักศึกษาและรหัสผ่านส่วนตัว</p>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 2</div>
+    <div class="step-title">เลือกรายวิชา SC60107 การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ</div>
+    <p>จากหน้าแรกของระบบ ให้คลิกเลือกรายวิชา <strong>[1.2/69] SC60107</strong> เพื่อเข้าสู่ห้องเรียนหลัก</p>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 3</div>
+    <div class="step-title">ค้นหากล่องส่งงาน "รวมไฟล์ workshop AI Coaching 10 คะแนน"</div>
+    <p>เลื่อนลงมาที่หมวดหมู่งานหลัก และคลิกที่หัวข้อส่งงานที่มีรหัสลิงก์ <code>mod/assign/view.php?id=569500</code></p>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 4</div>
+    <div class="step-title">อัปโหลดไฟล์รายงานผลงานรวม (.docx / .pdf)</div>
+    <p>กดปุ่ม <strong>"Add submission (ส่งงาน)"</strong> แนบไฟล์เอกสารผลงานที่มีภาพ Screenshot หลักฐานครบทั้ง 9 Workshop</p>
+    <div class="step-box">
+      📁 ชื่อไฟล์มาตรฐาน: Workshop_AI_Coaching_6752300313_Phuriphat.pdf
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 5</div>
+    <div class="step-title">เพิ่มหมายเหตุในช่อง Submission Comment</div>
+    <p>ตามคำแนะนำของ อ.ปุ๋ม ในแชท LINE ให้ระบุหมายเหตุว่านักศึกษากลุ่มตนเองได้นำเสนอเรื่องอะไร (เช่น Whisper AI) และระบุชื่อกลุ่มเพื่อนครบถ้วน</p>
+  </div>
+</div>
+</body>
+</html>"""
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"[+] Successfully generated Scribe SOP Guide at {output_file}")
+
+if __name__ == "__main__":
+    generate_scribe_sop_html()

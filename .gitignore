@@ -3,6 +3,7 @@
 *.PDF
 *.pptx
 *.PPTX
+!02_Labs_Assignments/Week2/Certificate_*.pdf
 !02_Labs_Assignments/Week5/Dashboard-6752300313-Submission.pdf
 
 # Obsidian
@@ -35,4 +36,8 @@ $RECYCLE.BIN/
 *.flac
 Debug_*.txt
 
+# AI & Tool Cache Artifacts
+.superpowers/
+.playwright-mcp/
 graphify-out/
+

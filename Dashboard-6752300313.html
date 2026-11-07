@@ -1,0 +1,2832 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cafe &amp; Bakery Sales Analytics — Earth Tone Bento Dashboard (6752300313)</title>
+<!-- Google Font Prompt with Native Fallback -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* CSS RESET & MODERN EARTH TONE DESIGN TOKENS */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Minimal Earth Tone Light Palette (Default) */
+  --bg-primary: #FDFBF7;        /* Warm Alabaster Cream */
+  --surface: #FFFFFF;           /* Card Pure Surface */
+  --surface-card: #FFFFFF;
+  --surface-sub: #F7F3EC;       /* Sand Tint */
+  --surface-hover: #F2ECE1;
+  --border-sand: #E8E2D9;       /* Sandstone Border */
+  --border-subtle: #F0EAE1;
+  --border-focus: #C86D51;
+  
+  /* Earth Tone Accents */
+  --accent-terracotta: #C86D51; /* Warm Terracotta Clay */
+  --accent-terracotta-dark: #A8543A;
+  --accent-terracotta-soft: rgba(200, 109, 81, 0.12);
+  --accent-terracotta-glow: rgba(200, 109, 81, 0.28);
+  
+  --accent-amber: #D98A2C;      /* Warm Ochre / Honey Amber */
+  --accent-amber-soft: rgba(217, 138, 44, 0.12);
+  --accent-amber-glow: rgba(217, 138, 44, 0.25);
+  
+  --accent-sage: #6B8E78;       /* Natural Sage Green */
+  --accent-sage-dark: #4F705C;
+  --accent-sage-soft: rgba(107, 142, 120, 0.14);
+  --accent-sage-glow: rgba(107, 142, 120, 0.25);
+  
+  --accent-clay: #8C7A6B;       /* Warm Earth Clay */
+  --accent-sand: #D5C9B8;
+  
+  /* Typography */
+  --text-espresso: #2B231D;     /* Deep Espresso Main Text */
+  --text-secondary: #6E655F;    /* Warm Slate Gray */
+  --text-muted: #9C9187;        /* Soft Sand Muted */
+  --text-inverse: #FFFFFF;
+  
+  /* Glassmorphism & Elevation */
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(232, 226, 217, 0.85);
+  --nav-bg: rgba(253, 251, 247, 0.94);
+  --modal-overlay: rgba(43, 35, 29, 0.65);
+  --modal-bg: #FFFFFF;
+  
+  --shadow-sm: 0 2px 8px rgba(43, 35, 29, 0.04);
+  --shadow-card: 0 4px 20px -2px rgba(43, 35, 29, 0.05), 0 2px 6px -1px rgba(43, 35, 29, 0.03);
+  --shadow-hover: 0 14px 34px -4px rgba(43, 35, 29, 0.12), 0 6px 14px -2px rgba(43, 35, 29, 0.06);
+  --shadow-3d: 0 24px 48px -12px rgba(43, 35, 29, 0.2);
+  
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  
+  --font-main: 'Prompt', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+[data-theme="dark"] {
+  /* Inverted Dark Espresso Palette */
+  --bg-primary: #1C1714;        /* Deep Roast Espresso */
+  --surface: #26201B;           /* Dark Roasted Bean Surface */
+  --surface-card: #26201B;
+  --surface-sub: #312A24;       /* Cocoa Brown Sub */
+  --surface-hover: #3D342C;
+  --border-sand: #3D342C;       /* Warm Dark Border */
+  --border-subtle: #332B23;
+  --border-focus: #E07D60;
+  
+  --accent-terracotta: #E07D60; /* Radiant Terracotta */
+  --accent-terracotta-dark: #C86D51;
+  --accent-terracotta-soft: rgba(224, 125, 96, 0.16);
+  --accent-terracotta-glow: rgba(224, 125, 96, 0.35);
+  
+  --accent-amber: #EBA044;      /* Glowing Amber */
+  --accent-amber-soft: rgba(235, 160, 68, 0.16);
+  --accent-amber-glow: rgba(235, 160, 68, 0.32);
+  
+  --accent-sage: #81A88E;       /* Minty Sage */
+  --accent-sage-dark: #6B8E78;
+  --accent-sage-soft: rgba(129, 168, 142, 0.16);
+  --accent-sage-glow: rgba(129, 168, 142, 0.3);
+  
+  --accent-clay: #B0A093;
+  --accent-sand: #695B4F;
+  
+  --text-espresso: #F4EFEA;     /* Warm Cream Text */
+  --text-secondary: #C8BDB4;    /* Light Sand Gray */
+  --text-muted: #8F8278;        /* Soft Dark Muted */
+  --text-inverse: #1C1714;
+  
+  --glass-bg: rgba(38, 32, 27, 0.9);
+  --glass-border: rgba(61, 52, 44, 0.85);
+  --nav-bg: rgba(28, 23, 20, 0.95);
+  --modal-overlay: rgba(10, 8, 7, 0.82);
+  --modal-bg: #26201B;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 4px 24px -2px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 16px 40px -4px rgba(0, 0, 0, 0.7);
+  --shadow-3d: 0 28px 56px -12px rgba(0, 0, 0, 0.8);
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-primary);
+  color: var(--text-espresso);
+  min-height: 100vh;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(circle at 10% 15%, var(--accent-terracotta-soft) 0%, transparent 40%),
+    radial-gradient(circle at 90% 85%, var(--accent-amber-soft) 0%, transparent 45%);
+  background-attachment: fixed;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* NAVBAR HEADER */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border-sand);
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: background-color 0.35s ease, border-color 0.35s ease;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-terracotta), var(--accent-amber));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px var(--accent-terracotta-glow);
+  flex-shrink: 0;
+}
+
+.brand-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-espresso);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title span.tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--accent-terracotta-soft);
+  color: var(--accent-terracotta);
+  border: 1px solid var(--border-sand);
+}
+
+.brand-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* FLOATING GLASS STUDENT BADGE */
+.floating-glass-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 18px;
+  border-radius: 9999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border-sand);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-espresso);
+  transition: all 0.25s ease;
+}
+
+.floating-glass-badge:hover {
+  border-color: var(--accent-terracotta);
+  box-shadow: 0 4px 16px var(--accent-terracotta-soft);
+  transform: translateY(-1px);
+}
+
+.floating-glass-badge .badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-terracotta);
+  box-shadow: 0 0 8px var(--accent-terracotta);
+}
+
+.floating-glass-badge .badge-id {
+  color: var(--accent-terracotta);
+  font-weight: 700;
+}
+
+/* THEME TOGGLE BUTTON */
+.theme-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-sand);
+  background: var(--surface);
+  color: var(--text-espresso);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-btn:hover {
+  border-color: var(--accent-terracotta);
+  color: var(--accent-terracotta);
+  transform: rotate(15deg) scale(1.05);
+}
+
+/* DATASET STATUS PILL */
+.dataset-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--surface-sub);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-sand);
+}
+
+.dataset-pill .dot-green {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-sage);
+}
+
+/* MAIN BENTO LAYOUT */
+.bento-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 28px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* BENTO CARD SHARED STYLES */
+.bento-box {
+  background: var(--surface);
+  border: 1px solid var(--border-sand);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-box:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-focus);
+}
+
+/* SECTION TITLES */
+.bento-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.bento-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bento-icon-tag {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.tag-terracotta { background: var(--accent-terracotta-soft); color: var(--accent-terracotta); }
+.tag-amber { background: var(--accent-amber-soft); color: var(--accent-amber); }
+.tag-sage { background: var(--accent-sage-soft); color: var(--accent-sage); }
+.tag-clay { background: var(--surface-sub); color: var(--accent-clay); }
+
+.bento-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-espresso);
+  letter-spacing: -0.01em;
+}
+
+.bento-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   ROW 1: BENTO KPI CARDS (4 CARDS WITH 3D TILT & GLOW)
+   ========================================================================== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+}
+
+.kpi-tilt-card {
+  background: var(--surface);
+  border: 1px solid var(--border-sand);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.25s ease, border-color 0.25s ease;
+  user-select: none;
+}
+
+.kpi-tilt-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--card-accent, var(--accent-terracotta));
+  transition: height 0.2s ease;
+}
+
+.kpi-tilt-card:hover::before {
+  height: 6px;
+}
+
+.kpi-tilt-card:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--card-accent, var(--accent-terracotta));
+}
+
+.kpi-card-inner {
+  transform: translateZ(25px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.kpi-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.kpi-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.kpi-icon-pill {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-pill-bg, var(--surface-sub));
+  color: var(--card-accent, var(--accent-terracotta));
+  box-shadow: 0 2px 8px var(--card-glow, transparent);
+}
+
+.kpi-val {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-espresso);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 6px;
+}
+
+.kpi-sub-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-subtle);
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.kpi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+}
+
+.kpi-badge.badge-terracotta { background: var(--accent-terracotta-soft); color: var(--accent-terracotta); }
+.kpi-badge.badge-amber { background: var(--accent-amber-soft); color: var(--accent-amber); }
+.kpi-badge.badge-sage { background: var(--accent-sage-soft); color: var(--accent-sage); }
+
+/* ==========================================================================
+   ROW 2: TOP 3 BESTSELLERS 3D CAROUSEL (PERSPECTIVE 1000px)
+   ========================================================================== */
+.carousel-bento {
+  padding: 26px;
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.carousel-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-sand);
+  background: var(--surface);
+  color: var(--text-espresso);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.carousel-nav-btn:hover {
+  background: var(--accent-terracotta);
+  border-color: var(--accent-terracotta);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+/* 3D STAGE */
+.carousel-3d-stage {
+  perspective: 1000px;
+  height: 360px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0 10px;
+}
+
+.carousel-track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bestseller-3d-card {
+  position: absolute;
+  width: 380px;
+  height: 320px;
+  background: var(--surface);
+  border: 1px solid var(--border-sand);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* 3D Stacking Positions */
+.bestseller-3d-card.card-active {
+  transform: translateX(0) translateZ(80px) rotateY(0deg) scale(1);
+  z-index: 10;
+  opacity: 1;
+  border-color: var(--accent-terracotta);
+  box-shadow: var(--shadow-3d);
+}
+
+.bestseller-3d-card.card-prev {
+  transform: translateX(-65%) translateZ(-90px) rotateY(24deg) scale(0.86);
+  z-index: 5;
+  opacity: 0.72;
+}
+
+.bestseller-3d-card.card-next {
+  transform: translateX(65%) translateZ(-90px) rotateY(-24deg) scale(0.86);
+  z-index: 5;
+  opacity: 0.72;
+}
+
+@media (max-width: 900px) {
+  .bestseller-3d-card { width: 310px; height: 330px; }
+  .bestseller-3d-card.card-prev { transform: translateX(-45%) translateZ(-80px) rotateY(20deg) scale(0.85); }
+  .bestseller-3d-card.card-next { transform: translateX(45%) translateZ(-80px) rotateY(-20deg) scale(0.85); }
+}
+
+.card-rank-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rank-gold { background: linear-gradient(135deg, #D98A2C, #F5BA42); color: #FFFFFF; }
+.rank-silver { background: linear-gradient(135deg, #C86D51, #E08569); color: #FFFFFF; }
+.rank-bronze { background: linear-gradient(135deg, #6B8E78, #86A893); color: #FFFFFF; }
+
+.card-top-content {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.prod-avatar-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-sand);
+  background: var(--surface-sub);
+  flex-shrink: 0;
+}
+
+.prod-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.prod-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.prod-name-th {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-espresso);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.prod-name-en {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.prod-cat-pill {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--surface-sub);
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.card-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  background: var(--surface-sub);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  margin: 12px 0;
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-cell .s-label {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-cell .s-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-espresso);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-branch-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.branch-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.branch-split-bar {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--border-sand);
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.carousel-dot {
+  width: 24px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border-sand);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.carousel-dot.active {
+  width: 38px;
+  background: var(--accent-terracotta);
+}
+
+/* ==========================================================================
+   ROW 3: SPLIT DUAL-VIEW (31-DAY AREA CHART + DONUT & BRANCHES)
+   ========================================================================== */
+.split-dual-grid {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .split-dual-grid { grid-template-columns: 1fr; }
+}
+
+/* 31-DAY AREA CHART */
+.chart-stats-ribbon {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.ribbon-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--surface-sub);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.ribbon-chip b {
+  color: var(--text-espresso);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-svg-container {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* SVG INTERACTIVE TOOLTIP */
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--border-sand);
+  box-shadow: var(--shadow-hover);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+  transform: translate(-50%, -125%);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  opacity: 0;
+  z-index: 50;
+  white-space: nowrap;
+}
+
+.chart-tooltip.visible {
+  opacity: 1;
+}
+
+.tooltip-day {
+  font-weight: 700;
+  color: var(--accent-terracotta);
+  margin-bottom: 2px;
+}
+
+.tooltip-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-espresso);
+  font-variant-numeric: tabular-nums;
+}
+
+/* RIGHT BOX: DONUT & BRANCH COMPARISON */
+.donut-branch-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.donut-flex-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+@media (max-width: 500px) {
+  .donut-flex-row { flex-direction: column; align-items: center; }
+}
+
+.donut-svg-wrap {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.donut-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.donut-center-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.donut-center-lbl {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.donut-center-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-espresso);
+  font-variant-numeric: tabular-nums;
+}
+
+.cat-legend-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.cat-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sub);
+  border: 1px solid var(--border-subtle);
+  font-size: 12px;
+}
+
+.cat-dot-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text-espresso);
+}
+
+.cat-color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cat-legend-nums {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.cat-legend-rev {
+  font-weight: 700;
+  color: var(--text-espresso);
+}
+
+.cat-legend-pct {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+/* 3-BRANCH COMPARISON BARS */
+.branch-comp-section {
+  border-top: 1px solid var(--border-sand);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.branch-comp-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.branch-comp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+}
+
+.branch-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--text-espresso);
+}
+
+.branch-amt-wrap {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--text-espresso);
+}
+
+.branch-amt-pct {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+.branch-track {
+  height: 7px;
+  border-radius: 4px;
+  background: var(--surface-sub);
+  overflow: hidden;
+}
+
+.branch-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   ROW 4: SEARCHABLE CROSS-TAB MATRIX (8 PRODUCTS × 3 BRANCHES)
+   ========================================================================== */
+.matrix-bento {
+  padding: 24px;
+}
+
+.matrix-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.search-box-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 380px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-sand);
+  background: var(--surface-sub);
+  color: var(--text-espresso);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: var(--accent-terracotta);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-terracotta-soft);
+}
+
+.search-icon-pos {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.cat-filter-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-tab-btn {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-sand);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.filter-tab-btn:hover {
+  border-color: var(--accent-terracotta);
+  color: var(--accent-terracotta);
+}
+
+.filter-tab-btn.active {
+  background: var(--accent-terracotta);
+  border-color: var(--accent-terracotta);
+  color: #FFFFFF;
+}
+
+.matrix-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-sand);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.matrix-table thead th {
+  background: var(--surface-sub);
+  padding: 12px 14px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-sand);
+  white-space: nowrap;
+}
+
+.matrix-table thead th.text-right { text-align: right; }
+.matrix-table thead th.text-center { text-align: center; }
+
+.matrix-table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.matrix-table tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+.matrix-table td {
+  padding: 12px 14px;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.matrix-table td.text-right { text-align: right; }
+.matrix-table td.text-center { text-align: center; }
+
+.table-prod-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.table-prod-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--border-sand);
+  background: var(--surface-sub);
+  flex-shrink: 0;
+}
+
+.table-prod-name {
+  font-weight: 600;
+  color: var(--text-espresso);
+}
+
+.table-prod-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* INLINE PERCENTAGE VISUAL DATA BARS */
+.cell-bar-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cell-mini-bar {
+  width: 50px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-sand);
+  overflow: hidden;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.cell-mini-fill {
+  height: 100%;
+  background: var(--accent-terracotta);
+  border-radius: 2px;
+}
+
+.matrix-table tfoot td {
+  background: var(--surface-sub);
+  padding: 14px;
+  font-weight: 800;
+  color: var(--accent-terracotta);
+  border-top: 2px solid var(--accent-terracotta);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   2D GLASS MODAL POPUP
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-dialog {
+  background: var(--modal-bg);
+  border: 1px solid var(--border-sand);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-backdrop.open .modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-sand);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-sub);
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-sand);
+  background: var(--surface);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: var(--accent-terracotta);
+  border-color: var(--accent-terracotta);
+  color: #FFFFFF;
+}
+
+.modal-content-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  padding: 24px;
+  gap: 24px;
+}
+
+@media (max-width: 640px) {
+  .modal-content-grid { grid-template-columns: 1fr; }
+}
+
+.modal-hero-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid var(--border-sand);
+  padding-right: 20px;
+}
+
+@media (max-width: 640px) {
+  .modal-hero-pane { border-right: none; border-bottom: 1px solid var(--border-sand); padding-bottom: 20px; padding-right: 0; }
+}
+
+.modal-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  border: 1px solid var(--border-sand);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 14px;
+}
+
+.modal-p-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-espresso);
+}
+
+.modal-p-cat {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.modal-cost-table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+}
+
+.modal-cost-table td {
+  padding: 5px 0;
+  border-bottom: 1px dashed var(--border-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.modal-cost-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+}
+
+.modal-details-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-metric-trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.m-trio-box {
+  background: var(--surface-sub);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  text-align: center;
+}
+
+.m-trio-box .m-trio-lbl {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.m-trio-box .m-trio-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-espresso);
+  font-variant-numeric: tabular-nums;
+}
+
+.modal-branch-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.m-b-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.m-b-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.m-b-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-sub);
+  overflow: hidden;
+}
+
+.m-b-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* ==========================================================================
+   DASHBOARD FOOTER (ACADEMIC METADATA — STRICTLY NO STRATEGIC PILLARS)
+   ========================================================================== */
+.dashboard-footer {
+  border-top: 1px solid var(--border-sand);
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--nav-bg);
+}
+
+.footer-creators {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--accent-terracotta);
+}
+
+.footer-academic {
+  color: var(--text-muted);
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="brand-wrapper">
+    <div class="brand-icon-box">
+      <!-- Coffee & Wheat SVG Icon -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+        <line x1="6" y1="1" x2="6" y2="4"></line>
+        <line x1="10" y1="1" x2="10" y2="4"></line>
+        <line x1="14" y1="1" x2="14" y2="4"></line>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-title">
+        CAI · Cafe &amp; Bakery Performance Analytics
+        <span class="tag">Bento BI 2026</span>
+      </div>
+      <div class="brand-sub">SC60107 การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ · สถาบันการจัดการปัญญาภิวัฒน์</div>
+    </div>
+  </div>
+
+  <div class="nav-actions">
+    <div class="dataset-pill">
+      <span class="dot-green"></span>
+      <span>Live Dataset: 1Amazon_Quick_Workshop test.xlsx (100 รายการ)</span>
+    </div>
+
+    <!-- FLOATING GLASS BADGE -->
+    <div class="floating-glass-badge">
+      <span class="badge-dot"></span>
+      <span>นายภูริพัฒน์ เหมกุล</span>
+      <span style="opacity:0.35">|</span>
+      <span class="badge-id">6752300313</span>
+      <span style="opacity:0.35">|</span>
+      <span>กลุ่ม 1.2-1 CAI PIM</span>
+    </div>
+
+    <!-- THEME TOGGLE -->
+    <button class="theme-btn" id="themeToggleBtn" title="สลับโหมดสี (Earth Tone Invert)">
+      <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN BENTO CONTAINER -->
+<main class="bento-wrapper">
+
+  <!-- ROW 1: BENTO KPI 4 CARDS WITH 3D TILT & GLOW -->
+  <section class="kpi-grid">
+    <!-- Card 1: Revenue -->
+    <div class="kpi-tilt-card" style="--card-accent: var(--accent-terracotta); --card-pill-bg: var(--accent-terracotta-soft); --card-glow: var(--accent-terracotta-glow);" onclick="openKpiModal('rev')">
+      <div class="kpi-card-inner">
+        <div class="kpi-top-row">
+          <span class="kpi-label">รายได้รวมทั้งหมด (Total Revenue)</span>
+          <div class="kpi-icon-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-val">฿72,530</div>
+        <div class="kpi-sub-row">
+          <span>ครบถ้วน 100% ตามเป้าหมาย</span>
+          <span class="kpi-badge badge-terracotta">31 วัน</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Units Sold -->
+    <div class="kpi-tilt-card" style="--card-accent: var(--accent-amber); --card-pill-bg: var(--accent-amber-soft); --card-glow: var(--accent-amber-glow);" onclick="openKpiModal('units')">
+      <div class="kpi-card-inner">
+        <div class="kpi-top-row">
+          <span class="kpi-label">ปริมาณการจำหน่ายรวม (Units Sold)</span>
+          <div class="kpi-icon-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-val">1,000 <span style="font-size:18px;font-weight:500;">ชิ้น</span></div>
+        <div class="kpi-sub-row">
+          <span>เฉลี่ย 32.3 ชิ้น/วัน</span>
+          <span class="kpi-badge badge-amber">100 ธุรกรรม</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Gross Profit -->
+    <div class="kpi-tilt-card" style="--card-accent: var(--accent-sage); --card-pill-bg: var(--accent-sage-soft); --card-glow: var(--accent-sage-glow);" onclick="openKpiModal('profit')">
+      <div class="kpi-card-inner">
+        <div class="kpi-top-row">
+          <span class="kpi-label">กำไรขั้นต้นรวม (Gross Profit)</span>
+          <div class="kpi-icon-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-val">฿38,825</div>
+        <div class="kpi-sub-row">
+          <span>ต้นทุนรวม ฿33,705 (46.47%)</span>
+          <span class="kpi-badge badge-sage">สุทธิ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: GP Margin -->
+    <div class="kpi-tilt-card" style="--card-accent: var(--accent-clay); --card-pill-bg: var(--accent-terracotta-soft); --card-glow: var(--accent-terracotta-glow);" onclick="openKpiModal('margin')">
+      <div class="kpi-card-inner">
+        <div class="kpi-top-row">
+          <span class="kpi-label">อัตรากำไรขั้นต้น (GP Margin)</span>
+          <div class="kpi-icon-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="5" x2="5" y2="19"></line>
+              <circle cx="6.5" cy="6.5" r="2.5"></circle>
+              <circle cx="17.5" cy="17.5" r="2.5"></circle>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-val">53.53%</div>
+        <div class="kpi-sub-row">
+          <span>มาตรฐานอุตสาหกรรมคาเฟ่ &gt; 50%</span>
+          <span class="kpi-badge badge-terracotta">เกณฑ์ดีเยี่ยม</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROW 2: TOP 3 BESTSELLERS 3D CAROUSEL -->
+  <section class="bento-box carousel-bento">
+    <div class="bento-header">
+      <div class="bento-title-group">
+        <div class="bento-icon-tag tag-terracotta">🏆</div>
+        <div>
+          <div class="bento-title">สินค้าขายดี 3 อันดับแรก (Top 3 Bestsellers — 3D Carousel)</div>
+          <div class="bento-desc">ครองสัดส่วนยอดขายรวมกัน 46.27% (฿33,560) จากยอดขายทั้งหมดของร้าน</div>
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-nav-btn" id="prevCarouselBtn" title="ย้อนกลับ">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="carousel-nav-btn" id="nextCarouselBtn" title="ถัดไป">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3D CAROUSEL STAGE -->
+    <div class="carousel-3d-stage">
+      <div class="carousel-track" id="carouselTrack">
+        <!-- Card 1: Cheesecake (Active default) -->
+        <div class="bestseller-3d-card card-active" data-index="0" onclick="selectCarouselCard(0)">
+          <div class="card-rank-badge rank-gold">★ อันดับ 1 ยอดขายสูงสุด</div>
+          <div>
+            <div class="card-top-content">
+              <div class="prod-avatar-wrap">
+                <img src="https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=300&auto=format&fit=crop&q=80" alt="ชีสเค้ก" class="prod-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="prod-avatar-fallback" style="display:none;">🍰</div>
+              </div>
+              <div>
+                <div class="prod-name-th">ชีสเค้ก</div>
+                <div class="prod-name-en">New York Cheesecake</div>
+                <span class="prod-cat-pill">หมวดเบเกอรี</span>
+              </div>
+            </div>
+
+            <div class="card-stats-grid">
+              <div class="stat-cell">
+                <span class="s-label">ยอดขายรวม</span>
+                <span class="s-val" style="color:var(--accent-terracotta)">฿13,440</span>
+              </div>
+              <div class="stat-cell">
+                <span class="s-label">ส่วนแบ่ง (Share)</span>
+                <span class="s-val">18.53%</span>
+              </div>
+              <div class="stat-cell">
+                <span class="s-label">ปริมาณจำหน่าย</span>
+                <span class="s-val">160 ชิ้น</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-branch-bar">
+            <div class="branch-bar-label">
+              <span>สัดส่วน 3 สาขา: ม. ฿6,216 | สนง. ฿4,284 | ห้าง ฿2,940</span>
+              <span style="font-weight:700;color:var(--accent-sage)">GP 34.5%</span>
+            </div>
+            <div class="branch-split-bar">
+              <div style="width:46.25%;background:var(--accent-terracotta)" title="มหาวิทยาลัย 46.3%"></div>
+              <div style="width:31.88%;background:var(--accent-amber)" title="สำนักงาน 31.9%"></div>
+              <div style="width:21.88%;background:var(--accent-sage)" title="ห้างสรรพสินค้า 21.9%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Latte -->
+        <div class="bestseller-3d-card card-next" data-index="1" onclick="selectCarouselCard(1)">
+          <div class="card-rank-badge rank-silver">★ อันดับ 2</div>
+          <div>
+            <div class="card-top-content">
+              <div class="prod-avatar-wrap">
+                <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=300&auto=format&fit=crop&q=80" alt="ลาเต้" class="prod-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="prod-avatar-fallback" style="display:none;">☕</div>
+              </div>
+              <div>
+                <div class="prod-name-th">ลาเต้</div>
+                <div class="prod-name-en">Caffè Latte</div>
+                <span class="prod-cat-pill">หมวดกาแฟ</span>
+              </div>
+            </div>
+
+            <div class="card-stats-grid">
+              <div class="stat-cell">
+                <span class="s-label">ยอดขายรวม</span>
+                <span class="s-val" style="color:var(--accent-amber)">฿10,120</span>
+              </div>
+              <div class="stat-cell">
+                <span class="s-label">ส่วนแบ่ง (Share)</span>
+                <span class="s-val">13.95%</span>
+              </div>
+              <div class="stat-cell">
+                <span class="s-label">ปริมาณจำหน่าย</span>
+                <span class="s-val">184 ชิ้น</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-branch-bar">
+            <div class="branch-bar-label">
+              <span>สัดส่วน 3 สาขา: ม. ฿4,950 | สนง. ฿3,190 | ห้าง ฿1,980</span>
+              <span style="font-weight:700;color:var(--accent-sage)">GP 65.5%</span>
+            </div>
+            <div class="branch-split-bar">
+              <div style="width:48.91%;background:var(--accent-terracotta)" title="มหาวิทยาลัย 48.9%"></div>
+              <div style="width:31.52%;background:var(--accent-amber)" title="สำนักงาน 31.5%"></div>
+              <div style="width:19.57%;background:var(--accent-sage)" title="ห้างสรรพสินค้า 19.6%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Croissant -->
+        <div class="bestseller-3d-card card-prev" data-index="2" onclick="selectCarouselCard(2)">
+          <div class="card-rank-badge rank-bronze">★ อันดับ 3</div>
+          <div>
+            <div class="card-top-content">
+              <div class="prod-avatar-wrap">
+                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&auto=format&fit=crop&q=80" alt="ครัวซองต์" class="prod-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="prod-avatar-fallback" style="display:none;">🥐</div>
+              </div>
+              <div>
+                <div class="prod-name-th">ครัวซองต์</div>
+                <div class="prod-name-en">French Butter Croissant</div>
+                <span class="prod-cat-pill">หมวดเบเกอรี</span>
+              </div>
+            </div>
+
+            <div class="card-stats-grid">
+              <div class="stat-cell">
+                <span class="s-label">ยอดขายรวม</span>
+                <span class="s-val" style="color:var(--accent-sage)">฿10,000</span>
+              </div>
+              <div class="stat-cell">
+                <span class="s-label">ส่วนแบ่ง (Share)</span>
+                <span class="s-val">13.79%</span>
+              </div>
+              <div class="stat-cell">
+                <span class="s-label">ปริมาณจำหน่าย</span>
+                <span class="s-val">125 ชิ้น</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-branch-bar">
+            <div class="branch-bar-label">
+              <span>สัดส่วน 3 สาขา: ม. ฿4,560 | สนง. ฿3,280 | ห้าง ฿2,160</span>
+              <span style="font-weight:700;color:var(--accent-sage)">GP 29.4%</span>
+            </div>
+            <div class="branch-split-bar">
+              <div style="width:45.60%;background:var(--accent-terracotta)" title="มหาวิทยาลัย 45.6%"></div>
+              <div style="width:32.80%;background:var(--accent-amber)" title="สำนักงาน 32.8%"></div>
+              <div style="width:21.60%;background:var(--accent-sage)" title="ห้างสรรพสินค้า 21.6%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INDICATOR PILLS -->
+    <div class="carousel-indicators">
+      <div class="carousel-dot active" onclick="selectCarouselCard(0)"></div>
+      <div class="carousel-dot" onclick="selectCarouselCard(1)"></div>
+      <div class="carousel-dot" onclick="selectCarouselCard(2)"></div>
+    </div>
+  </section>
+
+  <!-- ROW 3: SPLIT DUAL-VIEW (31-DAY AREA CHART + DONUT & BRANCHES) -->
+  <section class="split-dual-grid">
+    <!-- LEFT BOX: 31-DAY INTERACTIVE AREA CHART -->
+    <div class="bento-box">
+      <div class="bento-header">
+        <div class="bento-title-group">
+          <div class="bento-icon-tag tag-amber">📈</div>
+          <div>
+            <div class="bento-title">แนวโน้มยอดขายรายวันตลอด 31 วัน (Daily Sales Timeline)</div>
+            <div class="bento-desc">Interactive SVG Gradient Area Chart แสดงยอดขายรายวัน (1–31 ส.ค.) รวม ฿72,530</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat ribbon -->
+      <div class="chart-stats-ribbon">
+        <div class="ribbon-chip">
+          <span>🚀 วันพีคสูงสุด:</span>
+          <b>วันที่ 4 (฿3,690)</b>
+        </div>
+        <div class="ribbon-chip">
+          <span>☕ ยอดต่ำสุด:</span>
+          <b>วันที่ 15 (฿1,290)</b>
+        </div>
+        <div class="ribbon-chip">
+          <span>📊 เฉลี่ยรายวัน:</span>
+          <b>฿2,339.68 / วัน</b>
+        </div>
+        <div class="ribbon-chip">
+          <span>📅 วันหยุด (10 วัน):</span>
+          <b>฿23,410 (32.3%)</b>
+        </div>
+      </div>
+
+      <!-- SVG CHART -->
+      <div class="chart-svg-container" id="chartContainer">
+        <!-- Floating Tooltip -->
+        <div class="chart-tooltip" id="chartTooltip">
+          <div class="tooltip-day" id="tooltipDay">วันที่ 1</div>
+          <div class="tooltip-val" id="tooltipVal">฿1,970</div>
+        </div>
+
+        <svg class="chart-svg" viewBox="0 0 760 220" id="salesSvg" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--accent-terracotta)" stop-opacity="0.38"></stop>
+              <stop offset="85%" stop-color="var(--accent-terracotta)" stop-opacity="0.04"></stop>
+              <stop offset="100%" stop-color="var(--accent-terracotta)" stop-opacity="0.00"></stop>
+            </linearGradient>
+            <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="var(--accent-terracotta)" flood-opacity="0.3"></feDropShadow>
+            </filter>
+          </defs>
+
+          <!-- Horizontal Grid lines -->
+          <g stroke="var(--border-subtle)" stroke-dasharray="3,3" stroke-width="1">
+            <line x1="45" y1="25" x2="735" y2="25"></line>
+            <line x1="45" y1="70" x2="735" y2="70"></line>
+            <line x1="45" y1="115" x2="735" y2="115"></line>
+            <line x1="45" y1="160" x2="735" y2="160"></line>
+          </g>
+
+          <!-- Y Axis Labels -->
+          <g fill="var(--text-muted)" font-size="9" font-family="inherit" text-anchor="end">
+            <text x="38" y="28">฿4k</text>
+            <text x="38" y="73">฿3k</text>
+            <text x="38" y="118">฿2k</text>
+            <text x="38" y="163">฿1k</text>
+          </g>
+
+          <!-- Area and Path pre-rendered statically -->
+          <path id="svgAreaPath" fill="url(#areaGradient)" d="M 45.0 101.1 C 56.5 101.1, 56.5 90.1, 68.0 90.1 C 79.5 90.1, 79.5 98.9, 91.0 98.9 C 102.5 98.9, 102.5 36.6, 114.0 36.6 C 125.5 36.6, 125.5 85.2, 137.0 85.2 C 148.5 85.2, 148.5 120.2, 160.0 120.2 C 171.5 120.2, 171.5 81.1, 183.0 81.1 C 194.5 81.1, 194.5 113.1, 206.0 113.1 C 217.5 113.1, 217.5 52.4, 229.0 52.4 C 240.5 52.4, 240.5 96.4, 252.0 96.4 C 263.5 96.4, 263.5 74.7, 275.0 74.7 C 286.5 74.7, 286.5 108.4, 298.0 108.4 C 309.5 108.4, 309.5 87.2, 321.0 87.2 C 332.5 87.2, 332.5 102.6, 344.0 102.6 C 355.5 102.6, 355.5 126.6, 367.0 126.6 C 378.5 126.6, 378.5 52.6, 390.0 52.6 C 401.5 52.6, 401.5 92.7, 413.0 92.7 C 424.5 92.7, 424.5 46.0, 436.0 46.0 C 447.5 46.0, 447.5 119.1, 459.0 119.1 C 470.5 119.1, 470.5 75.2, 482.0 75.2 C 493.5 75.2, 493.5 90.3, 505.0 90.3 C 516.5 90.3, 516.5 89.5, 528.0 89.5 C 539.5 89.5, 539.5 79.4, 551.0 79.4 C 562.5 79.4, 562.5 65.9, 574.0 65.9 C 585.5 65.9, 585.5 118.2, 597.0 118.2 C 608.5 118.2, 608.5 91.9, 620.0 91.9 C 631.5 91.9, 631.5 74.7, 643.0 74.7 C 654.5 74.7, 654.5 108.8, 666.0 108.8 C 677.5 108.8, 677.5 110.3, 689.0 110.3 C 700.5 110.3, 700.5 60.4, 712.0 60.4 C 723.5 60.4, 723.5 55.4, 735.0 55.4 L 735.0 175 L 45.0 175 Z"></path>
+          <path id="svgLinePath" fill="none" stroke="var(--accent-terracotta)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowEffect)" d="M 45.0 101.1 C 56.5 101.1, 56.5 90.1, 68.0 90.1 C 79.5 90.1, 79.5 98.9, 91.0 98.9 C 102.5 98.9, 102.5 36.6, 114.0 36.6 C 125.5 36.6, 125.5 85.2, 137.0 85.2 C 148.5 85.2, 148.5 120.2, 160.0 120.2 C 171.5 120.2, 171.5 81.1, 183.0 81.1 C 194.5 81.1, 194.5 113.1, 206.0 113.1 C 217.5 113.1, 217.5 52.4, 229.0 52.4 C 240.5 52.4, 240.5 96.4, 252.0 96.4 C 263.5 96.4, 263.5 74.7, 275.0 74.7 C 286.5 74.7, 286.5 108.4, 298.0 108.4 C 309.5 108.4, 309.5 87.2, 321.0 87.2 C 332.5 87.2, 332.5 102.6, 344.0 102.6 C 355.5 102.6, 355.5 126.6, 367.0 126.6 C 378.5 126.6, 378.5 52.6, 390.0 52.6 C 401.5 52.6, 401.5 92.7, 413.0 92.7 C 424.5 92.7, 424.5 46.0, 436.0 46.0 C 447.5 46.0, 447.5 119.1, 459.0 119.1 C 470.5 119.1, 470.5 75.2, 482.0 75.2 C 493.5 75.2, 493.5 90.3, 505.0 90.3 C 516.5 90.3, 516.5 89.5, 528.0 89.5 C 539.5 89.5, 539.5 79.4, 551.0 79.4 C 562.5 79.4, 562.5 65.9, 574.0 65.9 C 585.5 65.9, 585.5 118.2, 597.0 118.2 C 608.5 118.2, 608.5 91.9, 620.0 91.9 C 631.5 91.9, 631.5 74.7, 643.0 74.7 C 654.5 74.7, 654.5 108.8, 666.0 108.8 C 677.5 108.8, 677.5 110.3, 689.0 110.3 C 700.5 110.3, 700.5 60.4, 712.0 60.4 C 723.5 60.4, 723.5 55.4, 735.0 55.4"></path>
+
+          <!-- Vertical Guide Line & Circle on Hover -->
+          <line id="svgGuideLine" x1="0" y1="20" x2="0" y2="175" stroke="var(--accent-terracotta)" stroke-width="1.5" stroke-dasharray="3,3" style="display:none;"></line>
+          <circle id="svgGuidePoint" cx="0" cy="0" r="5" fill="#FFFFFF" stroke="var(--accent-terracotta)" stroke-width="3" style="display:none;"></circle>
+
+          <!-- X Axis Dates -->
+          <g id="xAxisLabels" fill="var(--text-muted)" font-size="9" font-family="inherit" text-anchor="middle">
+            <text x="45.0" y="196">วันที่ 1</text><text x="137.0" y="196">วันที่ 5</text><text x="252.0" y="196">วันที่ 10</text><text x="367.0" y="196">วันที่ 15</text><text x="482.0" y="196">วันที่ 20</text><text x="597.0" y="196">วันที่ 25</text><text x="735.0" y="196">วันที่ 31</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- RIGHT BOX: CATEGORY DONUT & 3-BRANCH COMPARISON -->
+    <div class="bento-box">
+      <div class="bento-header">
+        <div class="bento-title-group">
+          <div class="bento-icon-tag tag-sage">🍩</div>
+          <div>
+            <div class="bento-title">สัดส่วนหมวดหมู่ &amp; เปรียบเทียบ 3 สาขา</div>
+            <div class="bento-desc">Category Donut &amp; Cross-Branch Distribution</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="donut-branch-wrapper">
+        <!-- Donut row -->
+        <div class="donut-flex-row">
+          <div class="donut-svg-wrap">
+            <svg class="donut-svg" viewBox="0 0 120 120">
+              <!-- Background Ring -->
+              <circle cx="60" cy="60" r="46" fill="none" stroke="var(--surface-sub)" stroke-width="14"></circle>
+              <!-- Segment 1: Bakery 40.73% (circumference ~ 289.02, dash: 117.72) -->
+              <circle cx="60" cy="60" r="46" fill="none" stroke="var(--accent-terracotta)" stroke-width="14"
+                      stroke-dasharray="117.72 289.02" stroke-dashoffset="0"></circle>
+              <!-- Segment 2: Coffee 38.52% (dash: 111.33) -->
+              <circle cx="60" cy="60" r="46" fill="none" stroke="var(--accent-amber)" stroke-width="14"
+                      stroke-dasharray="111.33 289.02" stroke-dashoffset="-117.72"></circle>
+              <!-- Segment 3: Other 20.75% (dash: 59.97) -->
+              <circle cx="60" cy="60" r="46" fill="none" stroke="var(--accent-sage)" stroke-width="14"
+                      stroke-dasharray="59.97 289.02" stroke-dashoffset="-229.05"></circle>
+            </svg>
+            <div class="donut-center-text">
+              <span class="donut-center-lbl">ยอดขายรวม</span>
+              <span class="donut-center-val">฿72,530</span>
+            </div>
+          </div>
+
+          <div class="cat-legend-list">
+            <!-- Bakery -->
+            <div class="cat-legend-item">
+              <div class="cat-dot-name">
+                <span class="cat-color-dot" style="background:var(--accent-terracotta)"></span>
+                <span>เบเกอรี (Bakery)</span>
+              </div>
+              <div class="cat-legend-nums">
+                <div class="cat-legend-rev">฿29,540</div>
+                <div class="cat-legend-pct">40.73% · GP 38.4%</div>
+              </div>
+            </div>
+            <!-- Coffee -->
+            <div class="cat-legend-item">
+              <div class="cat-dot-name">
+                <span class="cat-color-dot" style="background:var(--accent-amber)"></span>
+                <span>กาแฟ (Coffee)</span>
+              </div>
+              <div class="cat-legend-nums">
+                <div class="cat-legend-rev">฿27,940</div>
+                <div class="cat-legend-pct">38.52% · GP 65.4%</div>
+              </div>
+            </div>
+            <!-- Other -->
+            <div class="cat-legend-item">
+              <div class="cat-dot-name">
+                <span class="cat-color-dot" style="background:var(--accent-sage)"></span>
+                <span>เครื่องดื่มอื่น (Others)</span>
+              </div>
+              <div class="cat-legend-nums">
+                <div class="cat-legend-rev">฿15,050</div>
+                <div class="cat-legend-pct">20.75% · GP 61.3%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Branch Comparison Bars -->
+        <div class="branch-comp-section">
+          <!-- University -->
+          <div class="branch-comp-item">
+            <div class="branch-comp-header">
+              <div class="branch-name-wrap">
+                <span>🎓 สาขามหาวิทยาลัย</span>
+                <span style="font-size:10px;padding:1px 6px;border-radius:4px;background:var(--accent-terracotta-soft);color:var(--accent-terracotta);">อันดับ 1</span>
+              </div>
+              <div class="branch-amt-wrap">
+                ฿33,395 <span class="branch-amt-pct">(46.04%)</span>
+              </div>
+            </div>
+            <div class="branch-track">
+              <div class="branch-fill" style="width:46.04%;background:var(--accent-terracotta);"></div>
+            </div>
+          </div>
+
+          <!-- Office -->
+          <div class="branch-comp-item">
+            <div class="branch-comp-header">
+              <div class="branch-name-wrap">
+                <span>🏢 สาขาอาคารสำนักงาน</span>
+              </div>
+              <div class="branch-amt-wrap">
+                ฿23,180 <span class="branch-amt-pct">(31.96%)</span>
+              </div>
+            </div>
+            <div class="branch-track">
+              <div class="branch-fill" style="width:31.96%;background:var(--accent-amber);"></div>
+            </div>
+          </div>
+
+          <!-- Mall -->
+          <div class="branch-comp-item">
+            <div class="branch-comp-header">
+              <div class="branch-name-wrap">
+                <span>🛍️ สาขาห้างสรรพสินค้า</span>
+              </div>
+              <div class="branch-amt-wrap">
+                ฿15,955 <span class="branch-amt-pct">(22.00%)</span>
+              </div>
+            </div>
+            <div class="branch-track">
+              <div class="branch-fill" style="width:22.00%;background:var(--accent-sage);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROW 4: SEARCHABLE CROSS-TAB MATRIX (8 PRODUCTS × 3 BRANCHES) -->
+  <section class="bento-box matrix-bento">
+    <div class="bento-header">
+      <div class="bento-title-group">
+        <div class="bento-icon-tag tag-clay">📊</div>
+        <div>
+          <div class="bento-title">ตารางไขว้แจกแจงรายได้รายสินค้าและสาขา (Product × Branch Cross-Tab Matrix)</div>
+          <div class="bento-desc">คลิกแถวสินค้าเพื่อดูโมดอลเจาะลึก 2D Glass Modal (โครงสร้างต้นทุน กำไร และสาขา)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLBAR (SEARCH & CATEGORY TABS) -->
+    <div class="matrix-toolbar">
+      <div class="search-box-wrap">
+        <span class="search-icon-pos">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </span>
+        <input type="text" id="searchInput" class="search-input" placeholder="ค้นหาชื่อสินค้า หรือหมวดหมู่...">
+      </div>
+
+      <div class="cat-filter-tabs">
+        <button class="filter-tab-btn active" data-cat="all">ทั้งหมด (8)</button>
+        <button class="filter-tab-btn" data-cat="เบเกอรี">เบเกอรี (3)</button>
+        <button class="filter-tab-btn" data-cat="กาแฟ">กาแฟ (3)</button>
+        <button class="filter-tab-btn" data-cat="เครื่องดื่มอื่น">เครื่องดื่มอื่น (2)</button>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="matrix-table-wrap">
+      <table class="matrix-table" id="matrixTable">
+        <thead>
+          <tr>
+            <th>รายการสินค้า</th>
+            <th>หมวดหมู่</th>
+            <th class="text-right">สาขามหาวิทยาลัย</th>
+            <th class="text-right">สาขาสำนักงาน</th>
+            <th class="text-right">สาขาห้างฯ</th>
+            <th class="text-right">ยอดรวมทั้งหมด</th>
+            <th class="text-right">สัดส่วน (%)</th>
+            <th class="text-center">อัตรากำไร (GP)</th>
+          </tr>
+        </thead>
+        <tbody id="matrixTbody">
+          <!-- 1. ชีสเค้ก -->
+          <tr onclick="openProductModal('cheesecake')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=100&auto=format&fit=crop&q=80" alt="ชีสเค้ก" class="table-prod-thumb" onerror="this.src='';this.alt='🍰'">
+                <div>
+                  <div class="table-prod-name">ชีสเค้ก</div>
+                  <div class="table-prod-sub">New York Cheesecake</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">เบเกอรี</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:95.6%;background:var(--accent-terracotta);"></span></span><span>฿6,216</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:65.9%;background:var(--accent-amber);"></span></span><span>฿4,284</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:45.2%;background:var(--accent-sage);"></span></span><span>฿2,940</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿13,440</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">18.53%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">34.5%</span></td>
+          </tr>
+          <!-- 2. ลาเต้ -->
+          <tr onclick="openProductModal('latte')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=100&auto=format&fit=crop&q=80" alt="ลาเต้" class="table-prod-thumb" onerror="this.src='';this.alt='☕'">
+                <div>
+                  <div class="table-prod-name">ลาเต้</div>
+                  <div class="table-prod-sub">Caffè Latte</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">กาแฟ</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:76.2%;background:var(--accent-terracotta);"></span></span><span>฿4,950</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:49.1%;background:var(--accent-amber);"></span></span><span>฿3,190</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:30.5%;background:var(--accent-sage);"></span></span><span>฿1,980</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿10,120</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">13.95%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">65.5%</span></td>
+          </tr>
+          <!-- 3. ครัวซองต์ -->
+          <tr onclick="openProductModal('croissant')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=100&auto=format&fit=crop&q=80" alt="ครัวซองต์" class="table-prod-thumb" onerror="this.src='';this.alt='🥐'">
+                <div>
+                  <div class="table-prod-name">ครัวซองต์</div>
+                  <div class="table-prod-sub">French Butter Croissant</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">เบเกอรี</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:70.2%;background:var(--accent-terracotta);"></span></span><span>฿4,560</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:50.5%;background:var(--accent-amber);"></span></span><span>฿3,280</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:33.2%;background:var(--accent-sage);"></span></span><span>฿2,160</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿10,000</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">13.79%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">29.4%</span></td>
+          </tr>
+          <!-- 4. คาปูชิโน -->
+          <tr onclick="openProductModal('cappuccino')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?w=100&auto=format&fit=crop&q=80" alt="คาปูชิโน" class="table-prod-thumb" onerror="this.src='';this.alt='☕'">
+                <div>
+                  <div class="table-prod-name">คาปูชิโน</div>
+                  <div class="table-prod-sub">Cappuccino</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">กาแฟ</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:67.2%;background:var(--accent-terracotta);"></span></span><span>฿4,370</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:44.2%;background:var(--accent-amber);"></span></span><span>฿2,875</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:31.8%;background:var(--accent-sage);"></span></span><span>฿2,070</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿9,315</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">12.84%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">64.0%</span></td>
+          </tr>
+          <!-- 5. เอสเพรสโซ -->
+          <tr onclick="openProductModal('espresso')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=100&auto=format&fit=crop&q=80" alt="เอสเพรสโซ" class="table-prod-thumb" onerror="this.src='';this.alt='☕'">
+                <div>
+                  <div class="table-prod-name">เอสเพรสโซ</div>
+                  <div class="table-prod-sub">Espresso Roast</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">กาแฟ</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:60.9%;background:var(--accent-terracotta);"></span></span><span>฿3,960</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:42.3%;background:var(--accent-amber);"></span></span><span>฿2,750</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:27.6%;background:var(--accent-sage);"></span></span><span>฿1,795</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿8,505</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">11.73%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">66.7%</span></td>
+          </tr>
+          <!-- 6. ชาเขียวมัทฉะ -->
+          <tr onclick="openProductModal('matcha')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=100&auto=format&fit=crop&q=80" alt="ชาเขียวมัทฉะ" class="table-prod-thumb" onerror="this.src='';this.alt='🍵'">
+                <div>
+                  <div class="table-prod-name">ชาเขียวมัทฉะ</div>
+                  <div class="table-prod-sub">Uji Matcha Latte</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">เครื่องดื่มอื่น</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:57.1%;background:var(--accent-terracotta);"></span></span><span>฿3,710</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:43.1%;background:var(--accent-amber);"></span></span><span>฿2,800</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:29.1%;background:var(--accent-sage);"></span></span><span>฿1,890</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿8,400</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">11.58%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">62.0%</span></td>
+          </tr>
+          <!-- 7. สมูทตี้ผลไม้ -->
+          <tr onclick="openProductModal('smoothie')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=100&auto=format&fit=crop&q=80" alt="สมูทตี้ผลไม้" class="table-prod-thumb" onerror="this.src='';this.alt='🥤'">
+                <div>
+                  <div class="table-prod-name">สมูทตี้ผลไม้</div>
+                  <div class="table-prod-sub">Berry Bliss Smoothie</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">เครื่องดื่มอื่น</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:42.3%;background:var(--accent-terracotta);"></span></span><span>฿2,749</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:32.0%;background:var(--accent-amber);"></span></span><span>฿2,081</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:28.0%;background:var(--accent-sage);"></span></span><span>฿1,820</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿6,650</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">9.17%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">60.5%</span></td>
+          </tr>
+          <!-- 8. ช็อกโกแลตเค้ก -->
+          <tr onclick="openProductModal('chocolate_cake')">
+            <td>
+              <div class="table-prod-cell">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=100&auto=format&fit=crop&q=80" alt="ช็อกโกแลตเค้ก" class="table-prod-thumb" onerror="this.src='';this.alt='🍫'">
+                <div>
+                  <div class="table-prod-name">ช็อกโกแลตเค้ก</div>
+                  <div class="table-prod-sub">Dark Chocolate Fudge Cake</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="prod-cat-pill">เบเกอรี</span></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:44.3%;background:var(--accent-terracotta);"></span></span><span>฿2,880</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:29.5%;background:var(--accent-amber);"></span></span><span>฿1,920</span></div></td>
+            <td class="text-right"><div class="cell-bar-box"><span class="cell-mini-bar"><span class="cell-mini-fill" style="width:20.0%;background:var(--accent-sage);"></span></span><span>฿1,300</span></div></td>
+            <td class="text-right" style="font-weight:700;color:var(--text-espresso);">฿6,100</td>
+            <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">8.41%</td>
+            <td class="text-center"><span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">61.6%</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">รวมยอดขายสุทธิทั้งหมด (Grand Total)</td>
+            <td class="text-right">฿33,395</td>
+            <td class="text-right">฿23,180</td>
+            <td class="text-right">฿15,955</td>
+            <td class="text-right">฿72,530</td>
+            <td class="text-right">100.00%</td>
+            <td class="text-center">53.53%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!-- 2D GLASS MODAL POPUP FOR PRODUCT DRILL-DOWN -->
+<div class="modal-backdrop" id="productModal" onclick="closeModalOnBackdrop(event)">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span style="font-size:20px;" id="mEmoji">🍰</span>
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--text-espresso);" id="mTitle">ชีสเค้ก (New York Cheesecake)</div>
+          <div style="font-size:11.5px;color:var(--text-muted);" id="mCat">หมวดหมู่: เบเกอรี</div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeProductModal()">✕</button>
+    </div>
+
+    <div class="modal-content-grid">
+      <!-- Left pane: photo & unit cost -->
+      <div class="modal-hero-pane">
+        <img src="https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=400&auto=format&fit=crop&q=80" alt="" class="modal-photo" id="mPhoto">
+        <div class="modal-p-title" id="mHeroName">ชีสเค้ก</div>
+        <div class="modal-p-cat" id="mHeroCat">New York Cheesecake</div>
+
+        <table class="modal-cost-table">
+          <tr>
+            <td style="color:var(--text-muted)">ราคาขายต่อชิ้น:</td>
+            <td id="mUnitPrice">฿84.00</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-muted)">ต้นทุนต่อชิ้น:</td>
+            <td id="mUnitCost">฿55.00</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-sage)">กำไรต่อชิ้น:</td>
+            <td id="mUnitProfit" style="color:var(--accent-sage)">฿29.00</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-secondary)">อัตรากำไร (GP%):</td>
+            <td id="mUnitMargin">34.5%</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Right pane: totals & branch distribution -->
+      <div class="modal-details-pane">
+        <div class="modal-metric-trio">
+          <div class="m-trio-box">
+            <div class="m-trio-lbl">ปริมาณจำหน่าย</div>
+            <div class="m-trio-val" id="mTotalQty">160 ชิ้น</div>
+          </div>
+          <div class="m-trio-box">
+            <div class="m-trio-lbl">ยอดขายรวม</div>
+            <div class="m-trio-val" style="color:var(--accent-terracotta);" id="mTotalRev">฿13,440</div>
+          </div>
+          <div class="m-trio-box">
+            <div class="m-trio-lbl">กำไรขั้นต้นรวม</div>
+            <div class="m-trio-val" style="color:var(--accent-sage);" id="mTotalProfit">฿4,637</div>
+          </div>
+        </div>
+
+        <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;" id="mDesc">
+          ชีสเค้กสูตรเข้มข้น เนื้อเนียนนุ่ม สไตล์นิวยอร์ก ทำจากครีมชีสแท้ระดับพรีเมียม ครองแชมป์ยอดขายอันดับ 1 ของร้าน
+        </div>
+
+        <div class="modal-branch-bars">
+          <div style="font-size:12px;font-weight:700;color:var(--text-espresso);margin-bottom:2px;">การกระจายยอดขายตามสาขา (Branch Allocation)</div>
+          
+          <!-- Uni -->
+          <div class="m-b-row">
+            <div class="m-b-header">
+              <span>🎓 สาขามหาวิทยาลัย</span>
+              <span id="mValUni">฿6,216 (46.3%)</span>
+            </div>
+            <div class="m-b-track">
+              <div class="m-b-fill" id="mBarUni" style="width:46.3%;background:var(--accent-terracotta);"></div>
+            </div>
+          </div>
+
+          <!-- Office -->
+          <div class="m-b-row">
+            <div class="m-b-header">
+              <span>🏢 สาขาอาคารสำนักงาน</span>
+              <span id="mValOff">฿4,284 (31.9%)</span>
+            </div>
+            <div class="m-b-track">
+              <div class="m-b-fill" id="mBarOff" style="width:31.9%;background:var(--accent-amber);"></div>
+            </div>
+          </div>
+
+          <!-- Mall -->
+          <div class="m-b-row">
+            <div class="m-b-header">
+              <span>🛍️ สาขาห้างสรรพสินค้า</span>
+              <span id="mValMall">฿2,940 (21.9%)</span>
+            </div>
+            <div class="m-b-track">
+              <div class="m-b-fill" id="mBarMall" style="width:21.9%;background:var(--accent-sage);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI DETAIL MODAL POPUP -->
+<div class="modal-backdrop" id="kpiModal" onclick="closeKpiModalOnBackdrop(event)">
+  <div class="modal-dialog" style="max-width:540px;">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span style="font-size:20px;" id="kpiModalIcon">📊</span>
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--text-espresso);" id="kpiModalTitle">เจาะลึกตัวชี้วัด</div>
+          <div style="font-size:11.5px;color:var(--text-muted);" id="kpiModalFormula">สูตรการคำนวณ</div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeKpiModal()">✕</button>
+    </div>
+    <div style="padding:22px;display:flex;flex-direction:column;gap:14px;">
+      <div style="background:var(--surface-sub);padding:14px;border-radius:var(--radius-md);text-align:center;">
+        <div style="font-size:11.5px;color:var(--text-muted);" id="kpiHeroLabel">ยอดสรุปสุทธิ</div>
+        <div style="font-size:28px;font-weight:800;color:var(--accent-terracotta);" id="kpiHeroVal">฿72,530</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;" id="kpiHeroSub">สถิติตลอดทั้งเดือน 31 วัน</div>
+      </div>
+
+      <div style="font-size:12.5px;font-weight:700;color:var(--text-espresso);">สัดส่วนแยกตาม 3 สาขา</div>
+      <div id="kpiBranchBreakdown" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD FOOTER (ACADEMIC METADATA — STRICTLY NO STRATEGIC PILLARS) -->
+<footer class="dashboard-footer">
+  <div>
+    <div class="footer-creators">
+      <span>🎓 ผู้จัดทำ: นายภูริพัฒน์ เหมกุล (Phuriphat Hemakul)</span>
+      <span>·</span>
+      <span>รหัสนักศึกษา: 6752300313</span>
+      <span>·</span>
+      <span>กลุ่ม 1.2-1 CAI PIM</span>
+    </div>
+    <div class="footer-academic">
+      วิชา SC60107 การจัดการเทคโนโลยีสารสนเทศทางธุรกิจ · หลักสูตรวิศวกรรมคอมพิวเตอร์และปัญญาประดิษฐ์ · สถาบันการจัดการปัญญาภิวัฒน์
+    </div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-weight:600;color:var(--text-espresso);">Bento Grid Sales Analytics Platform</div>
+    <div style="font-size:11px;color:var(--text-muted);">ข้อมูลจำลองเพื่อการเรียนรู้ · 1Amazon_Quick_Workshop test.xlsx</div>
+  </div>
+</footer>
+
+<!-- VANILLA JAVASCRIPT ENGINE -->
+<script>
+// RAW DATA MATRICES (VERBATIM ACCORDING TO TASK-1 BRIEF)
+const PRODUCTS_DATA = [
+  {
+    id: "cheesecake",
+    name: "ชีสเค้ก",
+    en: "New York Cheesecake",
+    cat: "เบเกอรี",
+    emoji: "🍰",
+    price: 84.0,
+    cost: 55.0,
+    qty: 160,
+    rev: 13440,
+    profit: 4637,
+    margin: "34.5%",
+    share: "18.53%",
+    img: "https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=400&auto=format&fit=crop&q=80",
+    desc: "ชีสเค้กสูตรเข้มข้น สไตล์นิวยอร์ก ทำจากครีมชีสแท้ระดับพรีเมียม ครองแชมป์ยอดขายอันดับ 1 ในทุกสาขา",
+    branches: {
+      uni: 6216,
+      off: 4284,
+      mall: 2940
+    }
+  },
+  {
+    id: "latte",
+    name: "ลาเต้",
+    en: "Caffè Latte",
+    cat: "กาแฟ",
+    emoji: "☕",
+    price: 55.0,
+    cost: 19.0,
+    qty: 184,
+    rev: 10120,
+    profit: 6629,
+    margin: "65.5%",
+    share: "13.95%",
+    img: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400&auto=format&fit=crop&q=80",
+    desc: "เอสเพรสโซช็อตผสมนมสดสตรีมนุ่มละมุน กลิ่นหอมกรุ่น อัตรากำไรขั้นต้นสูงถึง 65.5% ครองอันดับ 2 ด้านยอดขาย",
+    branches: {
+      uni: 4950,
+      off: 3190,
+      mall: 1980
+    }
+  },
+  {
+    id: "croissant",
+    name: "ครัวซองต์",
+    en: "French Butter Croissant",
+    cat: "เบเกอรี",
+    emoji: "🥐",
+    price: 80.0,
+    cost: 56.5,
+    qty: 125,
+    rev: 10000,
+    profit: 2940,
+    margin: "29.4%",
+    share: "13.79%",
+    img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&auto=format&fit=crop&q=80",
+    desc: "ครัวซองต์เนยสดแท้นำเข้าจากฝรั่งเศส อบสดใหม่ทุกเช้า แป้งกรอบนอกนุ่มใน เป็นเมนูจับคู่ยอดนิยมกับกาแฟ",
+    branches: {
+      uni: 4560,
+      off: 3280,
+      mall: 2160
+    }
+  },
+  {
+    id: "cappuccino",
+    name: "คาปูชิโน",
+    en: "Cappuccino",
+    cat: "กาแฟ",
+    emoji: "☕",
+    price: 69.0,
+    cost: 24.8,
+    qty: 135,
+    rev: 9315,
+    profit: 5962,
+    margin: "64.0%",
+    share: "12.84%",
+    img: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&auto=format&fit=crop&q=80",
+    desc: "กาแฟผสมฟองนมนุ่มหนา โรยผงโกโก้หอมกรุ่น ให้รสชาติเข้มข้นกลมกล่อม เหมาะสำหรับช่วงสายและบ่าย",
+    branches: {
+      uni: 4370,
+      off: 2875,
+      mall: 2070
+    }
+  },
+  {
+    id: "espresso",
+    name: "เอสเพรสโซ",
+    en: "Espresso Roast",
+    cat: "กาแฟ",
+    emoji: "☕",
+    price: 63.0,
+    cost: 21.0,
+    qty: 135,
+    rev: 8505,
+    profit: 5670,
+    margin: "66.7%",
+    share: "11.73%",
+    img: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&auto=format&fit=crop&q=80",
+    desc: "ช็อตกาแฟสกัดสดเข้มข้นจากเมล็ดอาราบิกาคั่วเข้ม ให้กลิ่นหอมและรสชาติคมชัด เป็นเมนูกำไรสูงอันดับต้นๆ",
+    branches: {
+      uni: 3960,
+      off: 2750,
+      mall: 1795
+    }
+  },
+  {
+    id: "matcha",
+    name: "ชาเขียวมัทฉะ",
+    en: "Uji Matcha Latte",
+    cat: "เครื่องดื่มอื่น",
+    emoji: "🍵",
+    price: 70.0,
+    cost: 26.6,
+    qty: 120,
+    rev: 8400,
+    profit: 5208,
+    margin: "62.0%",
+    share: "11.58%",
+    img: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=400&auto=format&fit=crop&q=80",
+    desc: "ผงชาเขียวมัทฉะแท้เกรดพิธีการจากญี่ปุ่น ผสมนมสด หวานน้อยกลมกล่อม ตอบโจทย์กลุ่มคนรักสุขภาพ",
+    branches: {
+      uni: 3710,
+      off: 2800,
+      mall: 1890
+    }
+  },
+  {
+    id: "smoothie",
+    name: "สมูทตี้ผลไม้",
+    en: "Berry Bliss Smoothie",
+    cat: "เครื่องดื่มอื่น",
+    emoji: "🥤",
+    price: 70.0,
+    cost: 27.6,
+    qty: 95,
+    rev: 6650,
+    profit: 4023,
+    margin: "60.5%",
+    share: "9.17%",
+    img: "https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=400&auto=format&fit=crop&q=80",
+    desc: "สมูทตี้ผลไม้สดปั่นรวม รสชาติเปรี้ยวอมหวาน สดชื่น อุดมด้วยวิตามิน ยอดขายดีในสาขาห้างสรรพสินค้า",
+    branches: {
+      uni: 2749,
+      off: 2081,
+      mall: 1820
+    }
+  },
+  {
+    id: "chocolate_cake",
+    name: "ช็อกโกแลตเค้ก",
+    en: "Dark Chocolate Fudge Cake",
+    cat: "เบเกอรี",
+    emoji: "🍫",
+    price: 93.85,
+    cost: 36.06,
+    qty: 46,
+    rev: 6100,
+    profit: 3756,
+    margin: "61.6%",
+    share: "8.41%",
+    img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&auto=format&fit=crop&q=80",
+    desc: "เค้กฟัดจ์ดาร์กช็อกโกแลตเข้มข้น 70% ราดกานาชเยิ้มๆ รสชาติหวานกำลังดีคู่กับความเข้มข้นของช็อกโกแลตแท้",
+    branches: {
+      uni: 2880,
+      off: 1920,
+      mall: 1300
+    }
+  }
+];
+
+const DAILY_SALES = [
+  1970, 2265, 2030, 3690, 2395, 1460, 2505, 1650, 3270, 2095,
+  2675, 1775, 2340, 1930, 1290, 3265, 2195, 3440, 1490, 2660,
+  2260, 2280, 2550, 2910, 1515, 2215, 2675, 1765, 1725, 3055, 3190
+];
+
+// 1. RENDER MATRIX TABLE WITH REALTIME SEARCH & FILTER
+let currentCategoryFilter = 'all';
+let searchQuery = '';
+
+function renderMatrixTable() {
+  const tbody = document.getElementById('matrixTbody');
+  
+  const filtered = PRODUCTS_DATA.filter(item => {
+    const matchCat = (currentCategoryFilter === 'all' || item.cat === currentCategoryFilter);
+    const matchSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                        item.en.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        item.cat.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchCat && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">ไม่พบรายการสินค้าที่ตรงกับคำค้นหา "${searchQuery}"</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(item => {
+    const maxBranchRev = 6500;
+    const pUni = (item.branches.uni / maxBranchRev) * 100;
+    const pOff = (item.branches.off / maxBranchRev) * 100;
+    const pMall = (item.branches.mall / maxBranchRev) * 100;
+
+    return `
+      <tr onclick="openProductModal('${item.id}')">
+        <td>
+          <div class="table-prod-cell">
+            <img src="${item.img}" alt="${item.name}" class="table-prod-thumb" onerror="this.src='';this.alt='${item.emoji}'">
+            <div>
+              <div class="table-prod-name">${item.name}</div>
+              <div class="table-prod-sub">${item.en}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span class="prod-cat-pill">${item.cat}</span>
+        </td>
+        <td class="text-right">
+          <div class="cell-bar-box">
+            <span class="cell-mini-bar"><span class="cell-mini-fill" style="width:${pUni}%;background:var(--accent-terracotta);"></span></span>
+            <span>฿${item.branches.uni.toLocaleString()}</span>
+          </div>
+        </td>
+        <td class="text-right">
+          <div class="cell-bar-box">
+            <span class="cell-mini-bar"><span class="cell-mini-fill" style="width:${pOff}%;background:var(--accent-amber);"></span></span>
+            <span>฿${item.branches.off.toLocaleString()}</span>
+          </div>
+        </td>
+        <td class="text-right">
+          <div class="cell-bar-box">
+            <span class="cell-mini-bar"><span class="cell-mini-fill" style="width:${pMall}%;background:var(--accent-sage);"></span></span>
+            <span>฿${item.branches.mall.toLocaleString()}</span>
+          </div>
+        </td>
+        <td class="text-right" style="font-weight:700;color:var(--text-espresso);">
+          ฿${item.rev.toLocaleString()}
+        </td>
+        <td class="text-right" style="font-weight:600;color:var(--accent-terracotta);">
+          ${item.share}
+        </td>
+        <td class="text-center">
+          <span style="font-weight:700;color:var(--accent-sage);background:var(--accent-sage-soft);padding:2px 8px;border-radius:9999px;font-size:11px;">
+            ${item.margin}
+          </span>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// 2. 3D CAROUSEL MECHANICS
+let currentCarouselIndex = 0;
+const cardsCount = 3;
+
+function updateCarouselCards() {
+  const cards = document.querySelectorAll('.bestseller-3d-card');
+  const dots = document.querySelectorAll('.carousel-dot');
+
+  cards.forEach(card => {
+    const idx = parseInt(card.getAttribute('data-index'));
+    card.classList.remove('card-active', 'card-prev', 'card-next');
+
+    const diff = (idx - currentCarouselIndex + cardsCount) % cardsCount;
+    if (diff === 0) {
+      card.classList.add('card-active');
+    } else if (diff === 1) {
+      card.classList.add('card-next');
+    } else if (diff === 2) {
+      card.classList.add('card-prev');
+    }
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentCarouselIndex);
+  });
+}
+
+function selectCarouselCard(index) {
+  currentCarouselIndex = index;
+  updateCarouselCards();
+}
+
+document.getElementById('prevCarouselBtn').addEventListener('click', () => {
+  currentCarouselIndex = (currentCarouselIndex - 1 + cardsCount) % cardsCount;
+  updateCarouselCards();
+});
+
+document.getElementById('nextCarouselBtn').addEventListener('click', () => {
+  currentCarouselIndex = (currentCarouselIndex + 1) % cardsCount;
+  updateCarouselCards();
+});
+
+// 3. INTERACTIVE 31-DAY SVG AREA CHART
+function initSvgChart() {
+  const svg = document.getElementById('salesSvg');
+  const guideLine = document.getElementById('svgGuideLine');
+  const guidePoint = document.getElementById('svgGuidePoint');
+  const tooltip = document.getElementById('chartTooltip');
+  const tooltipDay = document.getElementById('tooltipDay');
+  const tooltipVal = document.getElementById('tooltipVal');
+
+  const startX = 45;
+  const endX = 735;
+  const chartWidth = endX - startX;
+  const topY = 25;
+  const bottomY = 175;
+  const chartHeight = bottomY - topY;
+  const maxVal = 4000;
+
+  const points = DAILY_SALES.map((val, i) => {
+    const x = startX + (i / 30) * chartWidth;
+    const y = bottomY - (val / maxVal) * chartHeight;
+    return { x, y, val, day: i + 1 };
+  });
+
+  // Interactive Pointer Tracking
+  svg.addEventListener('mousemove', (e) => {
+    const rect = svg.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const svgX = (mouseX / rect.width) * 760;
+
+    let closest = points[0];
+    let minDist = Infinity;
+    points.forEach(p => {
+      const dist = Math.abs(p.x - svgX);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = p;
+      }
+    });
+
+    if (closest) {
+      guideLine.setAttribute('x1', closest.x);
+      guideLine.setAttribute('x2', closest.x);
+      guideLine.style.display = 'block';
+
+      guidePoint.setAttribute('cx', closest.x);
+      guidePoint.setAttribute('cy', closest.y);
+      guidePoint.style.display = 'block';
+
+      tooltipDay.textContent = `วันที่ ${closest.day} ส.ค. 2569`;
+      tooltipVal.textContent = `฿${closest.val.toLocaleString()} (${((closest.val / 72530) * 100).toFixed(2)}%)`;
+
+      const screenX = (closest.x / 760) * rect.width;
+      const screenY = (closest.y / 220) * rect.height;
+
+      tooltip.style.left = `${screenX}px`;
+      tooltip.style.top = `${screenY}px`;
+      tooltip.classList.add('visible');
+    }
+  });
+
+  svg.addEventListener('mouseleave', () => {
+    guideLine.style.display = 'none';
+    guidePoint.style.display = 'none';
+    tooltip.classList.remove('visible');
+  });
+}
+
+// 4. 2D GLASS MODAL CONTROLS
+const modal = document.getElementById('productModal');
+
+function openProductModal(productId) {
+  const prod = PRODUCTS_DATA.find(p => p.id === productId);
+  if (!prod) return;
+
+  document.getElementById('mEmoji').textContent = prod.emoji;
+  document.getElementById('mTitle').textContent = `${prod.name} (${prod.en})`;
+  document.getElementById('mCat').textContent = `หมวดหมู่: ${prod.cat} · ส่วนแบ่ง ${prod.share} ของยอดขายรวม`;
+
+  document.getElementById('mPhoto').src = prod.img;
+  document.getElementById('mHeroName').textContent = prod.name;
+  document.getElementById('mHeroCat').textContent = prod.en;
+
+  document.getElementById('mUnitPrice').textContent = `฿${prod.price.toFixed(2)}`;
+  document.getElementById('mUnitCost').textContent = `฿${prod.cost.toFixed(2)}`;
+  document.getElementById('mUnitProfit').textContent = `฿${(prod.price - prod.cost).toFixed(2)}`;
+  document.getElementById('mUnitMargin').textContent = prod.margin;
+
+  document.getElementById('mTotalQty').textContent = `${prod.qty.toLocaleString()} ชิ้น`;
+  document.getElementById('mTotalRev').textContent = `฿${prod.rev.toLocaleString()}`;
+  document.getElementById('mTotalProfit').textContent = `฿${prod.profit.toLocaleString()}`;
+  document.getElementById('mDesc').textContent = prod.desc;
+
+  const u = prod.branches.uni;
+  const o = prod.branches.off;
+  const m = prod.branches.mall;
+  const sum = prod.rev || 1;
+
+  const pu = ((u / sum) * 100).toFixed(1);
+  const po = ((o / sum) * 100).toFixed(1);
+  const pm = ((m / sum) * 100).toFixed(1);
+
+  document.getElementById('mValUni').textContent = `฿${u.toLocaleString()} (${pu}%)`;
+  document.getElementById('mBarUni').style.width = `${pu}%`;
+
+  document.getElementById('mValOff').textContent = `฿${o.toLocaleString()} (${po}%)`;
+  document.getElementById('mBarOff').style.width = `${po}%`;
+
+  document.getElementById('mValMall').textContent = `฿${m.toLocaleString()} (${pm}%)`;
+  document.getElementById('mBarMall').style.width = `${pm}%`;
+
+  modal.classList.add('open');
+}
+
+function closeProductModal() {
+  modal.classList.remove('open');
+}
+
+function closeModalOnBackdrop(e) {
+  if (e.target === modal) closeProductModal();
+}
+
+// 5. KPI MODAL POPUP
+const kpiModal = document.getElementById('kpiModal');
+
+function openKpiModal(metric) {
+  const titleMap = {
+    rev: {
+      icon: "💰",
+      title: "ยอดขายรวมสุทธิ (Total Revenue)",
+      formula: "คำนวณจาก ผลรวมยอดขาย 8 ชนิดสินค้า ทั้ง 3 สาขา ตลอด 31 วัน",
+      heroLabel: "ยอดขายรวมทั้งหมด",
+      heroVal: "฿72,530",
+      heroSub: "เฉลี่ยวันละ ฿2,339.68 · บรรลุเป้าหมาย 100%",
+      branches: [
+        { name: "สาขามหาวิทยาลัย", val: "฿33,395", pct: 46.04, color: "var(--accent-terracotta)" },
+        { name: "สาขาอาคารสำนักงาน", val: "฿23,180", pct: 31.96, color: "var(--accent-amber)" },
+        { name: "สาขาห้างสรรพสินค้า", val: "฿15,955", pct: 22.00, color: "var(--accent-sage)" }
+      ]
+    },
+    units: {
+      icon: "📦",
+      title: "ปริมาณจำหน่ายรวม (Units Sold)",
+      formula: "คำนวณจาก ผลรวมจำนวนชิ้นสินค้าที่จำหน่ายได้ 100 บิล",
+      heroLabel: "จำนวนชิ้นทั้งหมด",
+      heroVal: "1,000 ชิ้น",
+      heroSub: "เฉลี่ย 32.3 ชิ้น/วัน · ครบ 100 ธุรกรรม",
+      branches: [
+        { name: "สาขามหาวิทยาลัย", val: "465 ชิ้น", pct: 46.5, color: "var(--accent-terracotta)" },
+        { name: "สาขาอาคารสำนักงาน", val: "290 ชิ้น", pct: 29.0, color: "var(--accent-amber)" },
+        { name: "สาขาห้างสรรพสินค้า", val: "245 ชิ้น", pct: 24.5, color: "var(--accent-sage)" }
+      ]
+    },
+    profit: {
+      icon: "📈",
+      title: "กำไรขั้นต้นรวม (Gross Profit)",
+      formula: "คำนวณจาก: ผลรวม จำนวนขาย × (ราคาต่อหน่วย − ต้นทุนต่อหน่วย)",
+      heroLabel: "กำไรขั้นต้นสุทธิ",
+      heroVal: "฿38,825",
+      heroSub: "หักลบต้นทุนสินค้า ฿33,705 (46.47%)",
+      branches: [
+        { name: "สาขามหาวิทยาลัย", val: "฿18,152", pct: 46.75, color: "var(--accent-terracotta)" },
+        { name: "สาขาอาคารสำนักงาน", val: "฿10,967", pct: 28.25, color: "var(--accent-amber)" },
+        { name: "สาขาห้างสรรพสินค้า", val: "฿9,706", pct: 25.00, color: "var(--accent-sage)" }
+      ]
+    },
+    margin: {
+      icon: "📊",
+      title: "อัตรากำไรขั้นต้น (GP Margin)",
+      formula: "คำนวณจาก: (กำไรขั้นต้นรวม ÷ ยอดขายรวม) × 100%",
+      heroLabel: "อัตรากำไรเฉลี่ย",
+      heroVal: "53.53%",
+      heroSub: "สูงกว่ามาตรฐานธุรกิจอาหารและเครื่องดื่ม (50%)",
+      branches: [
+        { name: "สาขามหาวิทยาลัย", val: "54.36%", pct: 54.36, color: "var(--accent-terracotta)" },
+        { name: "สาขาอาคารสำนักงาน", val: "47.31%", pct: 47.31, color: "var(--accent-amber)" },
+        { name: "สาขาห้างสรรพสินค้า", val: "60.83%", pct: 60.83, color: "var(--accent-sage)" }
+      ]
+    }
+  };
+
+  const data = titleMap[metric];
+  if (!data) return;
+
+  document.getElementById('kpiModalIcon').textContent = data.icon;
+  document.getElementById('kpiModalTitle').textContent = data.title;
+  document.getElementById('kpiModalFormula').textContent = data.formula;
+  document.getElementById('kpiHeroLabel').textContent = data.heroLabel;
+  document.getElementById('kpiHeroVal').textContent = data.heroVal;
+  document.getElementById('kpiHeroSub').textContent = data.heroSub;
+
+  document.getElementById('kpiBranchBreakdown').innerHTML = data.branches.map(b => `
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+        <span>${b.name}</span>
+        <b>${b.val} (${b.pct}%)</b>
+      </div>
+      <div style="height:6px;border-radius:3px;background:var(--surface);overflow:hidden;border:1px solid var(--border-subtle);">
+        <div style="height:100%;border-radius:3px;width:${b.pct}%;background:${b.color};"></div>
+      </div>
+    </div>
+  `).join('');
+
+  kpiModal.classList.add('open');
+}
+
+function closeKpiModal() {
+  kpiModal.classList.remove('open');
+}
+
+function closeKpiModalOnBackdrop(e) {
+  if (e.target === kpiModal) closeKpiModal();
+}
+
+// 6. 3D TILT PHYSICS FOR KPI CARDS
+function initTiltPhysics() {
+  const cards = document.querySelectorAll('.kpi-tilt-card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotX = -((y - centerY) / centerY) * 7;
+      const rotY = ((x - centerX) / centerX) * 7;
+
+      card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)`;
+    });
+  });
+}
+
+// 7. THEME TOGGLER (EARTH TONE LIGHT / DARK ESPRESSO INVERT)
+const themeBtn = document.getElementById('themeToggleBtn');
+const themeIcon = document.getElementById('themeIcon');
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('earthtone_theme', theme);
+  if (theme === 'dark') {
+    themeIcon.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+  } else {
+    themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+  }
+}
+
+themeBtn.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  applyTheme(current === 'light' ? 'dark' : 'light');
+});
+
+// 8. EVENT LISTENERS SETUP
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeProductModal();
+    closeKpiModal();
+  }
+});
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  searchQuery = e.target.value.trim();
+  renderMatrixTable();
+});
+
+document.querySelectorAll('.filter-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategoryFilter = btn.getAttribute('data-cat');
+    renderMatrixTable();
+  });
+});
+
+// INITIAL BOOT
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('earthtone_theme') || 'light';
+  applyTheme(savedTheme);
+  updateCarouselCards();
+  initSvgChart();
+  initTiltPhysics();
+});
+</script>
+</body>
+</html>

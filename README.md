@@ -50,7 +50,7 @@ Course-SC60107-Business-Information-Technology-Management/
 │   └── 02_Teaching_Slides/           # สไลด์บรรยาย (W1, W2)
 ├── 02_Labs_Assignments/              # ใบงาน แบบฝึกหัด และการมอบหมายงานภาคปฏิบัติ
 │   ├── Week1/                        # AI Coaching ในการบริหารจัดการไอทีธุรกิจ (10 คะแนน)
-│   ├── Week2/                        # Storyboards & Video Clip แคมเปญโฆษณา Adidas F50 (10 คะแนน)
+│   ├── Week2/                        # Storyboards & Video Clip แคมเปญโฆษณา Adidas F50 (10 คะแนน) + เกียรติบัตร depa x SquareX
 │   ├── Week3/                        # (สำรองสัปดาห์การเรียนรู้)
 │   ├── Week4/                        # (สำรองสัปดาห์การเรียนรู้)
 │   └── Week5/                        # Cafe & Bakery Sales Analytics Dashboard (3D) (5 คะแนน)
@@ -81,7 +81,7 @@ Course-SC60107-Business-Information-Technology-Management/
 | สัปดาห์ | ลำดับงาน | หัวข้องาน (Assignment) | รายละเอียดและโจทย์การวิเคราะห์ | เอกสาร/ซอร์สโค้ด |
 | :---: | :---: | :--- | :--- | :---: |
 | **Week 01** | **Assign 01** | AI Coaching ในการบริหารจัดการไอทีธุรกิจ | ศึกษาและวิเคราะห์การนำเทคโนโลยี AI มาช่วยให้คำปรึกษา แนะนำ และโค้ชการทำงานภายในองค์กรธุรกิจ (10 คะแนน) | [เปิดเอกสารงาน](02_Labs_Assignments/Week1/AI%20Coaching%2010%20คะแนน.docx) |
-| **Week 02** | **Assign 02** | Storyboards & Video Clip แคมเปญโฆษณา (Adidas F50) | ออกแบบ Storyboard และสร้างวิดีโอคลิปโฆษณาสินค้าด้วย AI ตามกลยุทธ์ MarTech & Video Marketing (10 คะแนน) | [โฟลเดอร์ผลงาน](02_Labs_Assignments/Week2/) |
+| **Week 02** | **Assign 02** | Storyboards & Video Clip แคมเปญโฆษณา (Adidas F50) & Workshop Boost Your Smart Digital Marketing with AI | อบรมเชิงปฏิบัติการ depa x PIM x SquareX Academy, ออกแบบ Storyboard และสร้างวิดีโอคลิปโฆษณาสินค้าด้วย AI ตามกลยุทธ์ MarTech & Video Marketing (10 คะแนน) | [โฟลเดอร์ผลงาน](02_Labs_Assignments/Week2/) · [เกียรติบัตร](02_Labs_Assignments/Week2/Certificate_นายภูริพัฒน์%20เหมกุล.pdf) |
 | **Week 05** | **Assign 03** | Cafe & Bakery Sales Analytics Dashboard (3D) | Sales Dashboard & Interactive 3D Model Viewer สำหรับการวิเคราะห์ยอดขายร้านกาแฟและเบเกอรี (Amazon Quick Workshop) (5 คะแนน) | [🌐 Live Dashboard](https://phuriphattypez3r0.github.io/Course-SC60107-Business-Information-Technology-Management-2026/) · [โค้ด Dashboard](02_Labs_Assignments/Week5/Dashboard-6752300313.html) |
 
 ---
